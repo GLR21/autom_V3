@@ -1,33 +1,45 @@
-import 'package:autom_v3/utils/util.dart';
-import 'package:postgres/postgres.dart';
+import 'package:autom_v3/utils/environment_handler.dart';
+import 'package:fluent_query_builder/fluent_query_builder.dart';
 
 class Connection
 {
-  static PostgreSQLConnection? _connection;
-
-  static Future<PostgreSQLConnection> getConnection() async 
-  {
-
-    String host = Util.getEnvirommentVariable( 'POSTGRES_DATABASE_HOST' ) ?? 'localhost';
-    String port = Util.getEnvirommentVariable( 'POSTGRES_DATABASE_PORT' ) ?? '5432';
-    String database = Util.getEnvirommentVariable( 'POSTGRES_DATABASE_NAME' ) ?? 'autom';
-    String username = Util.getEnvirommentVariable( 'POSTGRES_DATABASE_USERNAME' ) ?? 'autom';
-    String password = Util.getEnvirommentVariable( 'POSTGRES_DATABASE_PASSWORD' ) ?? 'autom';
-
-
-    if (_connection == null)
+    Future<DbLayer> _connect() async
     {
-      _connection = PostgreSQLConnection
-                    (
-                      host,
-                      int.parse( port ),
-                      database,
-                      username: username,
-                      password: password
-                    );
-
-      await _connection!.open();
+        return await DbLayer(_dbInfo()).connect();
     }
-    return _connection!;
-  }
+
+    DBConnectionInfo _dbInfo()
+    {
+        String database = EnvironmentHandler.get('POSTGRES_DATABASE_NAME');
+        String username = EnvironmentHandler.get('POSTGRES_DATABASE_USERNAME');
+        String password = EnvironmentHandler.get('POSTGRES_DATABASE_PASSWORD');
+        String host = EnvironmentHandler.get('POSTGRES_DATABASE_HOST');
+        String port = EnvironmentHandler.get('POSTGRES_DATABASE_PORT');
+        String charset = EnvironmentHandler.get('POSTGRES_DATABASE_CHARSET');
+
+        return DBConnectionInfo(
+            host: host,
+            database: database,
+            driver: ConnectionDriver.pgsql,
+            port: int.parse(port),
+            username: username,
+            password: password,
+            charset: charset,
+            schemes: ['public'],
+        );
+    }
+
+    Future<DbLayer> getInstance()
+    {
+        final Future<DbLayer> conn;
+        try
+        {
+            conn = _connect();
+        }
+        catch(e, s)
+        {
+            throw Exception('fluent db error? $e $s');
+        }
+        return conn;
+    }
 }
