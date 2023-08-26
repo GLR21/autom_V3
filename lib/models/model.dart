@@ -15,7 +15,7 @@ class Model<T>
             await connection.open();
             var result = await connection?.query(query);
             await connection.close();
-            return result ?? [];
+            return result;
         }
         catch (e)
         {
