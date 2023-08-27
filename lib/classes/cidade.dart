@@ -60,6 +60,6 @@ class Cidade
     @override
     String toString()
     {
-        return 'Cidade{id: $_id, nome: $_nome, codIbge: $_codIbge, refEstado: $_refEstado}';
+        return 'Cidade{nome: $_nome, codIbge: $_codIbge, refEstado: $_refEstado}';
     }
 }
