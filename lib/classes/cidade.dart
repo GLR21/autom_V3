@@ -49,8 +49,8 @@ class Cidade
 
     Map<String, dynamic> toMap()
     {
-        return {
-            'id': _id,
+        return 
+        {
             'nome': _nome,
             'cod_ibge': _codIbge,
             'ref_estado': _refEstado
