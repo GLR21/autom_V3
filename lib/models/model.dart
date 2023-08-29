@@ -27,6 +27,10 @@ class Model<T>
     Future<Object> insert ( Map< String, T > object ) async
     {
         String query = "INSERT INTO $tableName (";
+
+        // Remove primary key from object to avoid errors on insert
+        object.remove(primaryKey);
+
         object.forEach((key, value) {
             query += "$key,";
         });
