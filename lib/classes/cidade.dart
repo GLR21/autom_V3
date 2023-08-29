@@ -51,6 +51,7 @@ class Cidade
     {
         return 
         {
+            'id': _id,
             'nome': _nome,
             'cod_ibge': _codIbge,
             'ref_estado': _refEstado
