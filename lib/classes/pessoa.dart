@@ -124,6 +124,7 @@ class Pessoa
     Map<String, dynamic > toMap()
     {
         return {
+            'id': _id,
             'nome': _nome,
             'email': _email,
             'senha': _senha,
