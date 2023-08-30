@@ -7,13 +7,13 @@ class Model<T>
     String tableName = '';
     String primaryKey = 'id';
 
-    Future<Object> _query(String query) async
+    Future<dynamic> _query(String query) async
     {
         var connection = Connection.getInstance();
         try
         {
             await connection.open();
-            var result = await connection?.query(query);
+            var result = await connection?.mappedResultsQuery(query);
             await connection.close();
             return result;
         }
@@ -25,8 +25,17 @@ class Model<T>
         }   
     }
 
+    List _getReturnLines ( dynamic result )
+    {
+        List resultArray = List.empty(growable: true);
+        result.forEach((element) {
+            resultArray.add(element[tableName]);
+        });
+        return resultArray;
+    }
+
     @override
-    Future<Object> insert ( Map< String, T > object ) async
+    Future<dynamic> insert ( Map< String, T > object ) async
     {
         String query = "INSERT INTO $tableName (";
 
@@ -49,11 +58,11 @@ class Model<T>
 
         query += ") RETURNING *;";
         var result = await _query(query);
-        return result;
+        return _getReturnLines(result);
     }
 
     @override
-    Future<Object> update ( Map< String,  T  > object ) async
+    Future<dynamic> update ( Map< String,  T  > object ) async
     {
         String query = "UPDATE $tableName SET ";
         object.forEach((key, value) {
@@ -65,32 +74,32 @@ class Model<T>
         query += " WHERE $primaryKey = ${object[primaryKey]} RETURNING *;";
 
         var result = await _query(query);
-        return result;
+        return _getReturnLines(result);
     }
 
     @override
-    Future<Object> delete ( Map< String, T > object ) async
+    Future<dynamic> delete ( Map< String, T > object ) async
     {
         String query = "DELETE FROM $tableName WHERE $primaryKey = ${object[primaryKey]} RETURNING *;";
 
         var result = await _query(query);
-        return result;
+        return _getReturnLines(result);
     }
 
     @override
-    Future<Object> select ( Map< String, T > object ) async
+    Future< dynamic > select ( Map< String, T > object ) async
     {
         String query = "SELECT * FROM $tableName WHERE $primaryKey = ${object[primaryKey]};";
 
         var result = await _query(query);
-        return result;
+        return _getReturnLines(result);
     }
 
-    Future<Object> selectAll () async
+    Future< dynamic > selectAll () async
     {
         String query = "SELECT * FROM $tableName;";
 
         var result = await _query(query);
-        return result;
+        return _getReturnLines(result);
     }
 }
