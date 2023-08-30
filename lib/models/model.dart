@@ -9,16 +9,18 @@ class Model<T>
 
     Future<Object> _query(String query) async
     {
+        var connection = Connection.getInstance();
         try
         {
-            var connection = Connection.getInstance();
             await connection.open();
             var result = await connection?.query(query);
             await connection.close();
             return result;
         }
-        catch (e)
+        catch ( e )
         {
+            await connection.close();
+            print( 'Exception details:\n $e \n\n Exception ' );
             return [];
         }   
     }
@@ -46,16 +48,8 @@ class Model<T>
         query = query.substring(0, query.length - 1);
 
         query += ") RETURNING *;";
-
-        try
-        {
-            var result = await _query(query);
-            return result;
-        }
-        catch (e)
-        {
-            return [];
-        }
+        var result = await _query(query);
+        return result;
     }
 
     @override
@@ -70,15 +64,8 @@ class Model<T>
 
         query += " WHERE $primaryKey = ${object[primaryKey]} RETURNING *;";
 
-        try
-        {
-            var result = await _query(query);
-            return result;
-        }
-        catch (e)
-        {
-            return [];
-        }
+        var result = await _query(query);
+        return result;
     }
 
     @override
@@ -86,15 +73,8 @@ class Model<T>
     {
         String query = "DELETE FROM $tableName WHERE $primaryKey = ${object[primaryKey]} RETURNING *;";
 
-        try
-        {
-            var result = await _query(query);
-            return result;
-        }
-        catch (e)
-        {
-            return [];
-        }
+        var result = await _query(query);
+        return result;
     }
 
     @override
@@ -102,29 +82,15 @@ class Model<T>
     {
         String query = "SELECT * FROM $tableName WHERE $primaryKey = ${object[primaryKey]};";
 
-        try
-        {
-            var result = await _query(query);
-            return result;
-        }
-        catch (e)
-        {
-            return [];
-        }
+        var result = await _query(query);
+        return result;
     }
 
     Future<Object> selectAll () async
     {
         String query = "SELECT * FROM $tableName;";
 
-        try
-        {
-            var result = await _query(query);
-            return result;
-        }
-        catch (e)
-        {
-            return [];
-        }
+        var result = await _query(query);
+        return result;
     }
 }
