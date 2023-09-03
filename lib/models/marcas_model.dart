@@ -4,7 +4,7 @@ class MarcasModel extends Model<dynamic>
 {
     MarcasModel()
     {
-        super.tableName = 'at_marcas';
+        super.tableName = 'at_marca';
         super.primaryKey = 'id';
     }
 }
