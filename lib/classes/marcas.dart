@@ -43,6 +43,14 @@ class Marcas
     @override
     String toString()
     {
-        return 'Marcas{nome: $_nome}';
+        return 'Marcas{id: $_id, nome: $_nome}';
+    }
+
+    Marcas toObject(Map<String, dynamic> map)
+    {
+        return Marcas(
+            map['nome'],
+            map['id']
+        );
     }
 }
