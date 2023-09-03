@@ -1,9 +1,9 @@
 
 // ignore_for_file: unnecessary_getters_setters
 
-import 'package:autom_v3/classes/marcas.dart';
+import 'package:autom_v3/classes/marca.dart';
 
-class Pecas
+class Peca
     extends
         Object
 {
@@ -12,14 +12,14 @@ class Pecas
     String _descricao = '';
     num _valorCompra = 0.00;
     num _valorRevenda = 0.00;
-    Marcas _refMarca = Marcas.empty();
+    Marca _refMarca = Marca.empty();
 
-    Pecas(
+    Peca(
         String nome,
         String descricao,
         num valorCompra,
         num valorRevenda,
-        Marcas refMarca,
+        Marca refMarca,
         [int id = 0]
     )
     {
@@ -31,14 +31,14 @@ class Pecas
         _id = id;
     }
 
-    Pecas.empty();
+    Peca.empty();
 
     int get id => _id;
     String get nome => _nome;
     String get descricao => _descricao;
     num get valorCompra => _valorCompra;
     num get valorRevenda => _valorRevenda;
-    Marcas get refMarca => _refMarca;
+    Marca get refMarca => _refMarca;
 
     set id(int id)
     {
@@ -60,7 +60,7 @@ class Pecas
     {
         _valorRevenda = valorRevenda;
     }
-    set refMarca(Marcas refMarca)
+    set refMarca(Marca refMarca)
     {
         _refMarca = refMarca;
     }

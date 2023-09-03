@@ -1,8 +1,8 @@
 import 'package:autom_v3/models/model.dart';
 
-class PecasModel extends Model<dynamic>
+class PecaModel extends Model<dynamic>
 {
-    PecasModel()
+    PecaModel()
     {
         super.tableName = 'at_peca';
         super.primaryKey = 'id';
