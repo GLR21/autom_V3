@@ -1,16 +1,16 @@
 
 // ignore_for_file: unnecessary_getters_setters
 
-class Marcas
+class Marca
     extends
         Object
 {
     int _id = 0;
     String _nome = '';
 
-    Marcas.empty();
+    Marca.empty();
 
-    Marcas(
+    Marca(
         String nome,
         [int id = 0]
     )
@@ -43,6 +43,14 @@ class Marcas
     @override
     String toString()
     {
-        return 'Marcas{nome: $_nome}';
+        return 'Marcas{id: $_id, nome: $_nome}';
+    }
+
+    Marca toObject(Map<String, dynamic> map)
+    {
+        return Marca(
+            map['nome'],
+            map['id']
+        );
     }
 }
