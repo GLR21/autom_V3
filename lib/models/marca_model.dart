@@ -1,8 +1,8 @@
 import 'package:autom_v3/models/model.dart';
 
-class MarcasModel extends Model<dynamic>
+class MarcaModel extends Model<dynamic>
 {
-    MarcasModel()
+    MarcaModel()
     {
         super.tableName = 'at_marca';
         super.primaryKey = 'id';
