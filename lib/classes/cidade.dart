@@ -12,6 +12,13 @@ class Cidade
 
     Cidade.empty();
 
+    Cidade.justId(
+        int id
+    )
+    {
+        _id = id;
+    }
+
     Cidade(
         String nome,
         String codIbge,
