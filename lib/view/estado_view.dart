@@ -1,4 +1,4 @@
-import 'package:autom_v3/view/components/painel_navegacao.dart';
+import 'package:autom_v3/view/components/navigation_panel.dart';
 import 'package:flutter/material.dart';
 
 class EstadoView extends StatelessWidget {
@@ -11,7 +11,7 @@ class EstadoView extends StatelessWidget {
             title: const Text('Estados', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),),
             backgroundColor: Colors.greenAccent,
         ),
-        drawer: const PainelNavegacao(),
+        drawer: const NavigationPanel(),
         body: const Center(
             child: Text('Página em branco')
         ),

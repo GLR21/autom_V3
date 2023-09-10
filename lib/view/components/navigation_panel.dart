@@ -1,10 +1,10 @@
 import 'package:autom_v3/view/estado_view.dart';
-import 'package:autom_v3/view/principal_view.dart';
+import 'package:autom_v3/view/main_view.dart';
 import 'package:flutter/material.dart';
 
-class PainelNavegacao extends StatelessWidget
+class NavigationPanel extends StatelessWidget
 {
-    const PainelNavegacao({Key? key}) : super(key: key);
+    const NavigationPanel({Key? key}) : super(key: key);
 
     @override
     Widget build(BuildContext context) => Drawer(
@@ -34,7 +34,7 @@ class PainelNavegacao extends StatelessWidget
                     onTap: () =>
                         Navigator.of(context).push(
                                PageRouteBuilder(
-                                    pageBuilder: (context, animation1, animation2) => const PrincipalView(),
+                                    pageBuilder: (context, animation1, animation2) => const MainView(),
                                 ),
                         )
                 ),
