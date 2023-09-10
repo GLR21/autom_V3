@@ -10,8 +10,6 @@ class Estado
     int _codIbge = 0;
     int _id = 0;
 
-    Estado.empty();
-
     Estado(
         String nome,
         String sigla,
@@ -24,6 +22,8 @@ class Estado
         _codIbge = codIbge;
         _id = id;
     }
+
+    Estado.empty();
 
     int get id => _id;
     String get nome => _nome;
@@ -63,5 +63,15 @@ class Estado
     String toString()
     {
         return 'Estado{nome: $_nome, sigla: $_sigla, codIbge: $_codIbge}';
+    }
+
+    Estado toObject(Map<String, dynamic> map)
+    {
+        return Estado(
+            map['nome'],
+            map['sigla'],
+            map['cod_ibge'],
+            map['id']
+        );
     }
 }
