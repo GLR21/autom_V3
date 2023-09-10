@@ -1,4 +1,5 @@
-import 'package:autom_v3/view/estado_view.dart';
+import 'package:autom_v3/view/estado/estado_list_view.dart';
+import 'package:autom_v3/view/estado/estado_view.dart';
 import 'package:autom_v3/view/main_view.dart';
 import 'package:flutter/material.dart';
 
@@ -45,7 +46,7 @@ class NavigationPanel extends StatelessWidget
                     onTap: () =>
                         Navigator.of(context).push(
                                 PageRouteBuilder(
-                                    pageBuilder: (context, animation1, animation2) => const EstadoView(),
+                                    pageBuilder: (context, animation1, animation2) => const EstadoListView(),
                                 ),
                         )
                 ),

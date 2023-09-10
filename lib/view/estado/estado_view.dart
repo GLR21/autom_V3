@@ -13,7 +13,7 @@ class EstadoView extends StatelessWidget {
         ),
         drawer: const NavigationPanel(),
         body: const Center(
-            child: Text('Página em branco')
+            child: Text('Estado Viewq')
         ),
     );
 }
