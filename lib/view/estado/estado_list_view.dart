@@ -26,7 +26,26 @@ class EstadoListView extends StatelessWidget {
                 backgroundColor: Colors.greenAccent,
             ),
             drawer: const NavigationPanel(),
-            body: const Text('Sem dados')
+            body: Center(
+                child: FutureBuilder(
+                    future: getEstadoList(),
+                    builder: (context, snapshot)
+                    {
+                        if (snapshot.connectionState == ConnectionState.waiting)
+                        {
+                            return const CircularProgressIndicator();
+                        }
+                        else if(snapshot.hasError)
+                        {
+                            return Text('Erro: ${snapshot.error}');
+                        }
+                        else
+                        {
+                            return const Text('Sucesso');
+                        }
+                    },
+                ),
+            )
         );
 
         return scaffold;
