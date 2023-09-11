@@ -3,17 +3,26 @@ import 'package:flutter/material.dart';
 
 class EstadoView extends StatelessWidget {
     
-    const EstadoView({Key? key}) : super(key: key);
+    final int? id;
+
+    const EstadoView(this.id, {super.key});
 
     @override
-    Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-            title: const Text('Estados', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),),
-            backgroundColor: Colors.greenAccent,
-        ),
-        drawer: const NavigationPanel(),
-        body: const Center(
-            child: Text('Estado Viewq')
-        ),
-    );
+    Widget build(BuildContext context) {
+
+        String id = this.id.toString();
+
+        Scaffold scaffold = Scaffold(
+            appBar: AppBar(
+                title: const Text('Estados', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),),
+                backgroundColor: Colors.greenAccent,
+            ),
+            drawer: const NavigationPanel(),
+            body: Center(
+                child: Text('Estado View: $id')
+            ),
+        );
+
+        return scaffold;
+    }
 }

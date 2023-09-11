@@ -1,6 +1,7 @@
 import 'package:autom_v3/classes/estado.dart';
 import 'package:autom_v3/models/estado_model.dart';
 import 'package:autom_v3/view/components/navigation_panel.dart';
+import 'package:autom_v3/view/estado/estado_view.dart';
 import 'package:flutter/material.dart';
 
 class EstadoListView extends StatelessWidget {
@@ -37,17 +38,30 @@ class EstadoListView extends StatelessWidget {
                         }
                         else if(snapshot.hasError)
                         {
-                            return Text('Erro: ${snapshot.error}');
+                            return Text('Error: ${snapshot.error}');
                         }
                         else
                         {
-                            return Center(
-                                child: ListView.builder(
-                                    itemCount: snapshot.data?.length,
-                                    itemBuilder: (context, index) {
-                                        return Text(snapshot.data?[index]['nome']!);
-                                    }
-                                ),
+                            return ListView.builder(
+                                itemCount: snapshot.data?.length,
+                                itemBuilder: (context, index)
+                                {
+                                    var row = snapshot.data?[index]!;
+
+                                    return ListTile(
+                                       title: Text(row['nome']),
+                                       trailing: ElevatedButton(
+                                            child: const Text('Editar'),
+                                            onPressed: () {
+                                                Navigator.of(context).push(
+                                                    PageRouteBuilder(
+                                                            pageBuilder: (context, animation1, animation2) => EstadoView(row['id']),
+                                                        ),
+                                                );
+                                            },
+                                       ),
+                                    );
+                                }
                             );
                         }
                     },
