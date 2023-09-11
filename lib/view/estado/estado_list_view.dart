@@ -41,7 +41,14 @@ class EstadoListView extends StatelessWidget {
                         }
                         else
                         {
-                            return const Text('Sucesso');
+                            return Center(
+                                child: ListView.builder(
+                                    itemCount: snapshot.data?.length,
+                                    itemBuilder: (context, index) {
+                                        return Text(snapshot.data?[index]['nome']!);
+                                    }
+                                ),
+                            );
                         }
                     },
                 ),
