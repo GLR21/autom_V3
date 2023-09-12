@@ -3,6 +3,7 @@ import 'package:autom_v3/models/estado_model.dart';
 import 'package:autom_v3/view/components/navigation_panel.dart';
 import 'package:autom_v3/view/estado/estado_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 class EstadoListView extends StatelessWidget {
 
@@ -42,27 +43,37 @@ class EstadoListView extends StatelessWidget {
                         }
                         else
                         {
-                            return ListView.builder(
-                                itemCount: snapshot.data?.length,
-                                itemBuilder: (context, index)
-                                {
-                                    var row = snapshot.data?[index]!;
+                            var rows =  snapshot.data!;
+                            int? length = snapshot.data?.length ?? 0;
 
-                                    return ListTile(
-                                       title: Text(row['nome']),
-                                       trailing: ElevatedButton(
-                                            child: const Text('Editar'),
-                                            onPressed: () {
-                                                Navigator.of(context).push(
-                                                    PageRouteBuilder(
-                                                            pageBuilder: (context, animation1, animation2) => EstadoView(row['id']),
-                                                        ),
-                                                );
-                                            },
-                                       ),
-                                    );
-                                }
+                            return DataTable
+                            (
+                                columns: 
+                                    const
+                                    [
+                                        DataColumn(label: Text('Sigla')),
+                                        DataColumn(label: Text('Nome')),
+                                    ],
+                                rows: List<DataRow>.generate
+                                (
+                                    length,
+                                    (index) => DataRow
+                                    (
+                                        cells: <DataCell>
+                                        [
+                                            DataCell
+                                            (
+                                                Text(rows[index]['sigla'])
+                                            ),
+                                            DataCell
+                                            (
+                                                Text(rows[index]['nome'])
+                                            ),
+                                        ]
+                                    )
+                                )                
                             );
+
                         }
                     },
                 ),
