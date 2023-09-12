@@ -20,66 +20,70 @@ class EstadoListView extends StatelessWidget {
     }
 
     @override
-    Widget build(BuildContext context) {
-
-        Scaffold scaffold = Scaffold(
-            appBar: AppBar(
+    Widget build(BuildContext context) => 
+        Scaffold
+        (
+            appBar: AppBar
+            (
                 title: const Text('Estados', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),),
                 backgroundColor: Colors.greenAccent,
             ),
             drawer: const NavigationPanel(),
-            body: Center(
-                child: FutureBuilder(
-                    future: getEstadoList(),
-                    builder: (context, snapshot)
-                    {
-                        if (snapshot.connectionState == ConnectionState.waiting)
+            body: Center
+            (
+                child: SingleChildScrollView
+                (
+                    scrollDirection: Axis.vertical,
+                    child: FutureBuilder
+                    (
+                        future: getEstadoList(),
+                        builder: (context, snapshot)
                         {
-                            return const CircularProgressIndicator();
-                        }
-                        else if(snapshot.hasError)
-                        {
-                            return Text('Error: ${snapshot.error}');
-                        }
-                        else
-                        {
-                            var rows =  snapshot.data!;
-                            int? length = snapshot.data?.length ?? 0;
+                            if (snapshot.connectionState == ConnectionState.waiting)
+                            {
+                                return const CircularProgressIndicator();
+                            }
+                            else if(snapshot.hasError)
+                            {
+                                return Text('Error: ${snapshot.error}');
+                            }
+                            else
+                            {
+                                var rows =  snapshot.data!;
+                                int? length = snapshot.data?.length ?? 0;
 
-                            return DataTable
-                            (
-                                columns: 
-                                    const
-                                    [
-                                        DataColumn(label: Text('Sigla')),
-                                        DataColumn(label: Text('Nome')),
-                                    ],
-                                rows: List<DataRow>.generate
+                                return DataTable
                                 (
-                                    length,
-                                    (index) => DataRow
-                                    (
-                                        cells: <DataCell>
+                                    columns: 
+                                        const
                                         [
-                                            DataCell
-                                            (
-                                                Text(rows[index]['sigla'])
-                                            ),
-                                            DataCell
-                                            (
-                                                Text(rows[index]['nome'])
-                                            ),
-                                        ]
-                                    )
-                                )                
-                            );
+                                            DataColumn(label: Text('Sigla')),
+                                            DataColumn(label: Text('Nome')),
+                                        ],
+                                    rows: List<DataRow>.generate
+                                    (
+                                        length,
+                                        (index) => DataRow
+                                        (
+                                            cells: <DataCell>
+                                            [
+                                                DataCell
+                                                (
+                                                    Text(rows[index]['sigla'])
+                                                ),
+                                                DataCell
+                                                (
+                                                    Text(rows[index]['nome'])
+                                                ),
+                                            ]
+                                        )
+                                    )                
+                                );
 
-                        }
-                    },
-                ),
+                            }
+                        },
+                    ),
+                )
             )
         );
-
-        return scaffold;
-    }
 }
