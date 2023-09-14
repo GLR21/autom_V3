@@ -1,14 +1,18 @@
 import 'package:autom_v3/classes/estado.dart';
 import 'package:autom_v3/models/estado_model.dart';
 import 'package:autom_v3/view/components/navigation_panel.dart';
-import 'package:autom_v3/view/estado/estado_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
-class EstadoListView extends StatelessWidget {
+class EstadoListView extends StatefulWidget {
 
     const EstadoListView({Key? key}): super(key: key);
 
+    @override
+    State<StatefulWidget> createState() => _EstadoListViewState();
+}
+
+class _EstadoListViewState extends State<EstadoListView>
+{
     Future<List> getEstadoList() async
     {
         List list = await EstadoModel().selectAll();
@@ -50,40 +54,65 @@ class EstadoListView extends StatelessWidget {
                             else
                             {
                                 var rows =  snapshot.data!;
-                                int? length = snapshot.data?.length ?? 0;
+                                var dts = DTS(rows);
+                                int? rowPerPage = PaginatedDataTable.defaultRowsPerPage;
 
-                                return DataTable
-                                (
-                                    columns: 
-                                        const
-                                        [
-                                            DataColumn(label: Text('Sigla')),
-                                            DataColumn(label: Text('Nome')),
-                                        ],
-                                    rows: List<DataRow>.generate
-                                    (
-                                        length,
-                                        (index) => DataRow
-                                        (
-                                            cells: <DataCell>
-                                            [
-                                                DataCell
-                                                (
-                                                    Text(rows[index]['sigla'])
-                                                ),
-                                                DataCell
-                                                (
-                                                    Text(rows[index]['nome'])
-                                                ),
-                                            ]
-                                        )
-                                    )                
+                                return PaginatedDataTable(
+                                    header: const Text('Estados'),
+                                    columns: const
+                                    [
+                                        DataColumn(label: Text('Sigla')),
+                                        DataColumn(label: Text('Nome')),
+                                    ],
+                                    source: dts,
+                                    onRowsPerPageChanged: (r)
+                                    {
+                                        rowPerPage = r;
+                                    },
+                                    rowsPerPage: rowPerPage,
                                 );
-
                             }
                         },
                     ),
                 )
             )
         );
+}
+
+class DTS extends DataTableSource
+{
+    var rows = [];
+
+    DTS
+    (
+        this.rows
+    );
+
+    @override
+    DataRow? getRow(int index)
+    {
+        if(index >= rows.length)
+        {
+            return null;
+        }
+    
+        return DataRow.byIndex
+        (
+            index: index,
+            cells: 
+            [
+                DataCell(Text(rows[index]['sigla'])),
+                DataCell(Text(rows[index]['nome'])),
+            ]
+        );
+    }
+
+    @override
+    bool get isRowCountApproximate => true;
+
+    @override
+    int get rowCount => 10;
+
+    @override
+    int get selectedRowCount => 0;
 }
