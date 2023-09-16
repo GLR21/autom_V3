@@ -33,46 +33,50 @@ class _EstadoListViewState extends State<EstadoListView>
                 backgroundColor: Colors.greenAccent,
             ),
             drawer: const NavigationPanel(),
-            body: Center
+            body: Scaffold
             (
-                child: SingleChildScrollView
+                body: Center
                 (
-                    scrollDirection: Axis.vertical,
-                    child: FutureBuilder
+                    child: SingleChildScrollView
                     (
-                        future: getEstadoList(),
-                        builder: (context, snapshot)
-                        {
-                            if (snapshot.connectionState == ConnectionState.waiting)
+                        scrollDirection: Axis.vertical,
+                        child: FutureBuilder
+                        (
+                            future: getEstadoList(),
+                            builder: (context, snapshot)
                             {
-                                return const CircularProgressIndicator();
-                            }
-                            else if(snapshot.hasError)
-                            {
-                                return Text('Error: ${snapshot.error}');
-                            }
-                            else
-                            {
-                                var rows =  snapshot.data!;
-                                var dts = DTS(rows);
-                                int? rowPerPage = PaginatedDataTable.defaultRowsPerPage;
-
-                                return PaginatedDataTable(
-                                    header: const Text('Estados'),
-                                    columns: const
-                                    [
-                                        DataColumn(label: Text('Sigla')),
-                                        DataColumn(label: Text('Nome')),
-                                    ],
-                                    source: dts,
-                                    onRowsPerPageChanged: (r)
-                                    {
-                                        rowPerPage = r;
-                                    },
-                                    rowsPerPage: rowPerPage,
-                                );
-                            }
-                        },
+                                if (snapshot.connectionState == ConnectionState.waiting)
+                                {
+                                    return const CircularProgressIndicator();
+                                }
+                                else if(snapshot.hasError)
+                                {
+                                    return Text('Error: ${snapshot.error}');
+                                }
+                                else
+                                {
+                                    var rows =  snapshot.data!;
+                                    var dts = DTS(rows);
+                                    int? rowPerPage = PaginatedDataTable.defaultRowsPerPage;
+                    
+                                    return PaginatedDataTable(
+                                        header: const Text('Estados'),
+                                        columns: const
+                                        [
+                                            DataColumn(label: Text('Sigla')),
+                                            DataColumn(label: Text('Nome')),
+                                        ],
+                                        source: dts,
+                                        onRowsPerPageChanged: (r)
+                                        {
+                                            rowPerPage = r;
+                                        },
+                                        rowsPerPage: rowPerPage,
+                                        
+                                    );
+                                }
+                            },
+                        ),
                     ),
                 )
             )
@@ -91,11 +95,6 @@ class DTS extends DataTableSource
     @override
     DataRow? getRow(int index)
     {
-        if(index >= rows.length)
-        {
-            return null;
-        }
-    
         return DataRow.byIndex
         (
             index: index,
@@ -103,15 +102,15 @@ class DTS extends DataTableSource
             [
                 DataCell(Text(rows[index]['sigla'])),
                 DataCell(Text(rows[index]['nome'])),
-            ]
+            ],
         );
     }
 
     @override
-    bool get isRowCountApproximate => true;
+    bool get isRowCountApproximate => false;
 
     @override
-    int get rowCount => 10;
+    int get rowCount => rows.length;
 
     @override
     int get selectedRowCount => 0;
