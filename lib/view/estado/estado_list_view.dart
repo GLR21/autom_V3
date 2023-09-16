@@ -19,6 +19,7 @@ class _EstadoListViewState extends State<EstadoListView>
 
     String? sigla;
     String? nome;
+    String? codIbge;
 
     Widget buildFieldSigla()
     {
@@ -27,10 +28,6 @@ class _EstadoListViewState extends State<EstadoListView>
             decoration: const InputDecoration(label: Text('Sigla')),
             validator: (String? value)
             {
-                if(value!.isEmpty)
-                {
-                    // return '"Sigla" é obrigatório';
-                }
                 return null;
             },
             onSaved: (newValue)
@@ -47,10 +44,6 @@ class _EstadoListViewState extends State<EstadoListView>
             decoration: const InputDecoration(label: Text('Nome')),
             validator: (String? value)
             {
-                if(value!.isEmpty)
-                {
-                    // return '"Nome" é obrigatório';
-                }
                 return null;
             },
             onSaved: (newValue)
@@ -60,6 +53,21 @@ class _EstadoListViewState extends State<EstadoListView>
         );
     }
 
+    Widget buildFieldCodIbge()
+    {
+        return TextFormField
+        (
+            decoration: const InputDecoration(label: Text('Código IBGE')),
+            validator: (String? value)
+            {
+                return null;
+            },
+            onSaved: (newValue)
+            {
+                codIbge = newValue;
+            },
+        );
+    }
 
     Future<List> getEstadoList() async
     {
@@ -108,6 +116,7 @@ class _EstadoListViewState extends State<EstadoListView>
                                                 [
                                                     buildFieldSigla(),
                                                     buildFieldNome(),
+                                                    buildFieldCodIbge()
                                                 ],                                            
                                             ),
                                         ),
