@@ -4,7 +4,8 @@ import 'package:autom_v3/view/components/navigation_panel.dart';
 import 'package:autom_v3/view/estado/estado_view.dart';
 import 'package:flutter/material.dart';
 
-class EstadoListView extends StatefulWidget {
+class EstadoListView extends StatefulWidget
+{
 
     const EstadoListView({Key? key}): super(key: key);
 
@@ -14,10 +15,11 @@ class EstadoListView extends StatefulWidget {
 
 class _EstadoListViewState extends State<EstadoListView>
 {
+    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-    String? sigla = '';
-    String? nome = '';
+    String? sigla;
+    String? nome;
 
     Widget buildFieldSigla()
     {
@@ -30,6 +32,7 @@ class _EstadoListViewState extends State<EstadoListView>
                 {
                     return '"Sigla" é obrigatório';
                 }
+                return null;
             },
             onSaved: (newValue)
             {
@@ -49,6 +52,7 @@ class _EstadoListViewState extends State<EstadoListView>
                 {
                     return '"Nome" é obrigatório';
                 }
+                return null;
             },
             onSaved: (newValue)
             {
@@ -72,6 +76,7 @@ class _EstadoListViewState extends State<EstadoListView>
     Widget build(BuildContext context) => 
         Scaffold
         (
+            key: scaffoldKey,
             appBar: AppBar
             (
                 title: const Text('Estados', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),),
@@ -89,6 +94,7 @@ class _EstadoListViewState extends State<EstadoListView>
                             margin: const EdgeInsets.all(0),
                             child: Form
                             (
+                                key: formKey,
                                 child: Column
                                 (
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -103,47 +109,59 @@ class _EstadoListViewState extends State<EstadoListView>
                                                 [
                                                     buildFieldSigla(),
                                                     buildFieldNome(),
-                                                    const SizedBox(height: 36)
                                                 ],                                            
                                             ),
                                         ),
-                                        Row
-                                        (
-                                            children:
-                                            [
-                                                ElevatedButton
-                                                (
-                                                    onPressed: ()
-                                                    {},
-                                                    child: const Text
-                                                    (
-                                                        'Buscar',
-                                                        style: TextStyle(color: Colors.green),
-                                                    ),
-                                                ),
-                                                const Padding
-                                                (
-                                                    padding: EdgeInsets.all(5)
-                                                ),
-                                                ElevatedButton
-                                                (
-                                                    onPressed: ()
-                                                    {
-                                                        Navigator.of(context).push
-                                                        (
-                                                            MaterialPageRoute
-                                                            (
-                                                                builder: (context) => const EstadoView(null),
-                                                            ),
-                                                        );
-                                                    },
-                                                    child: const Text
-                                                    (
-                                                        'Cadastrar',
-                                                        style: TextStyle(color: Colors.green),
-                                                    ),
-                                                ),
-                                            ],
+                                        Padding(
+                                          padding: const EdgeInsets.all(32),
+                                          child: Row
+                                          (
+                                              children:
+                                              [
+                                                  ElevatedButton
+                                                  (
+                                                      child: const Text
+                                                      (
+                                                          'Buscar',
+                                                          style: TextStyle(color: Colors.green),
+                                                      ),
+                                                      onPressed: ()
+                                                      {
+                                                          if(!formKey.currentState!.validate())
+                                                          {
+                                                              return;
+                                                          }
+                                        
+                                                          formKey.currentState!.save();
+                                        
+                                                          print(nome);
+                                                          print(sigla);
+                                                      },
+                                                  ),
+                                                  const Padding
+                                                  (
+                                                      padding: EdgeInsets.all(5)
+                                                  ),
+                                                  ElevatedButton
+                                                  (
+                                                      onPressed: ()
+                                                      {
+                                                          Navigator.of(context).push
+                                                          (
+                                                              MaterialPageRoute
+                                                              (
+                                                                  builder: (context) => const EstadoView(null),
+                                                              ),
+                                                          );
+                                                      },
+                                                      child: const Text
+                                                      (
+                                                          'Cadastrar',
+                                                          style: TextStyle(color: Colors.green),
+                                                      ),
+                                                  ),
+                                              ],
+                                          ),
                                         )
                                     ],
                                 )
