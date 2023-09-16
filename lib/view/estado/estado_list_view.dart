@@ -1,5 +1,4 @@
-import 'package:autom_v3/classes/estado.dart';
-import 'package:autom_v3/models/estado_model.dart';
+import 'package:autom_v3/controllers/estado_controller.dart';
 import 'package:autom_v3/view/components/navigation_panel.dart';
 import 'package:autom_v3/view/estado/estado_view.dart';
 import 'package:flutter/material.dart';
@@ -67,16 +66,6 @@ class _EstadoListViewState extends State<EstadoListView>
                 codIbge = newValue;
             },
         );
-    }
-
-    Future<List> getEstadoList() async
-    {
-        List list = await EstadoModel().selectAll();
-        list.map((e) => 
-            Estado.empty().toObject(e)
-        ).toList();
-
-        return list;
     }
 
     @override
@@ -179,7 +168,7 @@ class _EstadoListViewState extends State<EstadoListView>
                         (
                             child: FutureBuilder
                             (
-                                future: getEstadoList(),
+                                future: EstadoController().getEstadoList(),
                                 builder: (context, snapshot)
                                 {
                                     if (snapshot.connectionState == ConnectionState.waiting)
