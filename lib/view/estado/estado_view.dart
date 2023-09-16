@@ -24,61 +24,73 @@ class _EstadoView extends State<EstadoView>
 
     Widget buildFieldSigla()
     {
-        return TextFormField
+        return SizedBox
         (
-            decoration: const InputDecoration(label: Text('Sigla')),
-            validator: (String? value)
-            {
-                if(value!.isEmpty)
+            width: 100,
+            child: TextFormField
+            (
+                decoration: const InputDecoration(label: Text('Sigla')),
+                validator: (String? value)
                 {
-                    return '"Sigla" é obrigatório';
-                }
-                return null;
-            },
-            onSaved: (newValue)
-            {
-                sigla = newValue;
-            },
+                    if(value!.isEmpty)
+                    {
+                        return '"Sigla" é obrigatório';
+                    }
+                    return null;
+                },
+                onSaved: (newValue)
+                {
+                    sigla = newValue;
+                },
+            ),
         );
     }
 
     Widget buildFieldNome()
     {
-        return TextFormField
+        return SizedBox
         (
-            decoration: const InputDecoration(label: Text('Nome')),
-            validator: (String? value)
-            {
-                if(value!.isEmpty)
+            width: 300,
+            child: TextFormField
+            (
+                decoration: const InputDecoration(label: Text('Nome')),
+                validator: (String? value)
                 {
-                    return '"Nome" é obrigatório';
-                }
-                return null;
-            },
-            onSaved: (newValue)
-            {
-                nome = newValue;
-            },
+                    if(value!.isEmpty)
+                    {
+                        return '"Nome" é obrigatório';
+                    }
+                    return null;
+                },
+                onSaved: (newValue)
+                {
+                    nome = newValue;
+                },
+            ),
         );
     }
 
     Widget buildFieldCodIbge()
     {
-        return TextFormField
+        return SizedBox
         (
-            decoration: const InputDecoration(label: Text('Código IBGE')),
-            validator: (String? value)
-            {
-                if(value!.isEmpty)
+            width: 136,
+            child: TextFormField
+            (
+                decoration: const InputDecoration(label: Text('Código IBGE')),
+                validator: (String? value)
                 {
-                    return '"Código IBGE" é obrigatório';
-                }
-                return null;
-            },
-            onSaved: (newValue)
-            {
-                codIbge = newValue;
-            },
+                    if(value!.isEmpty)
+                    {
+                        return '"Código IBGE" é obrigatório';
+                    }
+                    return null;
+                },
+                onSaved: (newValue)
+                {
+                    codIbge = newValue;
+                },
+            ),
         );
     }
 
@@ -110,6 +122,7 @@ class _EstadoView extends State<EstadoView>
                                 key: formKey,
                                 child: Column
                                 (
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>
                                     [
@@ -118,6 +131,7 @@ class _EstadoView extends State<EstadoView>
                                             padding: const EdgeInsets.all(32),
                                             child: Column
                                             (
+                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                 children:
                                                 [
                                                     buildFieldSigla(),
