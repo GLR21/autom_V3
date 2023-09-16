@@ -102,4 +102,66 @@ class Model<T>
         var result = await _query(query);
         return _getReturnLines(result);
     }
+
+    Future< dynamic > manualQuery( String query ) async
+    {
+        var result = await _query(query);
+        return _getReturnLines(result);
+    }
+
+    Future< dynamic > selectQueryBuilder ( Map< String, T > object ) async
+    {
+        const where_ =  'WHERE';
+
+        int count = 0;
+
+        String select = "SELECT * FROM $tableName ";
+        String where = where_;
+        object.forEach
+        (
+            (key, value)
+            {
+                if(value != '' && value != 0)
+                {
+                    count++;
+
+                    if(count <= 1)
+                    {
+                        if(value is String)
+                        {
+                            where += " $key ILIKE '%$value%' ";
+                        }
+                        if(value is int || value is double)
+                        {
+                            where += " $key = $value ";
+                        }
+                    }
+                    else
+                    {
+                        if(value is String)
+                        {
+                            where += "AND $key ILIKE '%$value%' ";
+                        }
+                        if(value is int || value is double)
+                        {
+                            where += "AND $key = $value ";
+                        }
+                    }
+                }
+            }
+        );
+
+        String query = "";
+        if(where == where_)
+        {
+            query = select;
+        }
+        else
+        {
+            query = select + where;
+        }
+
+        var result = await _query(query);
+        return _getReturnLines(result);
+    }
 }
