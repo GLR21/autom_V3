@@ -1,5 +1,6 @@
 import 'package:autom_v3/classes/estado.dart';
 import 'package:autom_v3/controllers/estado_controller.dart';
+import 'package:autom_v3/view/components/dialog_builder.dart';
 import 'package:autom_v3/view/components/navigation_panel.dart';
 import 'package:flutter/material.dart';
 
@@ -169,22 +170,14 @@ class _EstadoView extends State<EstadoView>
                                                             Estado estado = Estado(nome!, sigla!, int.parse(codIbge!));
                                                             EstadoController().insert(estado);
 
-                                                            showDialog
+                                                            /*
+                                                             * mostrar mensagem
+                                                             */
+                                                            DialogBuilder().showInfoDialog
                                                             (
-                                                                context: context,
-                                                                builder: (context) => AlertDialog
-                                                                (
-                                                                    title: const Text("Sucesso"),
-                                                                    content: const Text('Estado inserido com sucesso!'),
-                                                                    actions:
-                                                                    [
-                                                                        ElevatedButton
-                                                                        (
-                                                                            onPressed: () => Navigator.pop(context),
-                                                                            child: const Text('Fechar')
-                                                                        )
-                                                                    ],
-                                                                )
+                                                                context,
+                                                                'Sucesso',
+                                                                'Estado inserido com sucesso'
                                                             );
 
                                                             /*
