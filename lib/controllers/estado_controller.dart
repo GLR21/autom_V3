@@ -18,7 +18,7 @@ class EstadoController
        return await EstadoModel().selectQueryBuilder(estado.toMap());
     }
 
-    insert(Estado estado)
+    void insert(Estado estado)
     {
         try
         {
