@@ -30,7 +30,7 @@ class _EstadoListViewState extends State<EstadoListView>
             {
                 if(value!.isEmpty)
                 {
-                    return '"Sigla" é obrigatório';
+                    // return '"Sigla" é obrigatório';
                 }
                 return null;
             },
@@ -50,7 +50,7 @@ class _EstadoListViewState extends State<EstadoListView>
             {
                 if(value!.isEmpty)
                 {
-                    return '"Nome" é obrigatório';
+                    // return '"Nome" é obrigatório';
                 }
                 return null;
             },
