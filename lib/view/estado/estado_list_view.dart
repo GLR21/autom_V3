@@ -77,7 +77,7 @@ class _EstadoListViewState extends State<EstadoListView>
                     codIbge = newValue;
                 },
             ),
-            );
+        );
     }
 
     @override
