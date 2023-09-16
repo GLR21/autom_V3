@@ -1,6 +1,11 @@
+import 'dart:collection';
+
+import 'package:autom_v3/classes/estado.dart';
 import 'package:autom_v3/controllers/estado_controller.dart';
+import 'package:autom_v3/models/estado_model.dart';
 import 'package:autom_v3/view/components/navigation_panel.dart';
 import 'package:autom_v3/view/estado/estado_view.dart';
+import 'package:autom_v3/view/main_view.dart';
 import 'package:flutter/material.dart';
 
 class EstadoListView extends StatefulWidget
@@ -15,6 +20,8 @@ class _EstadoListViewState extends State<EstadoListView>
 {
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+    Future<List> filteredList = EstadoController().getAll();
 
     String? sigla;
     String? nome;
@@ -150,8 +157,20 @@ class _EstadoListViewState extends State<EstadoListView>
                                                             }
                                             
                                                             formKey.currentState!.save();
-                                            
-                                                            // IMPLEMENTAR FILTRO DE BUSCA AQUI!
+
+                                                            /*
+                                                             * filtrar Estado
+                                                             */
+                                                            Estado estado = Estado(
+                                                                nome ?? '',
+                                                                sigla ?? '',
+                                                                codIbge!.isEmpty ? 0 : int.parse(codIbge!)
+                                                            );
+
+                                                            setState(()
+                                                            {
+                                                                filteredList = EstadoController().getFiltered(estado);
+                                                            });
                                                         },
                                                     ),
                                                     const Padding
@@ -187,7 +206,7 @@ class _EstadoListViewState extends State<EstadoListView>
                             (
                                 child: FutureBuilder
                                 (
-                                    future: EstadoController().getEstadoList(),
+                                    future: filteredList,
                                     builder: (context, snapshot)
                                     {
                                         if (snapshot.connectionState == ConnectionState.waiting)

@@ -3,7 +3,7 @@ import 'package:autom_v3/models/estado_model.dart';
 
 class EstadoController
 {
-    Future<List> getEstadoList() async
+    Future<List> getAll() async
     {
         List list = await EstadoModel().selectAll();
         list.map((e) => 
@@ -11,6 +11,11 @@ class EstadoController
         ).toList();
 
         return list;
+    }
+
+    Future<List> getFiltered(Estado estado) async
+    {
+       return await EstadoModel().selectQueryBuilder(estado.toMap());
     }
 
     insert(Estado estado)
