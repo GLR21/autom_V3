@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 
 class EstadoListView extends StatefulWidget
 {
-
     const EstadoListView({Key? key}): super(key: key);
 
     @override
@@ -185,7 +184,7 @@ class _EstadoListViewState extends State<EstadoListView>
                                     else
                                     {
                                         var rows =  snapshot.data!;
-                                        var dts = DTS(rows);
+                                        var dts = DTS(context, rows);
                                         int? rowPerPage = PaginatedDataTable.defaultRowsPerPage;
                         
                                         return PaginatedDataTable(
@@ -194,6 +193,7 @@ class _EstadoListViewState extends State<EstadoListView>
                                             [
                                                 DataColumn(label: Text('Sigla')),
                                                 DataColumn(label: Text('Nome')),
+                                                DataColumn(label: Text('Editar')),
                                             ],
                                             source: dts,
                                             onRowsPerPageChanged: (r)
@@ -215,10 +215,12 @@ class _EstadoListViewState extends State<EstadoListView>
 
 class DTS extends DataTableSource
 {
+    BuildContext context;
     var rows = [];
 
     DTS
     (
+        this.context,
         this.rows
     );
 
@@ -232,6 +234,27 @@ class DTS extends DataTableSource
             [
                 DataCell(Text(rows[index]['sigla'])),
                 DataCell(Text(rows[index]['nome'])),
+                DataCell
+                (
+                    ElevatedButton
+                    (
+                        onPressed: ()
+                        {
+                            Navigator.of(context).push
+                            (
+                                MaterialPageRoute
+                                (
+                                    builder: (context) => EstadoView(rows[index]['id']),
+                                ),
+                            );
+                        },
+                        child: const Text
+                        (
+                            'Editar',
+                            style: TextStyle(color: Colors.green),
+                        ),
+                    ),
+                )
             ],
         );
     }
