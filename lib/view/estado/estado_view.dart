@@ -1,3 +1,6 @@
+import 'package:autom_v3/classes/estado.dart';
+import 'package:autom_v3/controllers/estado_controller.dart';
+import 'package:autom_v3/models/estado_model.dart';
 import 'package:autom_v3/view/components/navigation_panel.dart';
 import 'package:flutter/material.dart';
 
@@ -64,7 +67,7 @@ class _EstadoView extends State<EstadoView>
     {
         return TextFormField
         (
-            decoration: const InputDecoration(label: Text('Nome')),
+            decoration: const InputDecoration(label: Text('Código IBGE')),
             validator: (String? value)
             {
                 if(value!.isEmpty)
@@ -125,38 +128,37 @@ class _EstadoView extends State<EstadoView>
                                             ),
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.all(32),
-                                          child: Row
-                                          (
-                                              children:
-                                              [
-                                                  const Padding
-                                                  (
-                                                      padding: EdgeInsets.all(5)
-                                                  ),
-                                                  ElevatedButton
-                                                  (
-                                                      child: const Text
-                                                      (
-                                                          'Inserir',
-                                                          style: TextStyle(color: Colors.green),
-                                                      ),
-                                                      onPressed: ()
-                                                      {
-                                                          if(!formKey.currentState!.validate())
-                                                          {
-                                                              return;
-                                                          }
-                                        
-                                                          formKey.currentState!.save();
-                                        
-                                                          print(nome);
-                                                          print(sigla);
-                                                          print(codIbge);
-                                                      },
-                                                  ),
-                                              ],
-                                          ),
+                                            padding: const EdgeInsets.all(32),
+                                            child: Row
+                                            (
+                                                children:
+                                                [
+                                                    const Padding
+                                                    (
+                                                        padding: EdgeInsets.all(5)
+                                                    ),
+                                                    ElevatedButton
+                                                    (
+                                                        child: const Text
+                                                        (
+                                                            'Inserir',
+                                                            style: TextStyle(color: Colors.green),
+                                                        ),
+                                                        onPressed: ()
+                                                        {
+                                                            if(!formKey.currentState!.validate())
+                                                            {
+                                                                return;
+                                                            }
+                                            
+                                                            formKey.currentState!.save();
+
+                                                            Estado estado = Estado(nome!, sigla!, int.parse(codIbge!));
+                                                            EstadoController().insert(estado);
+                                                        },
+                                                    ),
+                                                ],
+                                            ),
                                         )
                                     ],
                                 )
@@ -165,10 +167,6 @@ class _EstadoView extends State<EstadoView>
                     ]
                 )
             )
-            // body: Center
-            // (
-            //     child: Text('Estado View: $id')
-            // ),
         );
 
         return scaffold;
