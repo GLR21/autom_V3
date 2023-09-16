@@ -168,6 +168,29 @@ class _EstadoView extends State<EstadoView>
 
                                                             Estado estado = Estado(nome!, sigla!, int.parse(codIbge!));
                                                             EstadoController().insert(estado);
+
+                                                            showDialog
+                                                            (
+                                                                context: context,
+                                                                builder: (context) => AlertDialog
+                                                                (
+                                                                    title: const Text("Sucesso"),
+                                                                    content: const Text('Estado inserido com sucesso!'),
+                                                                    actions:
+                                                                    [
+                                                                        ElevatedButton
+                                                                        (
+                                                                            onPressed: () => Navigator.pop(context),
+                                                                            child: const Text('Fechar')
+                                                                        )
+                                                                    ],
+                                                                )
+                                                            );
+
+                                                            /*
+                                                             * limpar formulário
+                                                             */
+                                                            formKey.currentState!.reset();
                                                         },
                                                     ),
                                                 ],
