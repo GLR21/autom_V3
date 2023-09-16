@@ -22,50 +22,62 @@ class _EstadoListViewState extends State<EstadoListView>
 
     Widget buildFieldSigla()
     {
-        return TextFormField
+        return SizedBox
         (
-            decoration: const InputDecoration(label: Text('Sigla')),
-            validator: (String? value)
-            {
-                return null;
-            },
-            onSaved: (newValue)
-            {
-                sigla = newValue;
-            },
+            width: 100,
+            child: TextFormField
+            (
+                decoration: const InputDecoration(label: Text('Sigla')),
+                validator: (String? value)
+                {
+                    return null;
+                },
+                onSaved: (newValue)
+                {
+                    sigla = newValue;
+                },
+            ),
         );
     }
 
     Widget buildFieldNome()
     {
-        return TextFormField
+        return SizedBox
         (
-            decoration: const InputDecoration(label: Text('Nome')),
-            validator: (String? value)
-            {
-                return null;
-            },
-            onSaved: (newValue)
-            {
-                nome = newValue;
-            },
+            width: 300,
+            child: TextFormField
+            (
+                decoration: const InputDecoration(label: Text('Nome')),
+                validator: (String? value)
+                {
+                    return null;
+                },
+                onSaved: (newValue)
+                {
+                    nome = newValue;
+                },
+            ),
         );
     }
 
     Widget buildFieldCodIbge()
     {
-        return TextFormField
+        return SizedBox
         (
-            decoration: const InputDecoration(label: Text('Código IBGE')),
-            validator: (String? value)
-            {
-                return null;
-            },
-            onSaved: (newValue)
-            {
-                codIbge = newValue;
-            },
-        );
+            width: 136,
+            child: TextFormField
+            (
+                decoration: const InputDecoration(label: Text('Código IBGE')),
+                validator: (String? value)
+                {
+                    return null;
+                },
+                onSaved: (newValue)
+                {
+                    codIbge = newValue;
+                },
+            ),
+            );
     }
 
     @override
@@ -93,6 +105,7 @@ class _EstadoListViewState extends State<EstadoListView>
                                 key: formKey,
                                 child: Column
                                 (
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>
                                     [
@@ -101,6 +114,7 @@ class _EstadoListViewState extends State<EstadoListView>
                                             padding: const EdgeInsets.all(32),
                                             child: Column
                                             (
+                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                 children:
                                                 [
                                                     buildFieldSigla(),
