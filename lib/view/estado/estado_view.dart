@@ -1,6 +1,5 @@
 import 'package:autom_v3/classes/estado.dart';
 import 'package:autom_v3/controllers/estado_controller.dart';
-import 'package:autom_v3/models/estado_model.dart';
 import 'package:autom_v3/view/components/navigation_panel.dart';
 import 'package:flutter/material.dart';
 
