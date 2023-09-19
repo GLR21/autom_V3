@@ -29,7 +29,11 @@ class _EstadoListViewState extends State<EstadoListView>
             width: 100,
             child: TextFormField
             (
-                decoration: const InputDecoration(label: Text('Sigla')),
+                decoration: const InputDecoration
+                (
+                    label: Text('Sigla'),
+                    border: OutlineInputBorder()
+                ),
                 validator: (String? value)
                 {
                     return null;
@@ -49,7 +53,14 @@ class _EstadoListViewState extends State<EstadoListView>
             width: 300,
             child: TextFormField
             (
-                decoration: const InputDecoration(label: Text('Nome')),
+                decoration: const InputDecoration
+                (
+                    label: Text
+                    (
+                        'Nome'
+                    ),
+                    border: OutlineInputBorder()
+                ),
                 validator: (String? value)
                 {
                     return null;
@@ -57,7 +68,7 @@ class _EstadoListViewState extends State<EstadoListView>
                 onSaved: (newValue)
                 {
                     nome = newValue;
-                },
+                }
             ),
         );
     }
@@ -69,7 +80,11 @@ class _EstadoListViewState extends State<EstadoListView>
             width: 136,
             child: TextFormField
             (
-                decoration: const InputDecoration(label: Text('Código IBGE')),
+                decoration: const InputDecoration
+                (
+                    label: Text('Código IBGE'),
+                    border: OutlineInputBorder()
+                ),
                 validator: (String? value)
                 {
                     return null;
@@ -119,16 +134,48 @@ class _EstadoListViewState extends State<EstadoListView>
                                             Padding
                                             (
                                                 padding: const EdgeInsets.all(32),
-                                                child: Column
+                                                child: Row
                                                 (
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
                                                     children:
                                                     [
-                                                        buildFieldSigla(),
-                                                        buildFieldNome(),
-                                                        buildFieldCodIbge()
-                                                    ],                                            
-                                                ),
+                                                        Column
+                                                        (
+                                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                                            children:
+                                                            [
+                                                                buildFieldSigla()
+                                                            ]
+                                                        ),
+                                                        const Padding(padding: EdgeInsets.all(5),),
+                                                        Column
+                                                        (
+                                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                                            children:
+                                                            [
+                                                                buildFieldNome()
+                                                            ]
+                                                        ),
+                                                        const Padding(padding: EdgeInsets.all(5),),
+                                                        Column
+                                                        (
+                                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                                            children:
+                                                            [
+                                                                buildFieldCodIbge()
+                                                            ]
+                                                        )
+                                                    ]    
+                                                )
+                                                // child: Column
+                                                // (
+                                                //     crossAxisAlignment: CrossAxisAlignment.center,
+                                                //     children:
+                                                //     [
+                                                //         buildFieldSigla(),
+                                                //         buildFieldNome(),
+                                                //         buildFieldCodIbge()
+                                                //     ],                                            
+                                                // ),
                                             ),
                                             Padding(
                                             padding: const EdgeInsets.all(32),
