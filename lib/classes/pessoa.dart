@@ -6,6 +6,9 @@ class Pessoa
         Object
 {
     
+    static const int tipoPessoaFisica   = 1;
+    static const int tipoPessoaJuridica = 2;
+
     int _id = 0;
     String _nome = '';
     String _email = '';
@@ -30,9 +33,12 @@ class Pessoa
         String bairro,
         int numeroEndereco,
         int cidade,
-        int tipoPessoa,
         String complemento ,
-        [int id = 0] )
+        [   
+            int tipoPessoa = 0,
+            int id = 0
+        ]
+    )
     {
         _id = id;
         _nome = nome;
@@ -47,6 +53,8 @@ class Pessoa
         _tipoPessoa = tipoPessoa;
         _complemento = complemento;
     }
+
+    Pessoa.empty();
 
     int get id => _id;
     String get nome => _nome;
@@ -123,7 +131,8 @@ class Pessoa
 
     Map<String, dynamic > toMap()
     {
-        return {
+        return
+        {
             'id': _id,
             'nome': _nome,
             'email': _email,
