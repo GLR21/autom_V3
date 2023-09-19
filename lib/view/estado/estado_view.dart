@@ -18,19 +18,20 @@ class _EstadoView extends State<EstadoView>
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
+    Future<Estado> estado = Future.value(Estado.empty());
+
     String? sigla;
     String? nome;
     String? codIbge;
 
-    Estado? estado;
-
-    Widget buildFieldSigla()
+    Widget buildFieldSigla(String text)
     {
         return SizedBox
         (
             width: 100,
             child: TextFormField
             (
+                initialValue: text,
                 decoration: const InputDecoration
                 (
                     label: Text('Sigla'),
@@ -52,13 +53,14 @@ class _EstadoView extends State<EstadoView>
         );
     }
 
-    Widget buildFieldNome()
+    Widget buildFieldNome(String text)
     {
         return SizedBox
         (
             width: 300,
             child: TextFormField
             (
+                initialValue: text,
                 decoration: const InputDecoration
                 (
                     label: Text('Nome'),
@@ -80,13 +82,14 @@ class _EstadoView extends State<EstadoView>
         );
     }
 
-    Widget buildFieldCodIbge()
+    Widget buildFieldCodIbge(String? text)
     {
         return SizedBox
         (
             width: 136,
             child: TextFormField
             (
+                initialValue: text,
                 decoration: const InputDecoration
                 (
                     label: Text('Código IBGE'),
@@ -108,26 +111,6 @@ class _EstadoView extends State<EstadoView>
         );
     }
 
-    void setEstado(int id) async
-    {
-        Estado estado;
-        estado = await EstadoController().get(Estado.byId(id));
-        if(this.estado == null)
-        {
-            setState(() {
-                this.estado = estado;
-            });
-
-            sigla = getEstado()?.sigla;
-            nome = getEstado()?.nome;
-        }
-    }
-
-    Estado? getEstado()
-    {
-        return estado;
-    }
-
     @override
     Widget build(BuildContext context)
     {
@@ -139,14 +122,22 @@ class _EstadoView extends State<EstadoView>
         if(id != null)
         {
             isEdit = true;
-            setEstado(id);
+            estado = EstadoController().get(Estado.byId(id));
         }
 
         Scaffold scaffold = Scaffold
         (
             appBar: AppBar
             (
-                title: const Text('Estados', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),),
+                title: const Text
+                (
+                    'Estados',
+                    style: TextStyle
+                    (
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500
+                    ),
+                ),
                 backgroundColor: Colors.greenAccent,
             ),
             body: Scaffold
@@ -158,86 +149,113 @@ class _EstadoView extends State<EstadoView>
                         Container
                         (
                             margin: const EdgeInsets.all(0),
-                            child: Form
+                            child: FutureBuilder
                             (
-                                key: formKey,
-                                child: Column
-                                (
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>
-                                    [
-                                        Padding
+                                future: estado,
+                                builder: (context, snapshot)
+                                {
+                                    if (snapshot.connectionState == ConnectionState.waiting)
+                                    {
+                                        return const CircularProgressIndicator();
+                                    }
+                                    else if(snapshot.hasError)
+                                    {
+                                        return Text('Error: ${snapshot.error}');
+                                    }
+                                    else
+                                    {
+                                        var estado =  snapshot.data!;
+
+                                        return Form
                                         (
-                                            padding: const EdgeInsets.all(32),
+                                            key: formKey,
                                             child: Column
                                             (
                                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                                children:
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: <Widget>
                                                 [
-                                                    buildFieldSigla(),
-                                                    const Padding(padding: EdgeInsets.all(5)),
-                                                    buildFieldNome(),
-                                                    const Padding(padding: EdgeInsets.all(5)),
-                                                    buildFieldCodIbge()
-                                                ],                                            
-                                            ),
-                                        ),
-                                        Padding
-                                        (
-                                            padding: const EdgeInsets.symmetric(horizontal: 23),
-                                            child: Row
-                                            (
-                                                children:
-                                                [
-                                                    const Padding
+                                                    Padding
                                                     (
-                                                        padding: EdgeInsets.all(5)
-                                                    ),
-                                                    ElevatedButton
-                                                    (
-                                                        child: Text
+                                                        padding: const EdgeInsets.all(32),
+                                                        child: Column
                                                         (
-                                                            isEdit ? 'Atualizar' : 'Inserir',
-                                                            style: const TextStyle(color: Colors.green),
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children:
+                                                            [
+                                                                buildFieldSigla(estado.sigla),
+                                                                const Padding
+                                                                (
+                                                                    padding: EdgeInsets.all(5)
+                                                                ),
+                                                                buildFieldNome(estado.nome),
+                                                                const Padding
+                                                                (
+                                                                    padding: EdgeInsets.all(5)
+                                                                ),
+                                                                buildFieldCodIbge(estado.codIbge.toString())
+                                                            ],                                            
                                                         ),
-                                                        onPressed: ()
-                                                        {
-                                                            if(!formKey.currentState!.validate())
-                                                            {
-                                                                return;
-                                                            }
-                                            
-                                                            if(!isEdit)
-                                                            {
-                                                                formKey.currentState!.save();
-
-                                                                Estado estado = Estado(nome!, sigla!, int.parse(codIbge!));
-                                                                EstadoController().insert(estado);
-                                                            }
-
-                                                            /*
-                                                             * mostrar mensagem
-                                                             */
-                                                            DialogBuilder().showInfoDialog
-                                                            (
-                                                                context,
-                                                                'Sucesso',
-                                                                'Estado inserido com sucesso'
-                                                            );
-
-                                                            /*
-                                                             * limpar formulário
-                                                             */
-                                                            formKey.currentState!.reset();
-                                                        },
                                                     ),
+                                                    Padding
+                                                    (
+                                                        padding: const EdgeInsets.symmetric(horizontal: 23),
+                                                        child: Row
+                                                        (
+                                                            children:
+                                                            [
+                                                                const Padding
+                                                                (
+                                                                    padding: EdgeInsets.all(5)
+                                                                ),
+                                                                ElevatedButton
+                                                                (
+                                                                    child: Text
+                                                                    (
+                                                                        isEdit ? 'Atualizar' : 'Inserir',
+                                                                        style: const TextStyle(color: Colors.green),
+                                                                    ),
+                                                                    onPressed: ()
+                                                                    {
+                                                                        if(!formKey.currentState!.validate())
+                                                                        {
+                                                                            return;
+                                                                        }
+                                                        
+                                                                        if(!isEdit)
+                                                                        {
+                                                                            formKey.currentState!.save();
+
+                                                                            Estado estado = Estado(nome!, sigla!, int.parse(codIbge!));
+                                                                            EstadoController().insert(estado);
+                                                                        }
+
+                                                                        /*
+                                                                        * mostrar mensagem
+                                                                        */
+                                                                        DialogBuilder().showInfoDialog
+                                                                        (
+                                                                            context,
+                                                                            'Sucesso',
+                                                                            'Estado inserido com sucesso'
+                                                                        );
+
+                                                                        /*
+                                                                        * limpar formulário
+                                                                        */
+                                                                        formKey.currentState!.reset();
+                                                                    },
+                                                                ),
+                                                            ],
+                                                        ),
+                                                    )
                                                 ],
-                                            ),
-                                        )
-                                    ],
-                                )
+                                            )
+                                        );
+                                    }
+                                },
                             ),
+                            
                         ),
                     ]
                 )
