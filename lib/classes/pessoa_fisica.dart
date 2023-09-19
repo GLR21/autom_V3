@@ -5,29 +5,36 @@ class PessoaFisica
         extends
             Pessoa
 {
-
     String _cpf = '';
     String _rg = '';
     String _dataNascimento = '';
 
     PessoaFisica
     (
-        super.nome,
-        super.email,
-        super.senha,
-        super.telefone,
-        super.cep,
-        super.rua,
-        super.bairro,
-        super.numeroEndereco,
-        super.cidade,
-        super.tipoPessoa,
-        super.complemento,
-        super.id,
+        Pessoa pessoa,
         String cpf,
         String rg,
         String dataNascimento
-    );
+    )
+    : super
+    ( 
+        pessoa.nome,
+        pessoa.email,
+        pessoa.senha,
+        pessoa.telefone,
+        pessoa.cep,
+        pessoa.rua,
+        pessoa.bairro,
+        pessoa.numeroEndereco,
+        pessoa.cidade,
+        pessoa.complemento,
+        Pessoa.tipoPessoaFisica
+    )
+    {
+        _cpf = cpf;
+        _rg = rg;
+        _dataNascimento = dataNascimento;
+    }
 
     set cpf ( String cpf )
     {
@@ -48,8 +55,9 @@ class PessoaFisica
     Map<String, dynamic> toMap()
     {
         Map<String, dynamic> map = super.toMap();
-        map['ref_pessoa'] = map['id'];
-        map.remove('id');
+        int refPessoa = map['id'];
+        map.clear();
+        map['ref_pessoa'] = refPessoa;
         map['cpf'] = _cpf;
         map['rg'] = _rg;
         map['dt_nascimento'] = _dataNascimento;
