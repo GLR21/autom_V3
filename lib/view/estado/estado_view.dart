@@ -98,9 +98,6 @@ class _EstadoView extends State<EstadoView>
     @override
     Widget build(BuildContext context)
     {
-
-        // String id = .id.toString();
-
         Scaffold scaffold = Scaffold
         (
             appBar: AppBar
@@ -108,7 +105,6 @@ class _EstadoView extends State<EstadoView>
                 title: const Text('Estados', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),),
                 backgroundColor: Colors.greenAccent,
             ),
-            drawer: const NavigationPanel(),
             body: Scaffold
             (
                 body: Wrap

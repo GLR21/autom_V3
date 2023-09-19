@@ -94,7 +94,6 @@ class _EstadoListViewState extends State<EstadoListView>
                 title: const Text('Estados', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),),
                 backgroundColor: Colors.greenAccent,
             ),
-            drawer: const NavigationPanel(),
             body: Scaffold
             (
                 body: 
