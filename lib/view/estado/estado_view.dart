@@ -31,7 +31,11 @@ class _EstadoView extends State<EstadoView>
             width: 100,
             child: TextFormField
             (
-                decoration: const InputDecoration(label: Text('Sigla')),
+                decoration: const InputDecoration
+                (
+                    label: Text('Sigla'),
+                    border: OutlineInputBorder()
+                ),
                 validator: (String? value)
                 {
                     if(value!.isEmpty)
@@ -55,7 +59,11 @@ class _EstadoView extends State<EstadoView>
             width: 300,
             child: TextFormField
             (
-                decoration: const InputDecoration(label: Text('Nome')),
+                decoration: const InputDecoration
+                (
+                    label: Text('Nome'),
+                    border: OutlineInputBorder()
+                ),
                 validator: (String? value)
                 {
                     if(value!.isEmpty)
@@ -79,7 +87,11 @@ class _EstadoView extends State<EstadoView>
             width: 136,
             child: TextFormField
             (
-                decoration: const InputDecoration(label: Text('Código IBGE')),
+                decoration: const InputDecoration
+                (
+                    label: Text('Código IBGE'),
+                    border: OutlineInputBorder()
+                ),
                 validator: (String? value)
                 {
                     if(value!.isEmpty)
@@ -164,13 +176,16 @@ class _EstadoView extends State<EstadoView>
                                                 children:
                                                 [
                                                     buildFieldSigla(),
+                                                    const Padding(padding: EdgeInsets.all(5)),
                                                     buildFieldNome(),
+                                                    const Padding(padding: EdgeInsets.all(5)),
                                                     buildFieldCodIbge()
                                                 ],                                            
                                             ),
                                         ),
-                                        Padding(
-                                            padding: const EdgeInsets.all(32),
+                                        Padding
+                                        (
+                                            padding: const EdgeInsets.symmetric(horizontal: 23),
                                             child: Row
                                             (
                                                 children:
