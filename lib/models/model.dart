@@ -40,7 +40,10 @@ class Model<T>
         String query = "INSERT INTO $tableName (";
 
         // Remove primary key from object to avoid errors on insert
-        object.remove(primaryKey);
+        if( object.containsKey(primaryKey) && primaryKey == 'id' )
+        {
+            object.remove(primaryKey);
+        }
 
         object.forEach((key, value) {
             query += "$key,";
