@@ -13,6 +13,12 @@ class EstadoController
         return list;
     }
 
+    Future<Estado> get(Estado estado) async
+    {
+        List list = await EstadoModel().select(estado.toMap());
+        return await Future.value(Estado.empty().toObject(list.first));
+    }
+
     Future<List> getFiltered(Estado estado) async
     {
        return await EstadoModel().selectQueryBuilder(estado.toMap());

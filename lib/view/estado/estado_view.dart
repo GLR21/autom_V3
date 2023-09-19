@@ -22,6 +22,8 @@ class _EstadoView extends State<EstadoView>
     String? nome;
     String? codIbge;
 
+    Estado? estado;
+
     Widget buildFieldSigla()
     {
         return SizedBox
@@ -94,9 +96,40 @@ class _EstadoView extends State<EstadoView>
         );
     }
 
+    void setEstado(int id) async
+    {
+        Estado estado;
+        estado = await EstadoController().get(Estado.byId(id));
+        if(this.estado == null)
+        {
+            setState(() {
+                this.estado = estado;
+            });
+
+            sigla = getEstado()?.sigla;
+            nome = getEstado()?.nome;
+        }
+    }
+
+    Estado? getEstado()
+    {
+        return estado;
+    }
+
     @override
     Widget build(BuildContext context)
     {
+        /*
+         * verificar contexto
+         */
+        bool isEdit = false;
+        int? id = widget.id;
+        if(id != null)
+        {
+            isEdit = true;
+            setEstado(id);
+        }
+
         Scaffold scaffold = Scaffold
         (
             appBar: AppBar
@@ -148,10 +181,10 @@ class _EstadoView extends State<EstadoView>
                                                     ),
                                                     ElevatedButton
                                                     (
-                                                        child: const Text
+                                                        child: Text
                                                         (
-                                                            'Inserir',
-                                                            style: TextStyle(color: Colors.green),
+                                                            isEdit ? 'Atualizar' : 'Inserir',
+                                                            style: const TextStyle(color: Colors.green),
                                                         ),
                                                         onPressed: ()
                                                         {
@@ -160,10 +193,13 @@ class _EstadoView extends State<EstadoView>
                                                                 return;
                                                             }
                                             
-                                                            formKey.currentState!.save();
+                                                            if(!isEdit)
+                                                            {
+                                                                formKey.currentState!.save();
 
-                                                            Estado estado = Estado(nome!, sigla!, int.parse(codIbge!));
-                                                            EstadoController().insert(estado);
+                                                                Estado estado = Estado(nome!, sigla!, int.parse(codIbge!));
+                                                                EstadoController().insert(estado);
+                                                            }
 
                                                             /*
                                                              * mostrar mensagem

@@ -179,7 +179,7 @@ class _EstadoListViewState extends State<EstadoListView>
                                                             (
                                                                 MaterialPageRoute
                                                                 (
-                                                                    builder: (context) => const EstadoView(null),
+                                                                    builder: (context) => EstadoView(null),
                                                                 ),
                                                             );
                                                         },
@@ -223,6 +223,7 @@ class _EstadoListViewState extends State<EstadoListView>
                                                 [
                                                     DataColumn(label: Text('Sigla')),
                                                     DataColumn(label: Text('Nome')),
+                                                    DataColumn(label: Text('IBGE')),
                                                     DataColumn(label: Text('Editar')),
                                                 ],
                                                 source: dts,
@@ -268,17 +269,20 @@ class DTS extends DataTableSource
             [
                 DataCell(Text(rows[index]['sigla'])),
                 DataCell(Text(rows[index]['nome'])),
+                DataCell(Text(rows[index]['cod_ibge'].toString())),
                 DataCell
                 (
                     ElevatedButton
                     (
                         onPressed: ()
                         {
+                            var id = rows[index]['id'];
+
                             Navigator.of(context).push
                             (
                                 MaterialPageRoute
                                 (
-                                    builder: (context) => EstadoView(rows[index]['id']),
+                                    builder: (context) => EstadoView(id),
                                 ),
                             );
                         },
