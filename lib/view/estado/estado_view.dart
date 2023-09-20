@@ -263,17 +263,17 @@ class _EstadoView extends State<EstadoView>
                                                                         {
                                                                             formKey.currentState!.save();
 
+                                                                            /*
+                                                                            * Inserir 
+                                                                            */
                                                                             Estado estado = Estado(nome!, sigla!, int.parse(codIbge!));
                                                                             EstadoController().insert(estado);
-
-                                                                            route() => EstadoListView;
 
                                                                             DialogBuilder().showInfoDialog
                                                                             (
                                                                                 'Sucesso',
                                                                                 'Estado inserido com sucesso',
-                                                                                context,
-                                                                                route
+                                                                                context
                                                                             ).then((value) =>
                                                                                 Navigator.of(context).push
                                                                                 (
@@ -284,6 +284,27 @@ class _EstadoView extends State<EstadoView>
                                                                                 )
                                                                             );
                                                                         }
+
+                                                                        /*
+                                                                         * Atualizar 
+                                                                         */
+                                                                        Estado estado = Estado(nome!, sigla!, int.parse(codIbge!));
+                                                                        EstadoController().insert(estado);
+
+                                                                        DialogBuilder().showInfoDialog
+                                                                        (
+                                                                            'Sucesso',
+                                                                            'Estado atualizado com sucesso',
+                                                                            context
+                                                                        ).then((value) =>
+                                                                            Navigator.of(context).push
+                                                                            (
+                                                                                MaterialPageRoute
+                                                                                (
+                                                                                    builder: (context) => const EstadoListView()
+                                                                                ),
+                                                                            )
+                                                                        );
 
                                                                         /*
                                                                         * limpar 
