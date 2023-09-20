@@ -1,5 +1,4 @@
 import 'package:autom_v3/view/estado/estado_list_view.dart';
-import 'package:autom_v3/view/estado/estado_view.dart';
 import 'package:autom_v3/view/main_view.dart';
 import 'package:flutter/material.dart';
 
@@ -33,10 +32,12 @@ class NavigationPanel extends StatelessWidget
                     leading: const Icon(Icons.home_outlined),
                     title: const Text('Principal', style: TextStyle(fontWeight: FontWeight.w500),),
                     onTap: () =>
-                        Navigator.of(context).push(
-                               PageRouteBuilder(
-                                    pageBuilder: (context, animation1, animation2) => const MainView(),
-                                ),
+                        Navigator.of(context).push
+                        (
+                            MaterialPageRoute
+                            (
+                                builder: (context) => const MainView(),
+                            ),
                         )
                 ),
                 const Divider(color: Colors.black54,),
@@ -44,10 +45,12 @@ class NavigationPanel extends StatelessWidget
                     leading: const Icon(Icons.account_balance_outlined),
                     title: const Text('Estados', style: TextStyle(fontWeight: FontWeight.w500),),
                     onTap: () =>
-                        Navigator.of(context).push(
-                                PageRouteBuilder(
-                                    pageBuilder: (context, animation1, animation2) => const EstadoListView(),
-                                ),
+                        Navigator.of(context).push
+                        (
+                            MaterialPageRoute
+                            (
+                                builder: (context) => const EstadoListView(),
+                            ),
                         )
                 ),
             ],

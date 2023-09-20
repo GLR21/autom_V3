@@ -25,6 +25,11 @@ class Estado
 
     Estado.empty();
 
+    Estado.byId
+    (
+        this._id
+    );
+
     int get id => _id;
     String get nome => _nome;
     String get sigla => _sigla;

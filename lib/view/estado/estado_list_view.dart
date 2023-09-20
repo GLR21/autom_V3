@@ -1,10 +1,10 @@
 import 'package:autom_v3/classes/estado.dart';
-import 'package:autom_v3/models/estado_model.dart';
-import 'package:autom_v3/view/components/navigation_panel.dart';
+import 'package:autom_v3/controllers/estado_controller.dart';
+import 'package:autom_v3/view/estado/estado_view.dart';
 import 'package:flutter/material.dart';
 
-class EstadoListView extends StatefulWidget {
-
+class EstadoListView extends StatefulWidget
+{
     const EstadoListView({Key? key}): super(key: key);
 
     @override
@@ -13,89 +13,302 @@ class EstadoListView extends StatefulWidget {
 
 class _EstadoListViewState extends State<EstadoListView>
 {
-    Future<List> getEstadoList() async
-    {
-        List list = await EstadoModel().selectAll();
-        list.map((e) => 
-            Estado.empty().toObject(e)
-        ).toList();
+    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-        return list;
+    Future<List> filteredList = EstadoController().getAll();
+
+    String? sigla;
+    String? nome;
+    String? codIbge;
+
+    Widget buildFieldSigla()
+    {
+        return SizedBox
+        (
+            width: 100,
+            child: TextFormField
+            (
+                decoration: const InputDecoration
+                (
+                    label: Text('Sigla'),
+                    border: OutlineInputBorder()
+                ),
+                validator: (String? value)
+                {
+                    return null;
+                },
+                onSaved: (newValue)
+                {
+                    sigla = newValue;
+                },
+            ),
+        );
+    }
+
+    Widget buildFieldNome()
+    {
+        return SizedBox
+        (
+            width: 300,
+            child: TextFormField
+            (
+                decoration: const InputDecoration
+                (
+                    label: Text
+                    (
+                        'Nome'
+                    ),
+                    border: OutlineInputBorder()
+                ),
+                validator: (String? value)
+                {
+                    return null;
+                },
+                onSaved: (newValue)
+                {
+                    nome = newValue;
+                }
+            ),
+        );
+    }
+
+    Widget buildFieldCodIbge()
+    {
+        return SizedBox
+        (
+            width: 136,
+            child: TextFormField
+            (
+                decoration: const InputDecoration
+                (
+                    label: Text('Código IBGE'),
+                    border: OutlineInputBorder()
+                ),
+                validator: (String? value)
+                {
+                    return null;
+                },
+                onSaved: (newValue)
+                {
+                    codIbge = newValue;
+                },
+            ),
+        );
     }
 
     @override
-    Widget build(BuildContext context) => 
-        Scaffold
+    Widget build(BuildContext context)
+    {
+        Scaffold scaffold = Scaffold
         (
+            key: scaffoldKey,
             appBar: AppBar
             (
                 title: const Text('Estados', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),),
                 backgroundColor: Colors.greenAccent,
             ),
-            drawer: const NavigationPanel(),
-            body: Center
+            body: Scaffold
             (
-                child: SingleChildScrollView
+                body: 
+                SingleChildScrollView
                 (
                     scrollDirection: Axis.vertical,
-                    child: FutureBuilder
+                    child:
+                    Wrap
                     (
-                        future: getEstadoList(),
-                        builder: (context, snapshot)
-                        {
-                            if (snapshot.connectionState == ConnectionState.waiting)
-                            {
-                                return const CircularProgressIndicator();
-                            }
-                            else if(snapshot.hasError)
-                            {
-                                return Text('Error: ${snapshot.error}');
-                            }
-                            else
-                            {
-                                var rows =  snapshot.data!;
-                                var dts = DTS(rows);
-                                int? rowPerPage = PaginatedDataTable.defaultRowsPerPage;
+                        children:
+                        [
+                            Container
+                            (
+                                margin: const EdgeInsets.all(0),
+                                child: Form
+                                (
+                                    key: formKey,
+                                    child: Column
+                                    (
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: <Widget>
+                                        [
+                                            Padding
+                                            (
+                                                padding: const EdgeInsets.all(32),
+                                                child: Row
+                                                (
+                                                    children:
+                                                    [
+                                                        Column
+                                                        (
+                                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                                            children:
+                                                            [
+                                                                buildFieldSigla()
+                                                            ]
+                                                        ),
+                                                        const Padding(padding: EdgeInsets.all(5),),
+                                                        Column
+                                                        (
+                                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                                            children:
+                                                            [
+                                                                buildFieldNome()
+                                                            ]
+                                                        ),
+                                                        const Padding(padding: EdgeInsets.all(5),),
+                                                        Column
+                                                        (
+                                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                                            children:
+                                                            [
+                                                                buildFieldCodIbge()
+                                                            ]
+                                                        )
+                                                    ]    
+                                                )
+                                                // child: Column
+                                                // (
+                                                //     crossAxisAlignment: CrossAxisAlignment.center,
+                                                //     children:
+                                                //     [
+                                                //         buildFieldSigla(),
+                                                //         buildFieldNome(),
+                                                //         buildFieldCodIbge()
+                                                //     ],                                            
+                                                // ),
+                                            ),
+                                            Padding(
+                                            padding: const EdgeInsets.all(32),
+                                            child: Row
+                                            (
+                                                children:
+                                                [
+                                                    ElevatedButton
+                                                    (
+                                                        child: const Text
+                                                        (
+                                                            'Buscar',
+                                                            style: TextStyle(color: Colors.green),
+                                                        ),
+                                                        onPressed: ()
+                                                        {
+                                                            if(!formKey.currentState!.validate())
+                                                            {
+                                                                return;
+                                                            }
+                                            
+                                                            formKey.currentState!.save();
 
-                                return PaginatedDataTable(
-                                    header: const Text('Estados'),
-                                    columns: const
-                                    [
-                                        DataColumn(label: Text('Sigla')),
-                                        DataColumn(label: Text('Nome')),
-                                    ],
-                                    source: dts,
-                                    onRowsPerPageChanged: (r)
+                                                            /*
+                                                             * filtrar Estado
+                                                             */
+                                                            Estado estado = Estado(
+                                                                nome ?? '',
+                                                                sigla ?? '',
+                                                                codIbge!.isEmpty ? 0 : int.parse(codIbge!)
+                                                            );
+
+                                                            setState(()
+                                                            {
+                                                                filteredList = EstadoController().getFiltered(estado);
+                                                            });
+                                                        },
+                                                    ),
+                                                    const Padding
+                                                    (
+                                                        padding: EdgeInsets.all(5)
+                                                    ),
+                                                    ElevatedButton
+                                                    (
+                                                        onPressed: ()
+                                                        {
+                                                            Navigator.of(context).push
+                                                            (
+                                                                MaterialPageRoute
+                                                                (
+                                                                    builder: (context) => EstadoView(null),
+                                                                ),
+                                                            );
+                                                        },
+                                                        child: const Text
+                                                        (
+                                                            'Cadastrar',
+                                                            style: TextStyle(color: Colors.green),
+                                                        ),
+                                                    ),
+                                                ],
+                                            ),
+                                            )
+                                        ],
+                                    )
+                                ),
+                            ),
+                            Center
+                            (
+                                child: FutureBuilder
+                                (
+                                    future: filteredList,
+                                    builder: (context, snapshot)
                                     {
-                                        rowPerPage = r;
+                                        if (snapshot.connectionState == ConnectionState.waiting)
+                                        {
+                                            return const CircularProgressIndicator();
+                                        }
+                                        else if(snapshot.hasError)
+                                        {
+                                            return Text('Error: ${snapshot.error}');
+                                        }
+                                        else
+                                        {
+                                            var rows =  snapshot.data!;
+                                            var dts = DTS(context, rows);
+                                            int? rowPerPage = PaginatedDataTable.defaultRowsPerPage;
+                            
+                                            return PaginatedDataTable(
+                                                header: const Text('Estados'),
+                                                columns: const
+                                                [
+                                                    DataColumn(label: Text('Sigla')),
+                                                    DataColumn(label: Text('Nome')),
+                                                    DataColumn(label: Text('IBGE')),
+                                                    DataColumn(label: Text('Editar')),
+                                                ],
+                                                source: dts,
+                                                onRowsPerPageChanged: (r)
+                                                {
+                                                    rowPerPage = r;
+                                                },
+                                                rowsPerPage: rowPerPage,
+                                                
+                                            );
+                                        }
                                     },
-                                    rowsPerPage: rowPerPage,
-                                );
-                            }
-                        },
-                    ),
+                                ),
+                            ),
+                        ]
+                    )
                 )
             )
         );
+
+        return scaffold;
+    }
 }
 
 class DTS extends DataTableSource
 {
+    BuildContext context;
     var rows = [];
 
     DTS
     (
+        this.context,
         this.rows
     );
 
     @override
     DataRow? getRow(int index)
     {
-        if(index >= rows.length)
-        {
-            return null;
-        }
-    
         return DataRow.byIndex
         (
             index: index,
@@ -103,15 +316,39 @@ class DTS extends DataTableSource
             [
                 DataCell(Text(rows[index]['sigla'])),
                 DataCell(Text(rows[index]['nome'])),
-            ]
+                DataCell(Text(rows[index]['cod_ibge'].toString())),
+                DataCell
+                (
+                    ElevatedButton
+                    (
+                        onPressed: ()
+                        {
+                            var id = rows[index]['id'];
+
+                            Navigator.of(context).push
+                            (
+                                MaterialPageRoute
+                                (
+                                    builder: (context) => EstadoView(id),
+                                ),
+                            );
+                        },
+                        child: const Text
+                        (
+                            'Editar',
+                            style: TextStyle(color: Colors.green),
+                        ),
+                    ),
+                )
+            ],
         );
     }
 
     @override
-    bool get isRowCountApproximate => true;
+    bool get isRowCountApproximate => false;
 
     @override
-    int get rowCount => 10;
+    int get rowCount => rows.length;
 
     @override
     int get selectedRowCount => 0;
