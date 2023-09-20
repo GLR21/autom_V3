@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class DialogBuilder
 {
-    void showInfoDialog(BuildContext context, String title, String message)
+    Future<dynamic> showInfoDialog(String title, String message, BuildContext context, Function() callback) async
     {
-        showDialog
+        return showDialog
         (
             context: context,
             builder: (context) => AlertDialog
@@ -19,7 +19,7 @@ class DialogBuilder
                         child: const Text('Fechar')
                     )
                 ],
-            )
-        );  
+            ),
+        );
     }
 }

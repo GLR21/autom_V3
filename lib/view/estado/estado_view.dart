@@ -1,6 +1,7 @@
 import 'package:autom_v3/classes/estado.dart';
 import 'package:autom_v3/controllers/estado_controller.dart';
 import 'package:autom_v3/view/components/dialog_builder.dart';
+import 'package:autom_v3/view/estado/estado_list_view.dart';
 import 'package:flutter/material.dart';
 
 class EstadoView extends StatefulWidget
@@ -20,18 +21,20 @@ class _EstadoView extends State<EstadoView>
 
     Future<Estado> estado = Future.value(Estado.empty());
 
+    String? id;
     String? sigla;
     String? nome;
     String? codIbge;
 
-    Widget buildFieldSigla(String text)
+    Widget buildFieldId(String? value)
     {
         return SizedBox
         (
             width: 100,
             child: TextFormField
             (
-                initialValue: text,
+                initialValue: value,
+                enabled: false,
                 decoration: const InputDecoration
                 (
                     label: Text('Sigla'),
@@ -53,14 +56,43 @@ class _EstadoView extends State<EstadoView>
         );
     }
 
-    Widget buildFieldNome(String text)
+    Widget buildFieldSigla(String? value)
+    {
+        return SizedBox
+        (
+            width: 100,
+            child: TextFormField
+            (
+                initialValue: value,
+                decoration: const InputDecoration
+                (
+                    label: Text('Sigla'),
+                    border: OutlineInputBorder()
+                ),
+                validator: (String? value)
+                {
+                    if(value!.isEmpty)
+                    {
+                        return '"Sigla" é obrigatório';
+                    }
+                    return null;
+                },
+                onSaved: (newValue)
+                {
+                    sigla = newValue;
+                },
+            ),
+        );
+    }
+
+    Widget buildFieldNome(String value)
     {
         return SizedBox
         (
             width: 300,
             child: TextFormField
             (
-                initialValue: text,
+                initialValue: value,
                 decoration: const InputDecoration
                 (
                     label: Text('Nome'),
@@ -82,14 +114,14 @@ class _EstadoView extends State<EstadoView>
         );
     }
 
-    Widget buildFieldCodIbge(String? text)
+    Widget buildFieldCodIbge(String? value)
     {
         return SizedBox
         (
             width: 136,
             child: TextFormField
             (
-                initialValue: text,
+                initialValue: value,
                 decoration: const InputDecoration
                 (
                     label: Text('Código IBGE'),
@@ -183,6 +215,11 @@ class _EstadoView extends State<EstadoView>
                                                             crossAxisAlignment: CrossAxisAlignment.start,
                                                             children:
                                                             [
+                                                                buildFieldId(estado.id.toString()),
+                                                                const Padding
+                                                                (
+                                                                    padding: EdgeInsets.all(5)
+                                                                ),
                                                                 buildFieldSigla(estado.sigla),
                                                                 const Padding
                                                                 (
@@ -228,20 +265,28 @@ class _EstadoView extends State<EstadoView>
 
                                                                             Estado estado = Estado(nome!, sigla!, int.parse(codIbge!));
                                                                             EstadoController().insert(estado);
+
+                                                                            route() => EstadoListView;
+
+                                                                            DialogBuilder().showInfoDialog
+                                                                            (
+                                                                                'Sucesso',
+                                                                                'Estado inserido com sucesso',
+                                                                                context,
+                                                                                route
+                                                                            ).then((value) =>
+                                                                                Navigator.of(context).push
+                                                                                (
+                                                                                    MaterialPageRoute
+                                                                                    (
+                                                                                        builder: (context) => const EstadoListView()
+                                                                                    ),
+                                                                                )
+                                                                            );
                                                                         }
 
                                                                         /*
-                                                                        * mostrar mensagem
-                                                                        */
-                                                                        DialogBuilder().showInfoDialog
-                                                                        (
-                                                                            context,
-                                                                            'Sucesso',
-                                                                            'Estado inserido com sucesso'
-                                                                        );
-
-                                                                        /*
-                                                                        * limpar formulário
+                                                                        * limpar 
                                                                         */
                                                                         formKey.currentState!.reset();
                                                                     },
