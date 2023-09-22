@@ -221,44 +221,50 @@ class _EstadoListViewState extends State<EstadoListView>
                         ),
                         FutureBuilder
                         (
-                                future: filteredList,
-                                builder: (context, snapshot)
+                            future: filteredList,
+                            builder: (context, snapshot)
+                            {
+                                if (snapshot.connectionState == ConnectionState.waiting)
                                 {
-                                    if (snapshot.connectionState == ConnectionState.waiting)
-                                    {
-                                        return const CircularProgressIndicator();
-                                    }
-                                    else if(snapshot.hasError)
-                                    {
-                                        return Text('Error: ${snapshot.error}');
-                                    }
-                                    else
-                                    {
-                                        var rows =  snapshot.data!;
-                                        var dts = DTS(context, rows);
-                                        int? rowPerPage = PaginatedDataTable.defaultRowsPerPage;
-                        
-                                        return PaginatedDataTable
+                                    return const CircularProgressIndicator();
+                                }
+                                else if(snapshot.hasError)
+                                {
+                                    return Text('Error: ${snapshot.error}');
+                                }
+                                else
+                                {
+                                    var rows =  snapshot.data!;
+                                    var dts = DTS(context, rows);
+                                    int? rowPerPage = PaginatedDataTable.defaultRowsPerPage;
+
+                                    return FittedBox
+                                    (
+                                        fit: BoxFit.fitWidth,
+                                        child: SizedBox
                                         (
-                                            
-                                            columns: const
-                                            [
-                                                DataColumn(label: Text('Sigla')),
-                                                DataColumn(label: Text('Nome')),
-                                                DataColumn(label: Text('IBGE')),
-                                                DataColumn(label: Text('Ações')),
-                                            ],
-                                            
-                                            source: dts,
-                                            onRowsPerPageChanged: (r)
-                                            {
-                                                rowPerPage = r;
-                                            },
-                                            rowsPerPage: rowPerPage,
-                                            
-                                        );
-                                    }
-                                },
+                                            width: MediaQuery.of(context).size.width,
+                                            child: PaginatedDataTable
+                                            (
+                                                columns: const
+                                                [
+                                                    DataColumn(label: Text('Sigla')),
+                                                    DataColumn(label: Text('Nome')),
+                                                    DataColumn(label: Text('IBGE')),
+                                                    DataColumn(label: Text('Ações')),
+                                                ],
+   
+                                                source: dts,
+                                                onRowsPerPageChanged: (r)
+                                                {
+                                                    rowPerPage = r;
+                                                },
+                                                rowsPerPage: rowPerPage,
+                                            )
+                                        ),
+                                    );
+                                }
+                            },
                         ),
                     ]
                 )
