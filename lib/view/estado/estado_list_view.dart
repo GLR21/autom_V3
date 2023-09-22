@@ -1,5 +1,6 @@
 import 'package:autom_v3/classes/estado.dart';
 import 'package:autom_v3/controllers/estado_controller.dart';
+import 'package:autom_v3/view/components/navigation_panel.dart';
 import 'package:autom_v3/view/estado/estado_view.dart';
 import 'package:flutter/material.dart';
 
@@ -103,6 +104,7 @@ class _EstadoListViewState extends State<EstadoListView>
         Scaffold scaffold = Scaffold
         (
             key: scaffoldKey,
+            drawer: const NavigationPanel(),
             appBar: AppBar
             (
                 title: const Text('Estados', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),),
@@ -241,27 +243,34 @@ class _EstadoListViewState extends State<EstadoListView>
                                     return FittedBox
                                     (
                                         fit: BoxFit.fitWidth,
-                                        child: SizedBox
+                                        child: Wrap
                                         (
-                                            width: MediaQuery.of(context).size.width,
-                                            child: PaginatedDataTable
-                                            (
-                                                columns: const
-                                                [
-                                                    DataColumn(label: Text('Sigla')),
-                                                    DataColumn(label: Text('Nome')),
-                                                    DataColumn(label: Text('IBGE')),
-                                                    DataColumn(label: Text('Ações')),
-                                                ],
-   
-                                                source: dts,
-                                                onRowsPerPageChanged: (r)
-                                                {
-                                                    rowPerPage = r;
-                                                },
-                                                rowsPerPage: rowPerPage,
-                                            )
-                                        ),
+                                            children:
+                                            [
+                                                const Padding(padding: EdgeInsets.symmetric(horizontal: 180)),
+                                                SizedBox
+                                                (
+                                                    width: MediaQuery.of(context).size.width/1.60,
+                                                    child: PaginatedDataTable
+                                                    (
+                                                        columns: const
+                                                        [
+                                                            DataColumn(label: Text('Sigla')),
+                                                            DataColumn(label: Text('Nome')),
+                                                            DataColumn(label: Text('IBGE')),
+                                                            DataColumn(label: Text('Ações')),
+                                                        ],
+
+                                                        source: dts,
+                                                        onRowsPerPageChanged: (r)
+                                                        {
+                                                            rowPerPage = r;
+                                                        },
+                                                        rowsPerPage: rowPerPage,
+                                                    )
+                                                ),
+                                            ],
+                                        )
                                     );
                                 }
                             },
