@@ -1,5 +1,6 @@
 import 'package:autom_v3/classes/estado.dart';
 import 'package:autom_v3/controllers/estado_controller.dart';
+import 'package:autom_v3/view/components/dialog_builder.dart';
 import 'package:autom_v3/view/components/navigation_panel.dart';
 import 'package:autom_v3/view/estado/estado_view.dart';
 import 'package:flutter/material.dart';
@@ -19,9 +20,34 @@ class _EstadoListViewState extends State<EstadoListView>
 
     Future<List> filteredList = EstadoController().getAll();
 
+    String? id;
     String? sigla;
     String? nome;
     String? codIbge;
+
+    Widget buildFieldId()
+    {
+        return SizedBox
+        (
+            width: 100,
+            child: TextFormField
+            (
+                decoration: const InputDecoration
+                (
+                    label: Text('Código'),
+                    border: OutlineInputBorder()
+                ),
+                validator: (String? value)
+                {
+                    return null;
+                },
+                onSaved: (newValue)
+                {
+                    id = newValue;
+                },
+            ),
+        );
+    }
 
     Widget buildFieldSigla()
     {
@@ -132,28 +158,36 @@ class _EstadoListViewState extends State<EstadoListView>
                                         crossAxisAlignment: CrossAxisAlignment.center,
                                         children:
                                         [
+                                            buildFieldId()
+                                        ]
+                                    ),
+                                    const Padding(padding: EdgeInsets.all(5),),
+                                    Column
+                                    (
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children:
+                                        [
                                             buildFieldSigla()
                                         ]
-                                        ),
-                                        const Padding(padding: EdgeInsets.all(5),),
-                                        Column
-                                        (
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            children:
-                                            [
-                                                buildFieldNome()
-                                            ]
-                                        ),
-                                        const Padding(padding: EdgeInsets.all(5),),
-                                        Column
-                                        (
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            children:
-                                            [
-                                                buildFieldCodIbge()
-                                            ]
-                                        ),
-                                    
+                                    ),
+                                    const Padding(padding: EdgeInsets.all(5),),
+                                    Column
+                                    (
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children:
+                                        [
+                                            buildFieldNome()
+                                        ]
+                                    ),
+                                    const Padding(padding: EdgeInsets.all(5),),
+                                    Column
+                                    (
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children:
+                                        [
+                                            buildFieldCodIbge()
+                                        ]
+                                    ),
                                     Padding
                                     (
                                         padding: const EdgeInsets.all(32),
@@ -180,11 +214,13 @@ class _EstadoListViewState extends State<EstadoListView>
                                                         /*
                                                         * filtrar Estado
                                                         */
+                                                        int? id = this.id != null && this.id != '' ? int.parse(this.id!) : 0;
                                                         Estado estado = Estado
                                                         (
                                                             nome ?? '',
                                                             sigla ?? '',
-                                                            codIbge!.isEmpty ? 0 : int.parse(codIbge!)
+                                                            codIbge!.isEmpty ? 0 : int.parse(codIbge!),
+                                                            id
                                                         );
 
                                                         setState(()
@@ -240,36 +276,43 @@ class _EstadoListViewState extends State<EstadoListView>
                                     var dts = DTS(context, rows);
                                     int? rowPerPage = PaginatedDataTable.defaultRowsPerPage;
 
-                                    return FittedBox
+                                    return Container
                                     (
-                                        fit: BoxFit.fitWidth,
-                                        child: Wrap
+                                        alignment: AlignmentDirectional.center,
+                                        child: FittedBox
                                         (
-                                            children:
-                                            [
-                                                const Padding(padding: EdgeInsets.symmetric(horizontal: 180)),
-                                                SizedBox
-                                                (
-                                                    width: MediaQuery.of(context).size.width/1.60,
-                                                    child: PaginatedDataTable
+                                            fit: BoxFit.fitWidth,
+                                            child: Wrap
+                                            (
+                                                children:
+                                                [
+                                                    const SizedBox(),
+                                                    SizedBox
                                                     (
-                                                        columns: const
-                                                        [
-                                                            DataColumn(label: Text('Sigla')),
-                                                            DataColumn(label: Text('Nome')),
-                                                            DataColumn(label: Text('IBGE')),
-                                                            DataColumn(label: Text('Ações')),
-                                                        ],
+                                                        width: MediaQuery.of(context).size.width/1.80,
+                                                        child: PaginatedDataTable
+                                                        (
+                                                            columns: const
+                                                            [
+                                                                DataColumn(label: Text('Código')),
+                                                                DataColumn(label: Text('Sigla')),
+                                                                DataColumn(label: Text('Nome')),
+                                                                DataColumn(label: Text('IBGE')),
+                                                                DataColumn(label: Text('Editar')),
+                                                                DataColumn(label: Text('Excluir')),
+                                                            ],
 
-                                                        source: dts,
-                                                        onRowsPerPageChanged: (r)
-                                                        {
-                                                            rowPerPage = r;
-                                                        },
-                                                        rowsPerPage: rowPerPage,
-                                                    )
-                                                ),
-                                            ],
+                                                            source: dts,
+                                                            onRowsPerPageChanged: (r)
+                                                            {
+                                                                rowPerPage = r;
+                                                            },
+                                                            rowsPerPage: rowPerPage,
+                                                        )
+                                                    ),
+                                                    const SizedBox(),
+                                                ],
+                                            )
                                         )
                                     );
                                 }
@@ -304,6 +347,7 @@ class DTS extends DataTableSource
             index: index,
             cells: 
             [
+                DataCell(Text(rows[index]['id'].toString())),
                 DataCell(Text(rows[index]['sigla'])),
                 DataCell(Text(rows[index]['nome'])),
                 DataCell(Text(rows[index]['cod_ibge'].toString())),
@@ -314,27 +358,88 @@ class DTS extends DataTableSource
                         message: 'Editar',
                         height: 40,
                         verticalOffset: 25,
-                        child:  ElevatedButton
+                        child: ElevatedButton
                         (
-                                onPressed: ()
-                                {
-                                    var id = rows[index]['id'];
+                            onPressed: ()
+                            {
+                                var id = rows[index]['id'];
 
-                                    Navigator.of(context).push
-                                    (
-                                        MaterialPageRoute
-                                        (
-                                            builder: (context) => EstadoView(id),
-                                        ),
-                                    );
-                                },
-                                child: const  Icon
+                                Navigator.of(context).push
                                 (
-                                    Icons.edit,
-                                    color: Colors.blueAccent
-                                )
-                        
-                        ) 
+                                    MaterialPageRoute
+                                    (
+                                        builder: (context) => EstadoView(id),
+                                    ),
+                                );
+                            },
+                            child: const  Icon
+                            (
+                                Icons.edit,
+                                color: Colors.blueAccent
+                            )
+                        )
+                    ),
+                ),
+                DataCell
+                (
+                    Tooltip
+                    (
+                        message: 'Excluir',
+                        height: 40,
+                        verticalOffset: 25,
+                        child: ElevatedButton
+                        (
+                            onPressed: ()
+                            {
+                                var id = rows[index]['id'];
+
+                                showDialog
+                                (
+                                    context: context,
+                                    builder: (context) => AlertDialog
+                                    (
+                                        title: const Text('Alerta!'),
+                                        content: const Text('Deseja remover o Estado?'),
+                                        actions:
+                                        [
+                                            ElevatedButton
+                                            (
+                                                onPressed: ()
+                                                {
+                                                    EstadoController().delete(Estado.byId(id));
+                                                    
+                                                    DialogBuilder().showInfoDialog
+                                                    (
+                                                        'Sucesso',
+                                                        'Estado excluído com sucesso',
+                                                        context
+                                                    ).then((value) =>
+                                                        Navigator.of(context).push
+                                                        (
+                                                            MaterialPageRoute
+                                                            (
+                                                                builder: (context) => const EstadoListView()
+                                                            ),
+                                                        )
+                                                    );
+                                                },
+                                                child: const Text('Sim')
+                                            ),
+                                            ElevatedButton
+                                            (
+                                                onPressed: () => Navigator.pop(context),
+                                                child: const Text('Não')
+                                            )
+                                        ],
+                                    ),
+                                );
+                            },
+                            child: const  Icon
+                            (
+                                Icons.delete,
+                                color: Colors.blueAccent
+                            )
+                        )
                     ),
                 )
             ],

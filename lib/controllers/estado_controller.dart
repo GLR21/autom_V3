@@ -1,3 +1,5 @@
+// ignore_for_file: empty_catches
+
 import 'package:autom_v3/classes/estado.dart';
 import 'package:autom_v3/models/estado_model.dart';
 
@@ -30,9 +32,15 @@ class EstadoController
         {
             EstadoModel().insert(estado.toMap());
         }
-        catch(e)
+        catch(e) {}
+    }
+
+    void delete(Estado estado)
+    {
+        try
         {
-            print(e);
+            EstadoModel().delete(estado.toMap());
         }
+        catch(e) {}
     }
 }

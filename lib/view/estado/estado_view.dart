@@ -28,31 +28,35 @@ class _EstadoView extends State<EstadoView>
 
     Widget buildFieldId(String? value)
     {
-        return SizedBox
+        return Visibility
         (
-            width: 100,
-            child: TextFormField
+            visible: int.parse(value!) != 0 ? true : false,
+            child: SizedBox
             (
-                initialValue: value,
-                enabled: false,
-                decoration: const InputDecoration
+                width: 100,
+                child: TextFormField
                 (
-                    label: Text('Sigla'),
-                    border: OutlineInputBorder()
-                ),
-                validator: (String? value)
-                {
-                    if(value!.isEmpty)
+                    initialValue: value,
+                    enabled: false,
+                    decoration: const InputDecoration
+                    (
+                        label: Text('Código'),
+                        border: OutlineInputBorder()
+                    ),
+                    validator: (String? value)
                     {
-                        return '"Sigla" é obrigatório';
-                    }
-                    return null;
-                },
-                onSaved: (newValue)
-                {
-                    sigla = newValue;
-                },
-            ),
+                        if(value!.isEmpty)
+                        {
+                            return '"Código" é obrigatório';
+                        }
+                        return null;
+                    },
+                    onSaved: (newValue)
+                    {
+                        sigla = newValue;
+                    },
+                ),
+            )
         );
     }
 
@@ -258,14 +262,12 @@ class _EstadoView extends State<EstadoView>
                                                                         {
                                                                             return;
                                                                         }
-                                                        
+
                                                                         if(!isEdit)
                                                                         {
+                                                                            /* Inserir */
                                                                             formKey.currentState!.save();
 
-                                                                            /*
-                                                                            * Inserir 
-                                                                            */
                                                                             Estado estado = Estado(nome!, sigla!, int.parse(codIbge!));
                                                                             EstadoController().insert(estado);
 
@@ -284,32 +286,32 @@ class _EstadoView extends State<EstadoView>
                                                                                 )
                                                                             );
                                                                         }
+                                                                        else
+                                                                        {
+                                                                            /* Atualizar  */
+                                                                            formKey.currentState!.save();
 
-                                                                        /*
-                                                                         * Atualizar 
-                                                                         */
-                                                                        Estado estado = Estado(nome!, sigla!, int.parse(codIbge!));
-                                                                        EstadoController().insert(estado);
+                                                                            Estado estado = Estado(nome!, sigla!, int.parse(codIbge!));
+                                                                            EstadoController().insert(estado);
 
-                                                                        DialogBuilder().showInfoDialog
-                                                                        (
-                                                                            'Sucesso',
-                                                                            'Estado atualizado com sucesso',
-                                                                            context
-                                                                        ).then((value) =>
-                                                                            Navigator.of(context).push
+                                                                            DialogBuilder().showInfoDialog
                                                                             (
-                                                                                MaterialPageRoute
+                                                                                'Sucesso',
+                                                                                'Estado atualizado com sucesso',
+                                                                                context
+                                                                            ).then((value) =>
+                                                                                Navigator.of(context).push
                                                                                 (
-                                                                                    builder: (context) => const EstadoListView()
-                                                                                ),
-                                                                            )
-                                                                        );
+                                                                                    MaterialPageRoute
+                                                                                    (
+                                                                                        builder: (context) => const EstadoListView()
+                                                                                    ),
+                                                                                )
+                                                                            );
 
-                                                                        /*
-                                                                        * limpar 
-                                                                        */
-                                                                        formKey.currentState!.reset();
+                                                                            /* Limpar form */
+                                                                            formKey.currentState!.reset();
+                                                                        }
                                                                     },
                                                                 ),
                                                             ],
