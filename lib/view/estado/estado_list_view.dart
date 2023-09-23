@@ -437,7 +437,7 @@ class DTS extends DataTableSource
                             child: const  Icon
                             (
                                 Icons.delete,
-                                color: Colors.blueAccent
+                                color: Color.fromARGB(255, 177, 0, 0)
                             )
                         )
                     ),
