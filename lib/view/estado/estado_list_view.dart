@@ -1,5 +1,6 @@
 import 'package:autom_v3/classes/estado.dart';
 import 'package:autom_v3/controllers/estado_controller.dart';
+import 'package:autom_v3/view/components/dialog_builder.dart';
 import 'package:autom_v3/view/components/navigation_panel.dart';
 import 'package:autom_v3/view/estado/estado_view.dart';
 import 'package:flutter/material.dart';
@@ -297,7 +298,8 @@ class _EstadoListViewState extends State<EstadoListView>
                                                                 DataColumn(label: Text('Sigla')),
                                                                 DataColumn(label: Text('Nome')),
                                                                 DataColumn(label: Text('IBGE')),
-                                                                DataColumn(label: Text('Ações')),
+                                                                DataColumn(label: Text('Editar')),
+                                                                DataColumn(label: Text('Excluir')),
                                                             ],
 
                                                             source: dts,
@@ -356,27 +358,64 @@ class DTS extends DataTableSource
                         message: 'Editar',
                         height: 40,
                         verticalOffset: 25,
-                        child:  ElevatedButton
+                        child: ElevatedButton
                         (
-                                onPressed: ()
-                                {
-                                    var id = rows[index]['id'];
+                            onPressed: ()
+                            {
+                                var id = rows[index]['id'];
 
+                                Navigator.of(context).push
+                                (
+                                    MaterialPageRoute
+                                    (
+                                        builder: (context) => EstadoView(id),
+                                    ),
+                                );
+                            },
+                            child: const  Icon
+                            (
+                                Icons.edit,
+                                color: Colors.blueAccent
+                            )
+                        )
+                    ),
+                ),
+                DataCell
+                (
+                    Tooltip
+                    (
+                        message: 'Excluir',
+                        height: 40,
+                        verticalOffset: 25,
+                        child: ElevatedButton
+                        (
+                            onPressed: ()
+                            {
+                                var id = rows[index]['id'];
+
+                                EstadoController().delete(Estado.byId(id));
+
+                                DialogBuilder().showInfoDialog
+                                (
+                                    'Sucesso',
+                                    'Estado excluído com sucesso',
+                                    context
+                                ).then((value) =>
                                     Navigator.of(context).push
                                     (
                                         MaterialPageRoute
                                         (
-                                            builder: (context) => EstadoView(id),
+                                            builder: (context) => const EstadoListView()
                                         ),
-                                    );
-                                },
-                                child: const  Icon
-                                (
-                                    Icons.edit,
-                                    color: Colors.blueAccent
-                                )
-                        
-                        ) 
+                                    )
+                                );
+                            },
+                            child: const  Icon
+                            (
+                                Icons.delete,
+                                color: Colors.blueAccent
+                            )
+                        )
                     ),
                 )
             ],
