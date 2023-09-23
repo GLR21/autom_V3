@@ -262,7 +262,7 @@ class _EstadoView extends State<EstadoView>
                                                                         {
                                                                             return;
                                                                         }
-                                                        
+
                                                                         if(!isEdit)
                                                                         {
                                                                             /* Inserir */
@@ -309,9 +309,7 @@ class _EstadoView extends State<EstadoView>
                                                                                 )
                                                                             );
 
-                                                                            /*
-                                                                            * limpar 
-                                                                            */
+                                                                            /* Limpar form */
                                                                             formKey.currentState!.reset();
                                                                         }
                                                                     },

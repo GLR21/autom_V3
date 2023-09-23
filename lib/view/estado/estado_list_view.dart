@@ -393,21 +393,45 @@ class DTS extends DataTableSource
                             {
                                 var id = rows[index]['id'];
 
-                                EstadoController().delete(Estado.byId(id));
-
-                                DialogBuilder().showInfoDialog
+                                showDialog
                                 (
-                                    'Sucesso',
-                                    'Estado excluído com sucesso',
-                                    context
-                                ).then((value) =>
-                                    Navigator.of(context).push
+                                    context: context,
+                                    builder: (context) => AlertDialog
                                     (
-                                        MaterialPageRoute
-                                        (
-                                            builder: (context) => const EstadoListView()
-                                        ),
-                                    )
+                                        title: const Text('Alerta!'),
+                                        content: const Text('Deseja remover o Estado?'),
+                                        actions:
+                                        [
+                                            ElevatedButton
+                                            (
+                                                onPressed: ()
+                                                {
+                                                    EstadoController().delete(Estado.byId(id));
+                                                    
+                                                    DialogBuilder().showInfoDialog
+                                                    (
+                                                        'Sucesso',
+                                                        'Estado excluído com sucesso',
+                                                        context
+                                                    ).then((value) =>
+                                                        Navigator.of(context).push
+                                                        (
+                                                            MaterialPageRoute
+                                                            (
+                                                                builder: (context) => const EstadoListView()
+                                                            ),
+                                                        )
+                                                    );
+                                                },
+                                                child: const Text('Sim')
+                                            ),
+                                            ElevatedButton
+                                            (
+                                                onPressed: () => Navigator.pop(context),
+                                                child: const Text('Não')
+                                            )
+                                        ],
+                                    ),
                                 );
                             },
                             child: const  Icon
