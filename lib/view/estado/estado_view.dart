@@ -87,6 +87,7 @@ class _EstadoView extends State<EstadoView>
 
     Widget buildFieldNome(String value)
     {
+        
         return TextFormField
         (
             initialValue: value,
@@ -125,7 +126,7 @@ class _EstadoView extends State<EstadoView>
                 ),
                 validator: (String? value)
                 {
-                    if(value!.isEmpty)
+                    if(value!.isEmpty || value == '0')
                     {
                         return '"Código IBGE" é obrigatório';
                     }
@@ -170,44 +171,100 @@ class _EstadoView extends State<EstadoView>
             ),
             body: Scaffold
             (
-                body: Wrap
+                body: SingleChildScrollView
                 (
-                    children:
-                    [
-                        Container
+                    child:
+                    Padding
+                    (
+                        padding: const EdgeInsets.all(10),
+
+                        child:
+                        
+                        Center
                         (
-                            padding: const EdgeInsets.all(11),
-                            margin: const EdgeInsets.all(0),
-                            child: FutureBuilder
+                            child:
+                            Container
                             (
-                                future: estado,
-                                builder: (context, snapshot)
-                                {
-                                    if (snapshot.connectionState == ConnectionState.waiting)
+                                width: MediaQuery.of(context).size.width * 0.5,
+                                padding: const EdgeInsets.all(10),
+                                margin: const EdgeInsets.all(10),
+                                child: FutureBuilder
+                                (
+                                    future: estado,
+                                    builder: (context, snapshot)
                                     {
-                                        return const CircularProgressIndicator();
-                                    }
-                                    else if(snapshot.hasError)
-                                    {
-                                        return Text('Error: ${snapshot.error}');
-                                    }
-                                    else
-                                    {
-                                        var estado =  snapshot.data!;
-
-                                        return
-                                        
-                                        Form
-                                        (
-                                            key: formKey,
-                                            child: Column
+                                        if( snapshot.connectionState == ConnectionState.waiting )
+                                        {
+                                            return const Center
                                             (
-                                                
-                                                children: <Widget>
-                                                [
-                                                    (
-                                                        isEdit ?
+                                                child: CircularProgressIndicator()
+                                            );
+                                        }
 
+                                        if(snapshot.hasError)
+                                        {
+                                            return Text('Error: ${snapshot.error}');
+                                        }
+                                        else
+                                        {
+                                            var estado =  snapshot.data!;
+
+                                            return
+                                            
+                                            Form
+                                            (
+                                                key: formKey,
+                                                child: Column
+                                                (
+                                                    
+                                                    children: <Widget>
+                                                    [
+                                                        (
+                                                            isEdit ?
+
+                                                            Row
+                                                            (
+                                                                children:
+                                                                [
+                                                                    Expanded
+                                                                    (
+                                                                        flex: 1,
+                                                                        child: ListTile
+                                                                        (
+                                                                            contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+                                                                            subtitle: buildFieldId(estado.id.toString())
+                                                                        ) 
+                                                                    ),
+
+                                                                    const SizedBox
+                                                                    (
+                                                                        width: 1
+                                                                    ),
+
+                                                                    Expanded
+                                                                    (
+                                                                        flex: 5,
+                                                                        child: ListTile
+                                                                        (
+                                                                            contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+                                                                            subtitle: buildFieldNome( estado.nome ),
+                                                                        ) 
+                                                                    )    
+                                                                ],
+                                                            )
+                                                            :
+                                                            ListTile
+                                                            (
+                                                                contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+                                                                title: buildFieldNome( estado.nome ),
+                                                            )
+                                                        ),
+                                                        
+                                                        const SizedBox
+                                                        (
+                                                            height: 2
+                                                        ),
+                                                        
                                                         Row
                                                         (
                                                             children:
@@ -218,13 +275,13 @@ class _EstadoView extends State<EstadoView>
                                                                     child: ListTile
                                                                     (
                                                                         contentPadding: const EdgeInsets.symmetric(horizontal: 5),
-                                                                        subtitle: buildFieldId(estado.id.toString())
+                                                                        subtitle: buildFieldSigla(estado.sigla )
                                                                     ) 
                                                                 ),
 
                                                                 const SizedBox
                                                                 (
-                                                                    width: 1
+                                                                    width: 2
                                                                 ),
 
                                                                 Expanded
@@ -233,160 +290,118 @@ class _EstadoView extends State<EstadoView>
                                                                     child: ListTile
                                                                     (
                                                                         contentPadding: const EdgeInsets.symmetric(horizontal: 5),
-                                                                        subtitle: buildFieldNome( estado.nome ),
+                                                                        subtitle: buildFieldCodIbge( estado.codIbge.toString() )
                                                                     ) 
                                                                 )    
                                                             ],
-                                                        )
-                                                        :
-                                                        ListTile
+                                                        ),
+
+                                                        const SizedBox
                                                         (
-                                                            contentPadding: const EdgeInsets.symmetric(horizontal: 5),
-                                                            title: buildFieldNome( estado.nome ),
-                                                        )
-                                                    ),
-                                                    
+                                                            height: 5
+                                                        ),
 
-                                                    const SizedBox
-                                                    (
-                                                        height: 2
-                                                    ),
-                                                    
-                                                    Row
-                                                    (
-                                                        children:
-                                                        [
-                                                            Expanded
-                                                            (
-                                                                flex: 1,
-                                                                child: ListTile
+                                                        Row
+                                                        (
+                                                            children:
+                                                            [
+                                                                Expanded
                                                                 (
-                                                                    contentPadding: const EdgeInsets.symmetric(horizontal: 5),
-                                                                    subtitle: buildFieldSigla(estado.sigla )
-                                                                ) 
-                                                            ),
-
-                                                            const SizedBox
-                                                            (
-                                                                width: 2
-                                                            ),
-
-                                                            Expanded
-                                                            (
-                                                                flex: 1,
-                                                                child: ListTile
-                                                                (
-                                                                    contentPadding: const EdgeInsets.symmetric(horizontal: 5),
-                                                                    subtitle: buildFieldCodIbge( estado.codIbge.toString() )
-                                                                ) 
-                                                            )    
-                                                        ],
-                                                    ),
-
-                                                    const SizedBox
-                                                    (
-                                                        height: 5
-                                                    ),
-
-                                                    Row
-                                                    (
-                                                        children:
-                                                        [
-                                                            Expanded
-                                                            (
-                                                                flex: 1,
-                                                                child: 
-                                                                ListTile
-                                                                (
-                                                                    contentPadding: const EdgeInsets.symmetric(horizontal: 5),
-                                                                    title: 
-                                                                    ElevatedButton
+                                                                    flex: 1,
+                                                                    child: 
+                                                                    ListTile
                                                                     (
-                                                                        style: ElevatedButton.styleFrom
+                                                                        contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+                                                                        title: 
+                                                                        ElevatedButton
                                                                         (
-                                                                            backgroundColor: Colors.green,
-                                                                            foregroundColor: Colors.white,
-                                                                            shape: RoundedRectangleBorder
+                                                                            style: ElevatedButton.styleFrom
                                                                             (
-                                                                                borderRadius: BorderRadius.circular(4.0),
+                                                                                backgroundColor: Colors.green,
+                                                                                foregroundColor: Colors.white,
+                                                                                shape: RoundedRectangleBorder
+                                                                                (
+                                                                                    borderRadius: BorderRadius.circular(4.0),
+                                                                                ),
                                                                             ),
-                                                                        ),
-                                                                        child: Text
-                                                                        (
-                                                                            isEdit ? 'Atualizar' : 'Salvar',
-                                                                            style: const TextStyle(color: Colors.white),
-                                                                        ),
-                                                                        onPressed: ()
-                                                                        {
-                                                                            if(!formKey.currentState!.validate())
+                                                                            child: Text
+                                                                            (
+                                                                                isEdit ? 'Atualizar' : 'Salvar',
+                                                                                style: const TextStyle(color: Colors.white),
+                                                                            ),
+                                                                            onPressed: ()
                                                                             {
-                                                                                return;
-                                                                            }
+                                                                                if(!formKey.currentState!.validate())
+                                                                                {
+                                                                                    return;
+                                                                                }
 
-                                                                            if(!isEdit)
-                                                                            {
-                                                                                /* Inserir */
-                                                                                formKey.currentState!.save();
+                                                                                if(!isEdit)
+                                                                                {
+                                                                                    /* Inserir */
+                                                                                    formKey.currentState!.save();
 
-                                                                                Estado estado = Estado(nome!, sigla!, int.parse(codIbge!));
-                                                                                EstadoController().insert(estado);
+                                                                                    Estado estado = Estado(nome!, sigla!, int.parse(codIbge!));
+                                                                                    EstadoController().insert(estado);
 
-                                                                                DialogBuilder().showInfoDialog
-                                                                                (
-                                                                                    'Sucesso',
-                                                                                    'Estado inserido com sucesso',
-                                                                                    context
-                                                                                ).then((value) =>
-                                                                                    Navigator.of(context).push
+                                                                                    DialogBuilder().showInfoDialog
                                                                                     (
-                                                                                        MaterialPageRoute
+                                                                                        'Sucesso',
+                                                                                        'Estado inserido com sucesso',
+                                                                                        context
+                                                                                    ).then((value) =>
+                                                                                        Navigator.of(context).push
                                                                                         (
-                                                                                            builder: (context) => const EstadoListView()
-                                                                                        ),
-                                                                                    )
-                                                                                );
-                                                                            }
-                                                                            else
-                                                                            {
-                                                                                /* Atualizar  */
-                                                                                formKey.currentState!.save();
+                                                                                            MaterialPageRoute
+                                                                                            (
+                                                                                                builder: (context) => const EstadoListView()
+                                                                                            ),
+                                                                                        )
+                                                                                    );
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    /* Atualizar  */
+                                                                                    formKey.currentState!.save();
 
-                                                                                Estado estado = Estado(nome!, sigla!, int.parse(codIbge!));
-                                                                                EstadoController().insert(estado);
+                                                                                    Estado estado = Estado(nome!, sigla!, int.parse(codIbge!));
+                                                                                    EstadoController().insert(estado);
 
-                                                                                DialogBuilder().showInfoDialog
-                                                                                (
-                                                                                    'Sucesso',
-                                                                                    'Estado atualizado com sucesso',
-                                                                                    context
-                                                                                ).then((value) =>
-                                                                                    Navigator.of(context).push
+                                                                                    DialogBuilder().showInfoDialog
                                                                                     (
-                                                                                        MaterialPageRoute
+                                                                                        'Sucesso',
+                                                                                        'Estado atualizado com sucesso',
+                                                                                        context
+                                                                                    ).then((value) =>
+                                                                                        Navigator.of(context).push
                                                                                         (
-                                                                                            builder: (context) => const EstadoListView()
-                                                                                        ),
-                                                                                    )
-                                                                                );
+                                                                                            MaterialPageRoute
+                                                                                            (
+                                                                                                builder: (context) => const EstadoListView()
+                                                                                            ),
+                                                                                        )
+                                                                                    );
 
-                                                                                /* Limpar form */
-                                                                                formKey.currentState!.reset();
-                                                                            }
-                                                                        },
+                                                                                    /* Limpar form */
+                                                                                    formKey.currentState!.reset();
+                                                                                }
+                                                                            },
+                                                                        )
                                                                     )
                                                                 )
-                                                            )
-                                                        ],
-                                                    )
-                                                ],
-                                            )
-                                        );
-                                    }
-                                },
-                            ),
+                                                            ],
+                                                        )
+                                                    ],
+                                                )
+                                            );
+                                        }
+                                    },
+                                ),
                             
-                        ),
-                    ]
+                            )
+                        )
+                    )
+                    
                 )
             )
         );
