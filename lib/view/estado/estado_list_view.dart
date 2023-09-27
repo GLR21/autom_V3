@@ -148,50 +148,80 @@ class _EstadoListViewState extends State<EstadoListView>
                         Form
                         (
                             key: formKey,
-                            child: Row
+                            child:
+                            Padding
+                            (
+                                padding: const EdgeInsets.all(15),
+                                child:
+                            
+                            Row
                             (
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>
                                 [
-                                    Column
+                                    Flexible
                                     (
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children:
-                                        [
-                                            buildFieldId()
-                                        ]
+                                        child: Column
+                                        (
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children:
+                                            [
+                                                buildFieldId()
+                                            ]
+                                        )
                                     ),
-                                    const Padding(padding: EdgeInsets.all(5),),
-                                    Column
+                                    const Flexible
                                     (
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children:
-                                        [
-                                            buildFieldSigla()
-                                        ]
+                                        child: Padding(padding: EdgeInsets.all(5),)
                                     ),
-                                    const Padding(padding: EdgeInsets.all(5),),
-                                    Column
+                                    Flexible
                                     (
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children:
-                                        [
-                                            buildFieldNome()
-                                        ]
+                                        child: Column
+                                        (
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children:
+                                            [
+                                                buildFieldSigla()
+                                            ]
+                                        )
                                     ),
-                                    const Padding(padding: EdgeInsets.all(5),),
-                                    Column
+                                    const Flexible
                                     (
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children:
-                                        [
-                                            buildFieldCodIbge()
-                                        ]
+                                        child: Padding(padding: EdgeInsets.all(5),)
                                     ),
-                                    Padding
+                                    Flexible
                                     (
-                                        padding: const EdgeInsets.all(32),
-                                        child: Row
+                                        child: Column
+                                        (
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children:
+                                            [
+                                                buildFieldNome()
+                                            ]
+                                        )
+                                    ),
+                                    const Flexible
+                                    (
+                                        child:  Padding(padding: EdgeInsets.all(5),)
+                                    ),
+                                    Flexible
+                                    (
+                                        child: Column
+                                        (
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children:
+                                            [
+                                                buildFieldCodIbge()
+                                            ]
+                                        )
+                                    ),
+                                    const Flexible
+                                    (
+                                        child: Padding(padding: EdgeInsets.all(5),)
+                                    ),
+                                    Flexible
+                                    (
+                                        child: Column
                                         (
                                             children:
                                             [
@@ -229,10 +259,18 @@ class _EstadoListViewState extends State<EstadoListView>
                                                         });
                                                     },
                                                 ),
-                                                const Padding
-                                                (
-                                                    padding: EdgeInsets.all(5)
-                                                ),
+                                            ],
+                                        ),
+                                    ),
+                                    const Flexible
+                                    (
+                                        child: Padding(padding: EdgeInsets.all(5),)
+                                    ),
+                                    Flexible
+                                    (
+                                        child: Column
+                                        (
+                                            children: [
                                                 ElevatedButton
                                                 (
                                                     onPressed: ()
@@ -241,7 +279,7 @@ class _EstadoListViewState extends State<EstadoListView>
                                                         (
                                                             MaterialPageRoute
                                                             (
-                                                                builder: (context) => EstadoView(null),
+                                                                builder: (context) => const EstadoView(null),
                                                             ),
                                                         );
                                                     },
@@ -252,9 +290,10 @@ class _EstadoListViewState extends State<EstadoListView>
                                                     ),
                                                 ),
                                             ],
-                                        ),
+                                        )
                                     )
                                 ],
+                            ),
                             )
                         ),
                         FutureBuilder
