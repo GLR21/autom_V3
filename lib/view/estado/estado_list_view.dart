@@ -215,9 +215,9 @@ class _EstadoListViewState extends State<EstadoListView>
                                             ]
                                         )
                                     ),
-                                    const Padding
+                                    const Flexible
                                     (
-                                        padding: EdgeInsets.all(5)
+                                        child: Padding(padding: EdgeInsets.all(5),)
                                     ),
                                     Flexible
                                     (
@@ -262,9 +262,9 @@ class _EstadoListViewState extends State<EstadoListView>
                                             ],
                                         ),
                                     ),
-                                    const Padding
+                                    const Flexible
                                     (
-                                        padding: EdgeInsets.all(5)
+                                        child: Padding(padding: EdgeInsets.all(5),)
                                     ),
                                     Flexible
                                     (
