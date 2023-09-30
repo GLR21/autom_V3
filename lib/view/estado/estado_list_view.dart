@@ -227,10 +227,19 @@ class _EstadoListViewState extends State<EstadoListView>
                                             [
                                                 ElevatedButton
                                                 (
+                                                    style: ElevatedButton.styleFrom
+                                                    (
+                                                        backgroundColor: Colors.green,
+                                                        foregroundColor: Colors.white,
+                                                        shape: RoundedRectangleBorder
+                                                        (
+                                                            borderRadius: BorderRadius.circular(4.0),
+                                                        ),
+                                                    ),
                                                     child: const Text
                                                     (
                                                         'Buscar',
-                                                        style: TextStyle(color: Colors.green),
+                                                        style: TextStyle(color: Colors.white),
                                                     ),
                                                     onPressed: ()
                                                     {
@@ -273,6 +282,20 @@ class _EstadoListViewState extends State<EstadoListView>
                                             children: [
                                                 ElevatedButton
                                                 (
+                                                    style: ElevatedButton.styleFrom
+                                                    (
+                                                        backgroundColor: Colors.green,
+                                                        foregroundColor: Colors.white,
+                                                        shape: RoundedRectangleBorder
+                                                        (
+                                                            borderRadius: BorderRadius.circular(4.0),
+                                                        ),
+                                                    ),
+                                                    child: const Text
+                                                    (
+                                                        'Cadastrar',
+                                                        style: TextStyle(color: Colors.white),
+                                                    ),
                                                     onPressed: ()
                                                     {
                                                         Navigator.of(context).push
@@ -283,11 +306,6 @@ class _EstadoListViewState extends State<EstadoListView>
                                                             ),
                                                         );
                                                     },
-                                                    child: const Text
-                                                    (
-                                                        'Cadastrar',
-                                                        style: TextStyle(color: Colors.green),
-                                                    ),
                                                 ),
                                             ],
                                         )
