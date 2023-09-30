@@ -22,7 +22,7 @@ class Model<T>
             await connection.close();
             print( 'Exception details:\n $e \n\n Exception ' );
             return [];
-        }   
+        }
     }
 
     List _getReturnLines ( dynamic result )

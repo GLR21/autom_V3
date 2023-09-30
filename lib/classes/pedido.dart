@@ -155,7 +155,7 @@ class Pedido
             map['rua'],
             map['bairro'],
             map['numero_endereco'],
-            Cidade.justId(map['ref_cidade']),
+            Cidade.byId(map['ref_cidade']),
             map['fl_usar_endereco_cliente'],
             map['id'],
         );
