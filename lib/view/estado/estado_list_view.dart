@@ -4,6 +4,7 @@ import 'package:autom_v3/view/components/dialog_builder.dart';
 import 'package:autom_v3/view/components/navigation_panel.dart';
 import 'package:autom_v3/view/estado/estado_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/physics.dart';
 
 class EstadoListView extends StatefulWidget
 {
@@ -336,41 +337,32 @@ class _EstadoListViewState extends State<EstadoListView>
                                     return Container
                                     (
                                         alignment: AlignmentDirectional.center,
-                                        child: FittedBox
+                                        child:
+                                        SizedBox
                                         (
-                                            fit: BoxFit.fitWidth,
-                                            child: Wrap
+                                            width: MediaQuery.of(context).size.width/1.80,
+                                            child:
+                                            PaginatedDataTable
                                             (
-                                                children:
+                                                columnSpacing: 0.01,
+                                                columns: const
                                                 [
-                                                    const SizedBox(),
-                                                    SizedBox
-                                                    (
-                                                        width: MediaQuery.of(context).size.width/1.80,
-                                                        child: PaginatedDataTable
-                                                        (
-                                                            columns: const
-                                                            [
-                                                                DataColumn(label: Text('Código')),
-                                                                DataColumn(label: Text('Sigla')),
-                                                                DataColumn(label: Text('Nome')),
-                                                                DataColumn(label: Text('IBGE')),
-                                                                DataColumn(label: Text('Editar')),
-                                                                DataColumn(label: Text('Excluir')),
-                                                            ],
-
-                                                            source: dts,
-                                                            onRowsPerPageChanged: (r)
-                                                            {
-                                                                rowPerPage = r;
-                                                            },
-                                                            rowsPerPage: rowPerPage,
-                                                        )
-                                                    ),
-                                                    const SizedBox(),
+                                                    DataColumn(label: Text('Código')),
+                                                    DataColumn(label: Text('Sigla')),
+                                                    DataColumn(label: Text('Nome')),
+                                                    DataColumn(label: Text('IBGE')),
+                                                    DataColumn(label: Text('Editar')),
+                                                    DataColumn(label: Text('Excluir')),
                                                 ],
-                                            )
-                                        )
+
+                                                source: dts,
+                                                onRowsPerPageChanged: (r)
+                                                {
+                                                    rowPerPage = r;
+                                                },
+                                                rowsPerPage: rowPerPage,
+                                            ) ,
+                                        ),
                                     );
                                 }
                             },
