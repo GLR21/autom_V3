@@ -22,7 +22,7 @@ class Model<T>
             await connection.close();
             print( 'Exception details:\n $e \n\n Exception ' );
             return [];
-        }   
+        }
     }
 
     List _getReturnLines ( dynamic result )
@@ -45,7 +45,8 @@ class Model<T>
             object.remove(primaryKey);
         }
 
-        object.forEach((key, value) {
+        object.forEach((key, value)
+        {
             query += "$key,";
         });
 
@@ -53,8 +54,16 @@ class Model<T>
 
         query += ") VALUES (";
 
-        object.forEach((key, value) {
-            query += "'$value',";
+        object.forEach((key, value)
+        {
+            if(key.startsWith('ref_'))
+            {
+                query += "$value,";    
+            }
+            else
+            {
+                query += "'$value',";    
+            }
         });
 
         query = query.substring(0, query.length - 1);

@@ -29,7 +29,7 @@ void main() async
             'Rua Teste',
             'Bairro Teste',
             'Número Teste',
-            Cidade.justId(1),
+            Cidade.byId(1),
             false
         );
 

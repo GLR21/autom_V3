@@ -12,12 +12,10 @@ class Cidade
 
     Cidade.empty();
 
-    Cidade.justId(
-        int id
-    )
-    {
-        _id = id;
-    }
+    Cidade.byId
+    (
+        this._id
+    );
 
     Cidade(
         String nome,
@@ -69,5 +67,15 @@ class Cidade
     String toString()
     {
         return 'Cidade{nome: $_nome, codIbge: $_codIbge, refEstado: $_refEstado}';
+    }
+
+    Cidade toObject(Map<String, dynamic> map)
+    {
+        return Cidade(
+            map['nome'],
+            map['cod_ibge'],
+            map['ref_estado'],
+            map['id']
+        );
     }
 }

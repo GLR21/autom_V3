@@ -4,7 +4,6 @@ import 'package:autom_v3/view/components/dialog_builder.dart';
 import 'package:autom_v3/view/components/navigation_panel.dart';
 import 'package:autom_v3/view/estado/estado_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/physics.dart';
 
 class EstadoListView extends StatefulWidget
 {
@@ -354,7 +353,6 @@ class _EstadoListViewState extends State<EstadoListView>
                                                     DataColumn(label: Text('Editar')),
                                                     DataColumn(label: Text('Excluir')),
                                                 ],
-
                                                 source: dts,
                                                 onRowsPerPageChanged: (r)
                                                 {
