@@ -114,7 +114,7 @@ class _EstadoView extends State<CidadeView>
         );
     }
 
-    FutureBuilder buildComboEstado()
+    FutureBuilder buildComboEstado(int? selectedItem)
     {
         return FutureBuilder<List<dynamic>>
         (
@@ -146,6 +146,7 @@ class _EstadoView extends State<CidadeView>
 
                     return DropdownButtonFormField
                     (
+                        value: selectedItem != 0 ? selectedItem : null,
                         isExpanded: true,
                         hint: const Text('Selecione um estado'),
                         items: items,
@@ -161,9 +162,9 @@ class _EstadoView extends State<CidadeView>
                             }
                             return null;
                         },
-                        onSaved: (newValue)
+                        onSaved: (value)
                         {
-                            selectedEstado = newValue;
+                            selectedEstado = value;
                         },
                     );
                 }
@@ -247,9 +248,9 @@ class _EstadoView extends State<CidadeView>
                                         else
                                         {
                                             var cidade =  snapshot.data!;
+                                            selectedEstado =  snapshot.data!.refEstado;  
 
                                             return
-                                            
                                             Form
                                             (
                                                 key: formKey,
@@ -259,7 +260,6 @@ class _EstadoView extends State<CidadeView>
                                                     [
                                                         (
                                                             isEdit ?
-
                                                             Row
                                                             (
                                                                 children:
@@ -334,7 +334,7 @@ class _EstadoView extends State<CidadeView>
                                                                     ListTile
                                                                     (
                                                                         contentPadding: const EdgeInsets.symmetric(horizontal: 5),
-                                                                        subtitle: buildComboEstado()
+                                                                        subtitle: buildComboEstado(cidade.refEstado)
                                                                     ) 
                                                                 ),  
                                                             ],
@@ -383,8 +383,7 @@ class _EstadoView extends State<CidadeView>
                                                                                 if(!isEdit)
                                                                                 {
                                                                                     int estado = int.parse(selectedEstado.toString());
-
-                                                                                    /* Inserir */
+                                                                                                                                                                        /* Inserir */
                                                                                     formKey.currentState!.save();
 
                                                                                     Cidade cidade = Cidade(nome!, codIbge!, estado);
@@ -407,10 +406,12 @@ class _EstadoView extends State<CidadeView>
                                                                                 }
                                                                                 else
                                                                                 {
+                                                                                    int estado = int.parse(selectedEstado.toString());
+
                                                                                     /* Atualizar  */
                                                                                     formKey.currentState!.save();
 
-                                                                                    Cidade cidade = Cidade(nome!, codIbge!, int.parse(refEstado!));
+                                                                                    Cidade cidade = Cidade(nome!, codIbge!, estado);
                                                                                     CidadeController().insert(cidade);
 
                                                                                     DialogBuilder().showInfoDialog
