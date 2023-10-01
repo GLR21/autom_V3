@@ -382,10 +382,12 @@ class _EstadoView extends State<CidadeView>
 
                                                                                 if(!isEdit)
                                                                                 {
+                                                                                    int estado = int.parse(selectedEstado.toString());
+
                                                                                     /* Inserir */
                                                                                     formKey.currentState!.save();
 
-                                                                                    Cidade cidade = Cidade(nome!, codIbge!, int.parse(refEstado!));
+                                                                                    Cidade cidade = Cidade(nome!, codIbge!, estado);
                                                                                     CidadeController().insert(cidade);
 
                                                                                     DialogBuilder().showInfoDialog
