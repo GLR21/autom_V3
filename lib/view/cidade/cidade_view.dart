@@ -1,5 +1,6 @@
 import 'package:autom_v3/classes/cidade.dart';
 import 'package:autom_v3/controllers/cidade_controller.dart';
+import 'package:autom_v3/controllers/estado_controller.dart';
 import 'package:autom_v3/view/cidade/cidade_list_view.dart';
 import 'package:autom_v3/view/components/dialog_builder.dart';
 import 'package:flutter/material.dart';
@@ -19,12 +20,15 @@ class _EstadoView extends State<CidadeView>
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
+    Future<List<dynamic>> all_estados = EstadoController().getAll();
     Future<Cidade> cidade = Future.value(Cidade.empty());
 
     String? id;
     String? nome;
     String? codIbge;
     String? refEstado;
+
+    Object? selectedEstado;
 
     Widget buildFieldId(String? value)
     {
@@ -58,7 +62,6 @@ class _EstadoView extends State<CidadeView>
 
     Widget buildFieldNome(String value)
     {
-        
         return TextFormField
         (
             initialValue: value,
@@ -111,32 +114,68 @@ class _EstadoView extends State<CidadeView>
         );
     }
 
-    Widget buildFieldEstado(String? value)
+    FutureBuilder buildComboEstado()
     {
-        return SizedBox
+        return FutureBuilder<List<dynamic>>
         (
-            width: 136,
-            child: TextFormField
-            (
-                initialValue: value,
-                decoration: const InputDecoration
-                (
-                    label: Text('Código Estado'),
-                    border: OutlineInputBorder()
-                ),
-                validator: (String? value)
+            future: all_estados,
+            builder: (context, snapshot)
+            {
+                if( snapshot.connectionState == ConnectionState.waiting )
                 {
-                    if(value!.isEmpty || value == '0')
-                    {
-                        return '"Código do Estado" é obrigatório';
-                    }
-                    return null;
-                },
-                onSaved: (newValue)
+                    return const Center
+                    (
+                        child: CircularProgressIndicator()
+                    );
+                }
+
+                if(snapshot.hasError)
                 {
-                    refEstado = newValue;
-                },
-            ),
+                    return Text('Error: ${snapshot.error}');
+                }
+
+                if (snapshot.hasData)
+                {
+                    var items = snapshot.data!.map((map) =>
+                        DropdownMenuItem
+                        (
+                            value: map['id'],
+                            child: Text(map['nome'])
+                        )
+                    ).toList();
+
+                    return DropdownButtonFormField
+                    (
+                        isExpanded: true,
+                        hint: const Text('Selecione um estado'),
+                        items: items,
+                        onChanged: (value) => setState(()
+                        {
+                            selectedEstado = value!;
+                        }),
+                        validator: (value)
+                        {
+                            if(value == null)
+                            {
+                                return 'Selecione um Estado!';
+                            }
+                            return null;
+                        },
+                        onSaved: (newValue)
+                        {
+                            selectedEstado = newValue;
+                        },
+                    );
+                }
+                else
+                {
+                    return DropdownButton
+                    (
+                        items: const [],
+                        onChanged: (item) => setState(() {}),
+                    );
+                }
+            },
         );
     }
 
@@ -291,10 +330,11 @@ class _EstadoView extends State<CidadeView>
                                                                 Expanded
                                                                 (
                                                                     flex: 1,
-                                                                    child: ListTile
+                                                                    child:
+                                                                    ListTile
                                                                     (
                                                                         contentPadding: const EdgeInsets.symmetric(horizontal: 5),
-                                                                        subtitle: buildFieldEstado( cidade.refEstado.toString() )
+                                                                        subtitle: buildComboEstado()
                                                                     ) 
                                                                 ),  
                                                             ],
