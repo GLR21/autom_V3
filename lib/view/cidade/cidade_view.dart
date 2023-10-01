@@ -248,7 +248,10 @@ class _EstadoView extends State<CidadeView>
                                         else
                                         {
                                             var cidade =  snapshot.data!;
-                                            selectedEstado =  snapshot.data!.refEstado;  
+                                            /**
+                                             * Ao editar precisa pegar dados vindos da tela de listagem
+                                             */
+                                            selectedEstado ??= snapshot.data!.refEstado;
 
                                             return
                                             Form
