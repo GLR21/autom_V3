@@ -25,10 +25,13 @@ class MyApp extends StatelessWidget
     const MyApp({super.key});
 
     @override
-    Widget build(BuildContext context) => MaterialApp(
+    Widget build(BuildContext context) => MaterialApp
+    (
         title: MainView.title,
-        theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(
+        theme: ThemeData
+        (
+            colorScheme: ColorScheme.fromSeed
+            (
                 seedColor: Colors.greenAccent
             ),
             useMaterial3: true,
