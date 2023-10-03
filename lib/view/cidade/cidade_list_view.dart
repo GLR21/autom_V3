@@ -1,5 +1,7 @@
 import 'package:autom_v3/classes/cidade.dart';
+import 'package:autom_v3/classes/estado.dart';
 import 'package:autom_v3/controllers/cidade_controller.dart';
+import 'package:autom_v3/controllers/estado_controller.dart';
 import 'package:autom_v3/view/cidade/cidade_view.dart';
 import 'package:autom_v3/view/components/navigation_panel.dart';
 import 'package:flutter/material.dart';
@@ -17,12 +19,15 @@ class _EstadoListViewState extends State<CidadeListView>
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
+    Future<List<dynamic>> all_estados = EstadoController().getAll();
     Future<List> filteredList = CidadeController().getAll();
 
     String? id;
     String? nome;
     String? codIbge;
     String? refEstado;
+
+    Object? selectedEstado;
 
     Widget buildFieldId()
     {
@@ -123,6 +128,71 @@ class _EstadoListViewState extends State<CidadeListView>
         );
     }
 
+    FutureBuilder buildComboEstado()
+    {
+        return FutureBuilder<List<dynamic>>
+        (
+            future: all_estados,
+            builder: (context, snapshot)
+            {
+                if( snapshot.connectionState == ConnectionState.waiting )
+                {
+                    return const Center
+                    (
+                        child: CircularProgressIndicator()
+                    );
+                }
+
+                if(snapshot.hasError)
+                {
+                    return Text('Error: ${snapshot.error}');
+                }
+
+                if (snapshot.hasData)
+                {
+                    var items = snapshot.data!.map((map) =>
+                        DropdownMenuItem
+                        (
+                            value: map['id'],
+                            child: Text(map['nome'])
+                        )
+                    ).toList();
+
+                    return DropdownButtonFormField
+                    (
+                        isExpanded: true,
+                        hint: const Text('Estado'),
+                        items: items,
+                        onChanged: (value) => setState(()
+                        {
+                            selectedEstado = value!;
+                        }),
+                        validator: (value)
+                        {
+                            if(value == null)
+                            {
+                                return 'Selecione um Estado!';
+                            }
+                            return null;
+                        },
+                        onSaved: (value)
+                        {
+                            selectedEstado = value;
+                        },
+                    );
+                }
+                else
+                {
+                    return DropdownButton
+                    (
+                        items: const [],
+                        onChanged: (item) => setState(() {}),
+                    );
+                }
+            },
+        );
+    }
+
     @override
     Widget build(BuildContext context)
     {
@@ -208,14 +278,13 @@ class _EstadoListViewState extends State<CidadeListView>
                                         ),
                                         Flexible
                                         (
-                                            child: Column
+                                            flex: 2,
+                                            child:
+                                            ListTile
                                             (
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                children:
-                                                [
-                                                    buildFieldEstado()
-                                                ]
-                                            )
+                                                contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+                                                subtitle: buildComboEstado()
+                                            ) 
                                         ),
                                         const Flexible
                                         (
@@ -260,7 +329,7 @@ class _EstadoListViewState extends State<CidadeListView>
                                                             (
                                                                 nome ?? '',
                                                                 codIbge!.isEmpty ? '' : codIbge!,
-                                                                refEstado!.isEmpty ? 0 : int.parse(refEstado!),
+                                                                selectedEstado == null ? 0 : selectedEstado as int,
                                                                 id
                                                             );
 
@@ -399,7 +468,10 @@ class DTS extends DataTableSource
                 DataCell(Text(rows[index]['id'].toString())),
                 DataCell(Text(rows[index]['nome'])),
                 DataCell(Text(rows[index]['cod_ibge'].toString())),
-                DataCell(Text(rows[index]['ref_estado'].toString())),
+                DataCell
+                (
+                    buidlCellEstado(rows[index]['ref_estado'])
+                ),
                 DataCell
                 (
                     Tooltip
@@ -496,4 +568,37 @@ class DTS extends DataTableSource
 
     @override
     int get selectedRowCount => 0;
+
+    FutureBuilder buidlCellEstado(int id)
+    {
+        return FutureBuilder<Estado>
+        (
+            future: EstadoController().get(Estado.byId(id)),
+            builder: (context, snapshot)
+            {
+                if( snapshot.connectionState == ConnectionState.waiting )
+                {
+                    return const Center
+                    (
+                        child: CircularProgressIndicator()
+                    );
+                }
+
+                if(snapshot.hasError)
+                {
+                    return Text('Error: ${snapshot.error}');
+                }
+
+                if (snapshot.hasData)
+                {
+                    var nome = snapshot.data!.nome;
+                    return Text(nome);
+                }
+                else
+                {
+                    return const Text('');
+                }
+            },
+        );
+    }
 }
