@@ -35,6 +35,15 @@ class CidadeController
         catch(e) {}
     }
 
+    void update(Cidade cidade)
+    {
+        try
+        {
+            CidadeModel().update(cidade.toMap());
+        }
+        catch(e) {}
+    }
+
     void delete(Cidade cidade)
     {
         try
