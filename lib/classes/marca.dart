@@ -10,6 +10,11 @@ class Marca
 
     Marca.empty();
 
+    Marca.byId
+    (
+        this._id
+    );
+
     Marca(
         String nome,
         [int id = 0]
