@@ -35,6 +35,15 @@ class EstadoController
         catch(e) {}
     }
 
+    void update(Estado estado)
+    {
+        try
+        {
+            EstadoModel().update(estado.toMap());
+        }
+        catch(e) {}
+    }
+
     void delete(Estado estado)
     {
         try
