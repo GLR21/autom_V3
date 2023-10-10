@@ -290,7 +290,7 @@ class _EstadoView extends State<CidadeView>
                                                                             contentPadding: const EdgeInsets.symmetric(horizontal: 5),
                                                                             subtitle: buildFieldNome( cidade.nome ),
                                                                         ) 
-                                                                    )    
+                                                                    )
                                                                 ],
                                                             )
                                                             :
@@ -386,7 +386,7 @@ class _EstadoView extends State<CidadeView>
                                                                                 if(!isEdit)
                                                                                 {
                                                                                     int estado = int.parse(selectedEstado.toString());
-                                                                                                                                                                        /* Inserir */
+                                                                                    /* Inserir */
                                                                                     formKey.currentState!.save();
 
                                                                                     Cidade cidade = Cidade(nome!, codIbge!, estado);
@@ -414,8 +414,8 @@ class _EstadoView extends State<CidadeView>
                                                                                     /* Atualizar  */
                                                                                     formKey.currentState!.save();
 
-                                                                                    Cidade cidade = Cidade(nome!, codIbge!, estado);
-                                                                                    CidadeController().insert(cidade);
+                                                                                    Cidade cidade = Cidade(nome!, codIbge!, estado, id!);
+                                                                                    CidadeController().update(cidade);
 
                                                                                     DialogBuilder().showInfoDialog
                                                                                     (
