@@ -145,19 +145,31 @@ class _EstadoListViewState extends State<CidadeListView>
 
                 if (snapshot.hasData)
                 {
-                    var items = snapshot.data!.map((map) =>
+                    var items = snapshot.data!;
+                    var map = items.map((map) =>
                         DropdownMenuItem
                         (
                             value: map['id'],
                             child: Text(map['nome'])
                         )
-                    ).toList();
+                    );
+                    var list = map.toList();
+                    list.insert
+                    (
+                        0,
+                        const DropdownMenuItem
+                        (
+                            value: 0,
+                            child: Text('Selecione um Estado')
+                        )
+                    );
 
                     return DropdownButtonFormField
                     (
                         isExpanded: true,
-                        hint: const Text('Estado'),
-                        items: items,
+                        value: 0,
+                        hint: const Text('Selecione um Estado'),
+                        items: list,
                         onChanged: (value) => setState(()
                         {
                             selectedEstado = value!;
