@@ -31,32 +31,28 @@ class _EstadoView extends State<EstadoView>
         return Visibility
         (
             visible: int.parse(value!) != 0 ? true : false,
-            // child: SizedBox
-            // (
-                // width: 100,
-                child: TextFormField
+            child: TextFormField
+            (
+                initialValue: value,
+                enabled: false,
+                decoration: const InputDecoration
                 (
-                    initialValue: value,
-                    enabled: false,
-                    decoration: const InputDecoration
-                    (
-                        label: Text('Código'),
-                        border: OutlineInputBorder()
-                    ),
-                    validator: (String? value)
+                    label: Text('Código'),
+                    border: OutlineInputBorder()
+                ),
+                validator: (String? value)
+                {
+                    if(value!.isEmpty)
                     {
-                        if(value!.isEmpty)
-                        {
-                            return '"Código" é obrigatório';
-                        }
-                        return null;
-                    },
-                    onSaved: (newValue)
-                    {
-                        sigla = newValue;
-                    },
-                )
-            // )
+                        return '"Código" é obrigatório';
+                    }
+                    return null;
+                },
+                onSaved: (newValue)
+                {
+                    id = newValue;
+                },
+            )
         );
     }
 
@@ -364,8 +360,8 @@ class _EstadoView extends State<EstadoView>
                                                                                     /* Atualizar  */
                                                                                     formKey.currentState!.save();
 
-                                                                                    Estado estado = Estado(nome!, sigla!, int.parse(codIbge!));
-                                                                                    EstadoController().insert(estado);
+                                                                                    Estado estado = Estado(nome!, sigla!, int.parse(codIbge!), id!);
+                                                                                    EstadoController().update(estado);
 
                                                                                     DialogBuilder().showInfoDialog
                                                                                     (
@@ -397,7 +393,6 @@ class _EstadoView extends State<EstadoView>
                                         }
                                     },
                                 ),
-                            
                             )
                         )
                     )
