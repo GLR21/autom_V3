@@ -136,12 +136,7 @@ class _EstadoListViewState extends State<CidadeListView>
             builder: (context, snapshot)
             {
                 if( snapshot.connectionState == ConnectionState.waiting )
-                {
-                    return const Center
-                    (
-                        child: CircularProgressIndicator()
-                    );
-                }
+                {}
 
                 if(snapshot.hasError)
                 {
@@ -392,7 +387,7 @@ class _EstadoListViewState extends State<CidadeListView>
                             {
                                 if (snapshot.connectionState == ConnectionState.waiting)
                                 {
-                                    return const CircularProgressIndicator();
+                                    return Container();
                                 }
                                 else if(snapshot.hasError)
                                 {
@@ -577,12 +572,7 @@ class DTS extends DataTableSource
             builder: (context, snapshot)
             {
                 if( snapshot.connectionState == ConnectionState.waiting )
-                {
-                    return const Center
-                    (
-                        child: CircularProgressIndicator()
-                    );
-                }
+                {}
 
                 if(snapshot.hasError)
                 {
