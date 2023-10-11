@@ -136,12 +136,7 @@ class _EstadoListViewState extends State<CidadeListView>
             builder: (context, snapshot)
             {
                 if( snapshot.connectionState == ConnectionState.waiting )
-                {
-                    return const Center
-                    (
-                        child: CircularProgressIndicator()
-                    );
-                }
+                {}
 
                 if(snapshot.hasError)
                 {
@@ -150,19 +145,31 @@ class _EstadoListViewState extends State<CidadeListView>
 
                 if (snapshot.hasData)
                 {
-                    var items = snapshot.data!.map((map) =>
+                    var items = snapshot.data!;
+                    var map = items.map((map) =>
                         DropdownMenuItem
                         (
                             value: map['id'],
                             child: Text(map['nome'])
                         )
-                    ).toList();
+                    );
+                    var list = map.toList();
+                    list.insert
+                    (
+                        0,
+                        const DropdownMenuItem
+                        (
+                            value: 0,
+                            child: Text('Selecione um Estado')
+                        )
+                    );
 
                     return DropdownButtonFormField
                     (
                         isExpanded: true,
-                        hint: const Text('Estado'),
-                        items: items,
+                        value: 0,
+                        hint: const Text('Selecione um Estado'),
+                        items: list,
                         onChanged: (value) => setState(()
                         {
                             selectedEstado = value!;
@@ -392,7 +399,7 @@ class _EstadoListViewState extends State<CidadeListView>
                             {
                                 if (snapshot.connectionState == ConnectionState.waiting)
                                 {
-                                    return const CircularProgressIndicator();
+                                    return Container();
                                 }
                                 else if(snapshot.hasError)
                                 {
@@ -577,12 +584,7 @@ class DTS extends DataTableSource
             builder: (context, snapshot)
             {
                 if( snapshot.connectionState == ConnectionState.waiting )
-                {
-                    return const Center
-                    (
-                        child: CircularProgressIndicator()
-                    );
-                }
+                {}
 
                 if(snapshot.hasError)
                 {
