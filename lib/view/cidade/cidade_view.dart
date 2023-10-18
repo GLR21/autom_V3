@@ -146,7 +146,7 @@ class _EstadoView extends State<CidadeView>
 
                     return DropdownButtonFormField
                     (
-                        value: selectedItem != 0 ? selectedItem : null,
+                        value: selectedEstado != 0 ? selectedEstado : null,
                         isExpanded: true,
                         hint: const Text('Selecione um estado'),
                         items: items,
