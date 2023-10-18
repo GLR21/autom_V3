@@ -2,6 +2,7 @@ import 'package:autom_v3/view/cidade/cidade_list_view.dart';
 import 'package:autom_v3/view/estado/estado_list_view.dart';
 import 'package:autom_v3/view/main_view.dart';
 import 'package:autom_v3/view/marca/marca_list_view.dart';
+import 'package:autom_v3/view/peca/peca_list_view.dart';
 import 'package:flutter/material.dart';
 
 class NavigationPanel extends StatelessWidget
@@ -53,7 +54,20 @@ class NavigationPanel extends StatelessWidget
                 const Divider(color: Colors.black54,),
                 ListTile
                 (
-                    leading: const Icon(Icons.account_balance_outlined),
+                    leading: const Icon(Icons.car_rental_outlined),
+                    title: const Text('Peças', style: TextStyle(fontWeight: FontWeight.w500),),
+                    onTap: () =>
+                        Navigator.of(context).push
+                        (
+                            MaterialPageRoute
+                            (
+                                builder: (context) => const PecaListView(),
+                            ),
+                        )
+                ),
+                ListTile
+                (
+                    leading: const Icon(Icons.car_rental_outlined),
                     title: const Text('Marcas', style: TextStyle(fontWeight: FontWeight.w500),),
                     onTap: () =>
                         Navigator.of(context).push
