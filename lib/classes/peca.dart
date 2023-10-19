@@ -1,8 +1,5 @@
 
 // ignore_for_file: unnecessary_getters_setters
-
-import 'package:autom_v3/classes/marca.dart';
-
 class Peca
     extends
         Object
@@ -12,14 +9,14 @@ class Peca
     String _descricao = '';
     num _valorCompra = 0.00;
     num _valorRevenda = 0.00;
-    Marca _refMarca = Marca.empty();
+    int _refMarca = 0;
 
     Peca(
         String nome,
         String descricao,
         num valorCompra,
         num valorRevenda,
-        Marca refMarca,
+        int refMarca,
         [int id = 0]
     )
     {
@@ -33,12 +30,17 @@ class Peca
 
     Peca.empty();
 
+    Peca.byId
+    (
+        this._id
+    );
+
     int get id => _id;
     String get nome => _nome;
     String get descricao => _descricao;
     num get valorCompra => _valorCompra;
     num get valorRevenda => _valorRevenda;
-    Marca get refMarca => _refMarca;
+    int get refMarca => _refMarca;
 
     set id(int id)
     {
@@ -60,7 +62,7 @@ class Peca
     {
         _valorRevenda = valorRevenda;
     }
-    set refMarca(Marca refMarca)
+    set refMarca(int refMarca)
     {
         _refMarca = refMarca;
     }
@@ -74,7 +76,7 @@ class Peca
             'descricao': _descricao,
             'valor_compra': _valorCompra,
             'valor_revenda': _valorCompra,
-            'ref_marca': _refMarca.id
+            'ref_marca': _refMarca
         };
     }
 
@@ -82,5 +84,17 @@ class Peca
     String toString()
     {
         return 'Marcas{id: $_id, nome: $_nome, descricao: $_descricao, valorCompra: $_valorCompra, valorRevenda: $_valorRevenda, refMarca: $_refMarca}';
+    }
+
+    Peca toObject(Map<String, dynamic> map)
+    {
+        return Peca(
+            map['nome'],
+            map['descricao'] ?? '',
+            num.parse(map['valor_compra']),
+            num.parse(map['valor_revenda']),
+            map['ref_marca'],
+            map['id']
+        );
     }
 }
