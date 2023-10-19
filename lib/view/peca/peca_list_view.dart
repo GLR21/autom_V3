@@ -149,17 +149,17 @@ class _PecaListViewState extends State<PecaListView>
                     (
                         isExpanded: true,
                         value: 0,
-                        hint: const Text('Selecione uma marca'),
+                        hint: const Text('Selecione uma marca!'),
                         items: list,
                         onChanged: (value) => setState(()
                         {
-                            selectedMarca = value!;
+                            selectedMarca = value;
                         }),
                         validator: (value)
                         {
                             if(value == null)
                             {
-                                return 'Selecione um Estado!';
+                                return 'Selecione uma marca!';
                             }
                             return null;
                         },
