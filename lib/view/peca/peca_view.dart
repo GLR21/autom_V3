@@ -137,20 +137,22 @@ class _PecaView extends State<PecaView>
 
                 if (snapshot.hasData)
                 {
-                    var items = snapshot.data!.map((map) =>
+                    var items = snapshot.data!;
+                    var map = items.map((map) =>
                         DropdownMenuItem
                         (
                             value: map['id'],
                             child: Text(map['nome'])
                         )
-                    ).toList();
+                    );
+                    var list = map.toList();
 
                     return DropdownButtonFormField
                     (
-                        value: selectedMarca,
+                        value: selectedMarca != 0 ? selectedMarca : null,
                         isExpanded: true,
                         hint: const Text('Selecione uma marca'),
-                        items: items,
+                        items: list,
                         onChanged: (value) => setState(()
                         {
                             selectedMarca = value!;
