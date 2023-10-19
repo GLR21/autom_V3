@@ -400,7 +400,7 @@ class _PecaListViewState extends State<PecaListView>
                                         child:
                                         SizedBox
                                         (
-                                            width: MediaQuery.of(context).size.width/1.80,
+                                            width: MediaQuery.of(context).size.width/1.60,
                                             child:
                                             PaginatedDataTable
                                             (
@@ -459,11 +459,19 @@ class DTS extends DataTableSource
                 DataCell(Text(rows[index]['nome'])),
                 DataCell
                 (
-                    Text(rows[index]['descricao'] ?? '')
+                    Padding
+                    (
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                        child: Text(rows[index]['descricao'] ?? '')
+                    )
                 ),
                 DataCell
                 (
-                    buidlCellMarca(rows[index]['ref_marca'])
+                    Padding
+                    (
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: buidlCellMarca(rows[index]['ref_marca'])
+                    )
                 ),
                 DataCell
                 (
