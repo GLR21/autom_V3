@@ -1,9 +1,6 @@
-import 'package:autom_v3/classes/cidade.dart';
 import 'package:autom_v3/classes/peca.dart';
-import 'package:autom_v3/controllers/cidade_controller.dart';
 import 'package:autom_v3/controllers/marca_controller.dart';
 import 'package:autom_v3/controllers/peca_controller.dart';
-import 'package:autom_v3/view/cidade/cidade_list_view.dart';
 import 'package:autom_v3/view/components/dialog_builder.dart';
 import 'package:autom_v3/view/peca/peca_list_view.dart';
 import 'package:flutter/material.dart';

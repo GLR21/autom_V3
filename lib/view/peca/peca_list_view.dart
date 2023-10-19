@@ -3,7 +3,6 @@ import 'package:autom_v3/classes/peca.dart';
 import 'package:autom_v3/controllers/marca_controller.dart';
 import 'package:autom_v3/controllers/peca_controller.dart';
 import 'package:autom_v3/view/components/navigation_panel.dart';
-import 'package:autom_v3/view/marca/marca_list_view.dart';
 import 'package:autom_v3/view/peca/peca_view.dart';
 import 'package:flutter/material.dart';
 
