@@ -1,6 +1,8 @@
 
 // ignore_for_file: unnecessary_getters_setters
 
+import 'dart:async';
+
 class Pessoa
     extends
         Object
@@ -55,6 +57,11 @@ class Pessoa
     }
 
     Pessoa.empty();
+
+    Pessoa.byId
+    (
+        this._id
+    );
 
     int get id => _id;
     String get nome => _nome;
@@ -154,4 +161,24 @@ class Pessoa
     {
         return 'Pessoa{id: $_id, nome: $_nome, email: $_email, senha: $_senha, telefone: $_telefone, cep: $_cep, rua: $_rua, bairro: $_bairro, tipoPessoa: $_tipoPessoa, complemento: $_complemento}';
     }
+
+    Pessoa toObject(Map<String, dynamic> map)
+    {
+        return Pessoa
+        (
+            map['nome'],
+            map['email'],
+            map['senha'],
+            map['telefone'],
+            map['cep'],
+            map['rua'],
+            map['bairro'],
+            map['numero_endereco'],
+            map['ref_cidade'],
+            map['complemento'],
+            map['tipo_pessoa'],
+            map['id'],
+        );
+    }
+
 }

@@ -17,6 +17,11 @@ class Cidade
         this._id
     );
 
+    Cidade.byCodigoIbge( String codIbge )
+    {
+        _codIbge = codIbge;
+    }
+
     Cidade(
         String nome,
         String codIbge,
