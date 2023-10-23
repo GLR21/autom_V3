@@ -1,4 +1,6 @@
 
+// ignore_for_file: unnecessary_getters_setters
+
 import 'package:autom_v3/classes/pessoa.dart';
 
 class PessoaFisica
@@ -28,7 +30,8 @@ class PessoaFisica
         pessoa.numeroEndereco,
         pessoa.cidade,
         pessoa.complemento,
-        Pessoa.tipoPessoaFisica
+        Pessoa.tipoPessoaFisica,
+        pessoa.id
     )
     {
         _cpf = cpf;
@@ -50,6 +53,9 @@ class PessoaFisica
     {
         _dataNascimento = dataNascimento;
     }
+    
+    String get cpf => _cpf;
+    String get rg => _rg;
 
     @override
     Map<String, dynamic> toMap()
