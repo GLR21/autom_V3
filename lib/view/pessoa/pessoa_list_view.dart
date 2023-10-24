@@ -1,5 +1,7 @@
+import 'package:autom_v3/classes/cidade.dart';
 import 'package:autom_v3/classes/peca.dart';
 import 'package:autom_v3/classes/pessoa.dart';
+import 'package:autom_v3/controllers/cidade_controller.dart';
 import 'package:autom_v3/controllers/peca_controller.dart';
 import 'package:autom_v3/controllers/pessoa_controller.dart';
 import 'package:autom_v3/view/components/navigation_panel.dart';
@@ -20,13 +22,18 @@ class _PessoaListViewState extends State<PessoaListView>
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     Future<List<dynamic>> all_pessoas = PessoaController().getAll();
+    Future<List<dynamic>> all_cidades = CidadeController().getAll();
     Future<List> filteredList = PessoaController().getAll();
 
     String? id;
     String? nome;
+    String? email;
+    String? cep;
+    String? bairro;
     String? tipoPessoa;
 
     Object? selectedTipoPessoa;
+    Object? selectedCidade;
 
     Widget buildFieldId()
     {
@@ -78,6 +85,87 @@ class _PessoaListViewState extends State<PessoaListView>
             ),
         );
     }
+
+    Widget buildFieldEmail()
+    {
+        return SizedBox
+        (
+            width: 300,
+            child: TextFormField
+            (
+                decoration: const InputDecoration
+                (
+                    label: Text
+                    (
+                        'E-mail'
+                    ),
+                    border: OutlineInputBorder()
+                ),
+                validator: (String? value)
+                {
+                    return null;
+                },
+                onSaved: (newValue)
+                {
+                    email = newValue;
+                }
+            ),
+        );
+    }
+
+    Widget buildFieldCep()
+    {
+        return SizedBox
+        (
+            width: 300,
+            child: TextFormField
+            (
+                decoration: const InputDecoration
+                (
+                    label: Text
+                    (
+                        'CEP'
+                    ),
+                    border: OutlineInputBorder()
+                ),
+                validator: (String? value)
+                {
+                    return null;
+                },
+                onSaved: (newValue)
+                {
+                    cep = newValue;
+                }
+            ),
+        );
+    }
+
+    Widget buildFieldBairro()
+    {
+        return SizedBox
+        (
+            width: 300,
+            child: TextFormField
+            (
+                decoration: const InputDecoration
+                (
+                    label: Text
+                    (
+                        'Bairro'
+                    ),
+                    border: OutlineInputBorder()
+                ),
+                validator: (String? value)
+                {
+                    return null;
+                },
+                onSaved: (newValue)
+                {
+                    bairro = newValue;
+                }
+            ),
+        );
+    }
  
     DropdownButtonFormField buildComboTipoPessoa()
     {
@@ -124,6 +212,78 @@ class _PessoaListViewState extends State<PessoaListView>
         );
     }
 
+    FutureBuilder buildComboCidade()
+    {
+        return FutureBuilder<List<dynamic>>
+        (
+            future: all_cidades,
+            builder: (context, snapshot)
+            {
+                if( snapshot.connectionState == ConnectionState.waiting )
+                {}
+
+                if(snapshot.hasError)
+                {
+                    return Text('Error: ${snapshot.error}');
+                }
+
+                if (snapshot.hasData)
+                {
+                    var items = snapshot.data!;
+                    var map = items.map((map) =>
+                        DropdownMenuItem
+                        (
+                            value: map['id'],
+                            child: Text(map['nome'])
+                        )
+                    );
+                    var list = map.toList();
+                    list.insert
+                    (
+                        0,
+                        const DropdownMenuItem
+                        (
+                            value: 0,
+                            child: Text('Selecione uma cidade')
+                        )
+                    );
+
+                    return DropdownButtonFormField
+                    (
+                        isExpanded: true,
+                        value: 0,
+                        hint: const Text('Selecione uma cidade'),
+                        items: list,
+                        onChanged: (value) => setState(()
+                        {
+                            selectedCidade = value!;
+                        }),
+                        validator: (value)
+                        {
+                            if(value == null)
+                            {
+                                return 'Selecione uma cidade!';
+                            }
+                            return null;
+                        },
+                        onSaved: (value)
+                        {
+                            selectedCidade = value;
+                        },
+                    );
+                }
+                else
+                {
+                    return DropdownButton
+                    (
+                        items: const [],
+                        onChanged: (item) => setState(() {}),
+                    );
+                }
+            },
+        );
+    }
+
     @override
     Widget build(BuildContext context)
     {
@@ -153,162 +313,248 @@ class _PessoaListViewState extends State<PessoaListView>
                             (
                                 padding: const EdgeInsets.all(15),
                                 child:
-                                Row
+                                Wrap
                                 (
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>
+                                    children:
                                     [
-                                        Flexible
+                                        Row
                                         (
-                                            child: Column
-                                            (
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                children:
-                                                [
-                                                    buildFieldId()
-                                                ]
-                                            )
-                                        ),
-                                        const Flexible
-                                        (
-                                            child: Padding(padding: EdgeInsets.all(5),)
-                                        ),
-                                        const Flexible
-                                        (
-                                            child: Padding(padding: EdgeInsets.all(5),)
-                                        ),
-                                        Flexible
-                                        (
-                                            child: Column
-                                            (
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                children:
-                                                [
-                                                    buildFieldNome()
-                                                ]
-                                            )
-                                        ),
-                                        const Flexible
-                                        (
-                                            child:  Padding(padding: EdgeInsets.all(5),)
-                                        ),
-                                        Flexible
-                                        (
-                                            flex: 2,
-                                            child: Column
-                                            (
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                children:
-                                                [
-                                                    buildComboTipoPessoa()
-                                                ]
-                                            )
-                                        ),
-                                        const Flexible
-                                        (
-                                            child: Padding(padding: EdgeInsets.all(5),)
-                                        ),
-                                        Flexible
-                                        (
-                                            child: Column
-                                            (
-                                                children:
-                                                [
-                                                    ElevatedButton
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: <Widget>
+                                            [
+                                                Flexible
+                                                (
+                                                    child: Column
                                                     (
-                                                        style: ElevatedButton.styleFrom
-                                                        (
-                                                            backgroundColor: Colors.green,
-                                                            foregroundColor: Colors.white,
-                                                            shape: RoundedRectangleBorder
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children:
+                                                        [
+                                                            buildFieldId()
+                                                        ]
+                                                    )
+                                                ),
+                                                const Flexible
+                                                (
+                                                    child: Padding(padding: EdgeInsets.all(5),)
+                                                ),
+                                                const Flexible
+                                                (
+                                                    child: Padding(padding: EdgeInsets.all(5),)
+                                                ),
+                                                Flexible
+                                                (
+                                                    flex: 2,
+                                                    child: Column
+                                                    (
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children:
+                                                        [
+                                                            buildFieldNome()
+                                                        ]
+                                                    )
+                                                ),
+                                                const Flexible
+                                                (
+                                                    child:  Padding(padding: EdgeInsets.all(5),)
+                                                ),
+                                                Flexible
+                                                (
+                                                    flex: 2,
+                                                    child: Column
+                                                    (
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children:
+                                                        [
+                                                            buildFieldEmail()
+                                                        ]
+                                                    )
+                                                ),
+                                                const Flexible
+                                                (
+                                                    child:  Padding(padding: EdgeInsets.all(5),)
+                                                ),
+                                                Flexible
+                                                (
+                                                    flex: 2,
+                                                    child: Column
+                                                    (
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children:
+                                                        [
+                                                            buildComboTipoPessoa()
+                                                        ]
+                                                    )
+                                                ),
+                                                const Flexible
+                                                (
+                                                    child: Padding(padding: EdgeInsets.all(5),)
+                                                ),
+                                                Flexible
+                                                (
+                                                    child: Column
+                                                    (
+                                                        children:
+                                                        [
+                                                            ElevatedButton
                                                             (
-                                                                borderRadius: BorderRadius.circular(4.0),
+                                                                style: ElevatedButton.styleFrom
+                                                                (
+                                                                    backgroundColor: Colors.green,
+                                                                    foregroundColor: Colors.white,
+                                                                    shape: RoundedRectangleBorder
+                                                                    (
+                                                                        borderRadius: BorderRadius.circular(4.0),
+                                                                    ),
+                                                                ),
+                                                                child: const Text
+                                                                (
+                                                                    'Buscar',
+                                                                    style: TextStyle(color: Colors.white),
+                                                                ),
+                                                                onPressed: ()
+                                                                {
+                                                                    if(!formKey.currentState!.validate())
+                                                                    {
+                                                                        return;
+                                                                    }
+                                                    
+                                                                    formKey.currentState!.save();
+
+                                                                    /*
+                                                                    * filtrar Pessoa
+                                                                    */
+                                                                    int? id = this.id != null && this.id != '' ? int.parse(this.id!) : 0;
+                                                                    Pessoa pessoa = Pessoa
+                                                                    (
+                                                                        nome ?? '',
+                                                                        email ?? '',
+                                                                        '', // senha
+                                                                        '', // telefone
+                                                                        cep ?? '',
+                                                                        '', // rua
+                                                                        bairro ?? '',
+                                                                        0,  // numeroEndereco
+                                                                        selectedCidade == null ? 0 : selectedCidade as int,  // cidade
+                                                                        '', // complemento
+                                                                        selectedTipoPessoa == null ? 0 : selectedTipoPessoa as int,
+                                                                        id
+                                                                    );
+
+                                                                    setState(()
+                                                                    {
+                                                                        filteredList = PessoaController().getFiltered(pessoa);
+                                                                    });
+                                                                },
                                                             ),
-                                                        ),
-                                                        child: const Text
-                                                        (
-                                                            'Buscar',
-                                                            style: TextStyle(color: Colors.white),
-                                                        ),
-                                                        onPressed: ()
-                                                        {
-                                                            if(!formKey.currentState!.validate())
-                                                            {
-                                                                return;
-                                                            }
-                                            
-                                                            formKey.currentState!.save();
-
-                                                            /*
-                                                             * filtrar Pessoa
-                                                             */
-                                                            int? id = this.id != null && this.id != '' ? int.parse(this.id!) : 0;
-                                                            Pessoa pessoa = Pessoa
-                                                            (
-                                                                nome ?? '',
-                                                                '', // email
-                                                                '', // senha
-                                                                '', // telefone
-                                                                '', // cep
-                                                                '', // rua
-                                                                '', // bairro
-                                                                0,  // numeroEndereco
-                                                                0,  // cidade
-                                                                '', // complemento
-                                                                selectedTipoPessoa == null ? 0 : selectedTipoPessoa as int,
-                                                                id
-                                                            );
-
-                                                            setState(()
-                                                            {
-                                                                filteredList = PessoaController().getFiltered(pessoa);
-                                                            });
-                                                        },
+                                                        ],
                                                     ),
-                                                ],
-                                            ),
+                                                ),
+                                                const Flexible
+                                                (
+                                                    child: Padding(padding: EdgeInsets.all(5),)
+                                                ),
+                                                // Flexible
+                                                // (
+                                                //     child: Column
+                                                //     (
+                                                //         children: [
+                                                //             ElevatedButton
+                                                //             (
+                                                //                 style: ElevatedButton.styleFrom
+                                                //                 (
+                                                //                     backgroundColor: Colors.green,
+                                                //                     foregroundColor: Colors.white,
+                                                //                     shape: RoundedRectangleBorder
+                                                //                     (
+                                                //                         borderRadius: BorderRadius.circular(4.0),
+                                                //                     ),
+                                                //                 ),
+                                                //                 child: const Text
+                                                //                 (
+                                                //                     'Cadastrar',
+                                                //                     style: TextStyle(color: Colors.white),
+                                                //                 ),
+                                                //                 onPressed: ()
+                                                //                 {
+                                                //                     Navigator.of(context).push
+                                                //                     (
+                                                //                         MaterialPageRoute
+                                                //                         (
+                                                //                             builder: (context) => const PecaView(null),
+                                                //                         ),
+                                                //                     );
+                                                //                 },
+                                                //             ),
+                                                //         ],
+                                                //     )
+                                                // )
+                                            ],
                                         ),
                                         const Flexible
                                         (
                                             child: Padding(padding: EdgeInsets.all(5),)
                                         ),
-                                        // Flexible
-                                        // (
-                                        //     child: Column
-                                        //     (
-                                        //         children: [
-                                        //             ElevatedButton
-                                        //             (
-                                        //                 style: ElevatedButton.styleFrom
-                                        //                 (
-                                        //                     backgroundColor: Colors.green,
-                                        //                     foregroundColor: Colors.white,
-                                        //                     shape: RoundedRectangleBorder
-                                        //                     (
-                                        //                         borderRadius: BorderRadius.circular(4.0),
-                                        //                     ),
-                                        //                 ),
-                                        //                 child: const Text
-                                        //                 (
-                                        //                     'Cadastrar',
-                                        //                     style: TextStyle(color: Colors.white),
-                                        //                 ),
-                                        //                 onPressed: ()
-                                        //                 {
-                                        //                     Navigator.of(context).push
-                                        //                     (
-                                        //                         MaterialPageRoute
-                                        //                         (
-                                        //                             builder: (context) => const PecaView(null),
-                                        //                         ),
-                                        //                     );
-                                        //                 },
-                                        //             ),
-                                        //         ],
-                                        //     )
-                                        // )
+                                        Row
+                                        (
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: <Widget> [
+                                                const Padding(padding: EdgeInsets.all(9)),
+                                                Flexible
+                                                (
+                                                    flex: 1,
+                                                    child: Column
+                                                    (
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children:
+                                                        [
+                                                            buildFieldCep()
+                                                        ]
+                                                    )
+                                                ),
+                                                const Flexible
+                                                (
+                                                    child: Padding(padding: EdgeInsets.all(5),)
+                                                ),
+                                                Flexible
+                                                (
+                                                    flex: 1,
+                                                    child: Column
+                                                    (
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children:
+                                                        [
+                                                            buildFieldBairro()
+                                                        ]
+                                                    )
+                                                ),
+                                                const Flexible
+                                                (
+                                                    child: Padding(padding: EdgeInsets.all(5),)
+                                                ),
+                                                Flexible
+                                                (
+                                                    flex: 1,
+                                                    child: Column
+                                                    (
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children:
+                                                        [
+                                                            buildComboCidade()
+                                                        ]
+                                                    )
+                                                ),
+                                                const Flexible
+                                                (
+                                                    child: Padding(padding: EdgeInsets.all(5),)
+                                                ),
+                                                const Flexible
+                                                (
+                                                    child: Padding(padding: EdgeInsets.all(5),)
+                                                ),
+                                            ],
+                                        )
                                     ],
-                                ),
+                                )
                             )
                         ),
                         FutureBuilder
@@ -336,7 +582,7 @@ class _PessoaListViewState extends State<PessoaListView>
                                         child:
                                         SizedBox
                                         (
-                                            width: MediaQuery.of(context).size.width/1.60,
+                                            width: MediaQuery.of(context).size.width/1.30,
                                             child:
                                             PaginatedDataTable
                                             (
@@ -345,6 +591,10 @@ class _PessoaListViewState extends State<PessoaListView>
                                                 [
                                                     DataColumn(label: Text('Código')),
                                                     DataColumn(label: Text('Nome')),
+                                                    DataColumn(label: Text('E-mail')),
+                                                    DataColumn(label: Text('CEP')),
+                                                    DataColumn(label: Text('Bairro')),
+                                                    DataColumn(label: Text('Cidade')),
                                                     DataColumn(label: Text('Tipo')),
                                                     // DataColumn(label: Text('Editar')),
                                                     DataColumn(label: Text('Excluir')),
@@ -392,6 +642,17 @@ class DTS extends DataTableSource
             [
                 DataCell(Text(rows[index].id.toString())),
                 DataCell(Text(rows[index].nome)),
+                DataCell(Text(rows[index].email)),
+                DataCell(Text(rows[index].cep)),
+                DataCell(Text(rows[index].bairro)),
+                DataCell
+                (
+                    Padding
+                    (
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: buildCellCidade(rows[index].cidade)
+                    )
+                ),
                 DataCell
                 (
                     Padding
@@ -516,6 +777,34 @@ class DTS extends DataTableSource
                 {
                     var data = snapshot.data!;
                     return Text(data.getTipoPessoaLabel());
+                }
+                else
+                {
+                    return const Text('');
+                }
+            },
+        );
+    }
+
+    FutureBuilder buildCellCidade(int id)
+    {
+        return FutureBuilder<Cidade>
+        (
+            future: CidadeController().get(Cidade.byId(id)),
+            builder: (context, snapshot)
+            {
+                if( snapshot.connectionState == ConnectionState.waiting )
+                {}
+
+                if(snapshot.hasError)
+                {
+                    return Text('Error: ${snapshot.error}');
+                }
+
+                if (snapshot.hasData)
+                {
+                    var data = snapshot.data!;
+                    return Text(data.nome);
                 }
                 else
                 {
