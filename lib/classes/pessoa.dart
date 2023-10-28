@@ -1,8 +1,6 @@
 
 // ignore_for_file: unnecessary_getters_setters
 
-import 'dart:async';
-
 class Pessoa
     extends
         Object
@@ -136,18 +134,6 @@ class Pessoa
         _complemento = complemento;
     }
 
-    String getTipoPessoaLabel()
-    {
-        if (_tipoPessoa == 1)
-        {
-            return 'Física';
-        }
-        else
-        {
-            return 'Jurídica';
-        }
-    }
-
     Map<String, dynamic > toMap()
     {
         return
@@ -167,7 +153,7 @@ class Pessoa
             'complemento': _complemento,
         };
     }
-    
+
     @override
     String toString()
     {
@@ -187,7 +173,7 @@ class Pessoa
             map['bairro'],
             map['numero_endereco'],
             map['ref_cidade'],
-            map['complemento'] ?? '',
+            map['complemento'],
             map['tipo_pessoa'],
             map['id'],
         );

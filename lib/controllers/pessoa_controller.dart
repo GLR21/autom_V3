@@ -30,16 +30,6 @@ class PessoaController
         return pessoa;
     }
 
-    Future<Pessoa> getOnlyPessoa(Pessoa pessoa) async
-    {
-        List list = await PessoaModel().select(pessoa.toMap());
-        if (list.isEmpty)
-        {
-            return Future.value(Pessoa.empty());
-        }
-        return await Future.value(Pessoa.empty().toObject(list.first));
-    }
-
     Future<List> getAll() async
     {
         List pessoasDados = await PessoaModel().selectAll();
@@ -52,23 +42,18 @@ class PessoaController
             {
                 case Pessoa.tipoPessoaFisica:
                     dynamic pessoaFisicaDados = await PessoaFisicaModel().select( filtroById );
-                    if (!pessoaFisicaDados.isEmpty)
-                    {
-                        pessoaFisicaDados = pessoaFisicaDados.first;
-                        pessoa = PessoaFisica( pessoa, pessoaFisicaDados['cpf'], pessoaFisicaDados['rg'], pessoaFisicaDados['dt_nascimento'].toString() ); 
-                    }
+                    pessoaFisicaDados = pessoaFisicaDados.first;
+                    pessoa = PessoaFisica( pessoa, pessoaFisicaDados['cpf'], pessoaFisicaDados['rg'], pessoaFisicaDados['dt_nascimento'].toString() );
                 break;
                 case Pessoa.tipoPessoaJuridica:
                     dynamic pessoaJuridicaDados = await PessoaJuridicaModel().select(filtroById);
-                    if (!pessoaJuridicaDados.isEmpty)
-                    {
-                        pessoaJuridicaDados = pessoaJuridicaDados.first;
-                        pessoa = PessoaJuridica( pessoa, pessoaJuridicaDados['cnpj'], pessoaJuridicaDados['razao_social'], pessoaJuridicaDados['nome_fantasia'], pessoaJuridicaDados['dt_fundacao'].toString() );
-                    }
+                    pessoaJuridicaDados = pessoaJuridicaDados.first;
+                    pessoa = PessoaJuridica( pessoa, pessoaJuridicaDados['cnpj'], pessoaJuridicaDados['razao_social'], pessoaJuridicaDados['nome_fantasia'], pessoaJuridicaDados['dt_fundacao'].toString() );
                 break;
             }
             pessoas.add(pessoa);
         }
+
         return pessoas;
     }
 
@@ -93,32 +78,5 @@ class PessoaController
         ).toList();
 
         return Future.value(list);
-    }
-
-    void insert(Pessoa pessoa)
-    {
-        try
-        {
-            PessoaModel().insert(pessoa.toMap());
-        }
-        catch(e) {}
-    }
-
-    void update(Pessoa pessoa)
-    {
-        try
-        {
-            PessoaModel().update(pessoa.toMap());
-        }
-        catch(e) {}
-    }
-
-    void delete(Pessoa pessoa)
-    {
-        try
-        {
-            PessoaModel().delete(pessoa.toMap());
-        }
-        catch(e) {}
     }
 }
