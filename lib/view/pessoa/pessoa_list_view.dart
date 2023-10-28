@@ -178,7 +178,7 @@ class _PessoaListViewState extends State<PessoaListView>
             const DropdownMenuItem
             (
                 value: 0,
-                child: Text('Selecione um tipo')
+                child: Text('Selecione um tipo de pessoa')
             ),
             const DropdownMenuItem
             (
@@ -326,9 +326,10 @@ class _PessoaListViewState extends State<PessoaListView>
                                         child:
                                         Row
                                         (
-                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.start,
                                             children: <Widget>
                                             [
+                                                const SizedBox(width: 250),
                                                 Flexible
                                                 (
                                                     child: Column
@@ -366,7 +367,7 @@ class _PessoaListViewState extends State<PessoaListView>
                                                 ),
                                                 Flexible
                                                 (
-                                                    flex: 2,
+                                                    flex: 3,
                                                     child: Column
                                                     (
                                                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -384,10 +385,10 @@ class _PessoaListViewState extends State<PessoaListView>
                                         child:
                                         Row
                                         (
-                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.start,
                                             children: <Widget>
                                             [
-                                                const Padding(padding: EdgeInsets.all(9)),
+                                                const SizedBox(width: 250),
                                                 Flexible
                                                 (
                                                     flex: 3,
@@ -438,7 +439,7 @@ class _PessoaListViewState extends State<PessoaListView>
                                                 ),
                                                 Flexible
                                                 (
-                                                    flex: 2,
+                                                    flex: 3,
                                                     child: Column
                                                     (
                                                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -464,8 +465,12 @@ class _PessoaListViewState extends State<PessoaListView>
                                         child:
                                         Row
                                         (
+                                            mainAxisAlignment: MainAxisAlignment.start,
                                             children:
                                             [
+                                                const Flexible(
+                                                    child: SizedBox(width: 635)
+                                                ),
                                                 Expanded
                                                 (
                                                     child:
