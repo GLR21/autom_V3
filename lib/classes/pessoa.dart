@@ -1,8 +1,6 @@
 
 // ignore_for_file: unnecessary_getters_setters
 
-import 'dart:async';
-
 class Pessoa
     extends
         Object

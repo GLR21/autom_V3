@@ -53,6 +53,30 @@ class PessoaController
             }
             pessoas.add(pessoa);
         }
+
         return pessoas;
+    }
+
+    Future<List> getFiltered(Pessoa pessoa) async
+    {
+        var dadosPessoa =  await PessoaModel().selectQueryBuilder(pessoa.toMap());
+        var list = dadosPessoa.map((pessoa) =>
+            Pessoa(
+                pessoa['nome'] ?? '',
+                pessoa['email'] ?? '',
+                pessoa['senha'] ?? '',
+                pessoa['telefone'] ?? '',
+                pessoa['cep'] ?? '',
+                pessoa['rua'] ?? '',
+                pessoa['bairro'] ?? '',
+                pessoa['numero_endereco'] ?? 0,
+                pessoa['ref_cidade'] ?? 0,
+                pessoa['complemento'] ?? '',
+                pessoa['tipo_pessoa'] ?? 0,
+                pessoa['id'] ?? 0
+            )
+        ).toList();
+
+        return Future.value(list);
     }
 }
