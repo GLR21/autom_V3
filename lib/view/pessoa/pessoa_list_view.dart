@@ -40,6 +40,7 @@ class _PessoaListViewState extends State<PessoaListView>
         return SizedBox
         (
             width: 100,
+            height: 45,
             child: TextFormField
             (
                 decoration: const InputDecoration
@@ -64,6 +65,7 @@ class _PessoaListViewState extends State<PessoaListView>
         return SizedBox
         (
             width: 300,
+            height: 45,
             child: TextFormField
             (
                 decoration: const InputDecoration
@@ -91,6 +93,7 @@ class _PessoaListViewState extends State<PessoaListView>
         return SizedBox
         (
             width: 300,
+            height: 45,
             child: TextFormField
             (
                 decoration: const InputDecoration
@@ -118,6 +121,7 @@ class _PessoaListViewState extends State<PessoaListView>
         return SizedBox
         (
             width: 300,
+            height: 45,
             child: TextFormField
             (
                 decoration: const InputDecoration
@@ -145,6 +149,7 @@ class _PessoaListViewState extends State<PessoaListView>
         return SizedBox
         (
             width: 300,
+            height: 45,
             child: TextFormField
             (
                 decoration: const InputDecoration
