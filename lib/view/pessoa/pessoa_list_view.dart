@@ -493,76 +493,76 @@ class _PessoaListViewState extends State<PessoaListView>
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: <Widget>
                                             [
-                                            const Padding(padding: EdgeInsets.all(9)),
-                                            Flexible
-                                            (
-                                                flex: 3,
-                                                child: Column
+                                                const Padding(padding: EdgeInsets.all(9)),
+                                                Flexible
                                                 (
-                                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                                    children:
-                                                    [
-                                                        buildFieldEmail()
-                                                    ]
-                                                )
-                                            ),
-                                            const Flexible
-                                            (
-                                                child:  Padding(padding: EdgeInsets.all(5),)
-                                            ),
-                                            Flexible
-                                            (
-                                                flex: 1,
-                                                child: Column
+                                                    flex: 3,
+                                                    child: Column
+                                                    (
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children:
+                                                        [
+                                                            buildFieldEmail()
+                                                        ]
+                                                    )
+                                                ),
+                                                const Flexible
                                                 (
-                                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                                    children:
-                                                    [
-                                                        buildFieldCep()
-                                                    ]
-                                                )
-                                            ),
-                                            const Flexible
-                                            (
-                                                child: Padding(padding: EdgeInsets.all(5),)
-                                            ),
-                                            Flexible
-                                            (
-                                                flex: 2,
-                                                child: Column
+                                                    child:  Padding(padding: EdgeInsets.all(5),)
+                                                ),
+                                                Flexible
                                                 (
-                                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                                    children:
-                                                    [
-                                                        buildFieldBairro()
-                                                    ]
-                                                )
-                                            ),
-                                            const Flexible
-                                            (
-                                                child: Padding(padding: EdgeInsets.all(5),)
-                                            ),
-                                            Flexible
-                                            (
-                                                flex: 2,
-                                                child: Column
+                                                    flex: 1,
+                                                    child: Column
+                                                    (
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children:
+                                                        [
+                                                            buildFieldCep()
+                                                        ]
+                                                    )
+                                                ),
+                                                const Flexible
                                                 (
-                                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                                    children:
-                                                    [
-                                                        buildComboCidade()
-                                                    ]
-                                                )
-                                            ),
-                                            const Flexible
-                                            (
-                                                child: Padding(padding: EdgeInsets.all(5),)
-                                            ),
-                                            const Flexible
-                                            (
-                                                child: Padding(padding: EdgeInsets.all(5),)
-                                            ),
-                                        ],
+                                                    child: Padding(padding: EdgeInsets.all(5),)
+                                                ),
+                                                Flexible
+                                                (
+                                                    flex: 2,
+                                                    child: Column
+                                                    (
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children:
+                                                        [
+                                                            buildFieldBairro()
+                                                        ]
+                                                    )
+                                                ),
+                                                const Flexible
+                                                (
+                                                    child: Padding(padding: EdgeInsets.all(5),)
+                                                ),
+                                                Flexible
+                                                (
+                                                    flex: 2,
+                                                    child: Column
+                                                    (
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children:
+                                                        [
+                                                            buildComboCidade()
+                                                        ]
+                                                    )
+                                                ),
+                                                const Flexible
+                                                (
+                                                    child: Padding(padding: EdgeInsets.all(5),)
+                                                ),
+                                                const Flexible
+                                                (
+                                                    child: Padding(padding: EdgeInsets.all(5),)
+                                                ),
+                                            ],
                                         )
                                     )
                                 ],
@@ -778,7 +778,7 @@ class DTS extends DataTableSource
     {
         return FutureBuilder<Pessoa>
         (
-            future: PessoaController().getOnlyPessoa(Pessoa.byId(id)),
+            future: PessoaController().get(Pessoa.byId(id)),
             builder: (context, snapshot)
             {
                 if( snapshot.connectionState == ConnectionState.waiting )
@@ -792,7 +792,7 @@ class DTS extends DataTableSource
                 if (snapshot.hasData)
                 {
                     var data = snapshot.data!;
-                    return Text(data.getTipoPessoaLabel());
+                    return Text(data.tipoPessoa == 1 ? 'Física' : 'Jurídica');
                 }
                 else
                 {
