@@ -302,26 +302,27 @@ class _PessoaListViewState extends State<PessoaListView>
                 backgroundColor: Colors.greenAccent,
             ),
             body: 
-            SingleChildScrollView
+            Wrap
             (
-                scrollDirection: Axis.vertical,
-                child:
-                Wrap
-                (
-                    children:
-                    [
-                        Form
+                children:
+                [
+                    const Padding(padding: EdgeInsets.all(10)),
+                    Form
+                    (
+                        key: formKey,
+                        child:
+                        Container
                         (
-                            key: formKey,
-                            child:
-                            Padding
+                            height: 150,
+                            child: 
+                            Flex
                             (
-                                padding: const EdgeInsets.all(15),
-                                child:
-                                Wrap
-                                (
-                                    children:
-                                    [
+                                direction: Axis.vertical,
+                                children:
+                                [
+                                    Expanded
+                                    (
+                                        child:
                                         Row
                                         (
                                             mainAxisAlignment: MainAxisAlignment.center,
@@ -378,7 +379,7 @@ class _PessoaListViewState extends State<PessoaListView>
                                                 (
                                                     child: Padding(padding: EdgeInsets.all(5),)
                                                 ),
-                                                Flexible
+                                                Expanded
                                                 (
                                                     child: Column
                                                     (
@@ -479,90 +480,99 @@ class _PessoaListViewState extends State<PessoaListView>
                                                 // )
                                             ],
                                         ),
-                                        const Flexible
-                                        (
-                                            child: Padding(padding: EdgeInsets.all(5),)
-                                        ),
+                                    ),
+                                    const Flexible
+                                    (
+                                        child: Padding(padding: EdgeInsets.all(5),)
+                                    ),
+                                    Flexible
+                                    (
+                                        child:
                                         Row
                                         (
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: <Widget>
                                             [
-                                                const Padding(padding: EdgeInsets.all(9)),
-                                                Flexible
+                                            const Padding(padding: EdgeInsets.all(9)),
+                                            Flexible
+                                            (
+                                                flex: 3,
+                                                child: Column
                                                 (
-                                                    flex: 3,
-                                                    child: Column
-                                                    (
-                                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                                        children:
-                                                        [
-                                                            buildFieldEmail()
-                                                        ]
-                                                    )
-                                                ),
-                                                const Flexible
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    children:
+                                                    [
+                                                        buildFieldEmail()
+                                                    ]
+                                                )
+                                            ),
+                                            const Flexible
+                                            (
+                                                child:  Padding(padding: EdgeInsets.all(5),)
+                                            ),
+                                            Flexible
+                                            (
+                                                flex: 1,
+                                                child: Column
                                                 (
-                                                    child:  Padding(padding: EdgeInsets.all(5),)
-                                                ),
-                                                Flexible
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    children:
+                                                    [
+                                                        buildFieldCep()
+                                                    ]
+                                                )
+                                            ),
+                                            const Flexible
+                                            (
+                                                child: Padding(padding: EdgeInsets.all(5),)
+                                            ),
+                                            Flexible
+                                            (
+                                                flex: 2,
+                                                child: Column
                                                 (
-                                                    flex: 1,
-                                                    child: Column
-                                                    (
-                                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                                        children:
-                                                        [
-                                                            buildFieldCep()
-                                                        ]
-                                                    )
-                                                ),
-                                                const Flexible
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    children:
+                                                    [
+                                                        buildFieldBairro()
+                                                    ]
+                                                )
+                                            ),
+                                            const Flexible
+                                            (
+                                                child: Padding(padding: EdgeInsets.all(5),)
+                                            ),
+                                            Flexible
+                                            (
+                                                flex: 2,
+                                                child: Column
                                                 (
-                                                    child: Padding(padding: EdgeInsets.all(5),)
-                                                ),
-                                                Flexible
-                                                (
-                                                    flex: 2,
-                                                    child: Column
-                                                    (
-                                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                                        children:
-                                                        [
-                                                            buildFieldBairro()
-                                                        ]
-                                                    )
-                                                ),
-                                                const Flexible
-                                                (
-                                                    child: Padding(padding: EdgeInsets.all(5),)
-                                                ),
-                                                Flexible
-                                                (
-                                                    flex: 2,
-                                                    child: Column
-                                                    (
-                                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                                        children:
-                                                        [
-                                                            buildComboCidade()
-                                                        ]
-                                                    )
-                                                ),
-                                                const Flexible
-                                                (
-                                                    child: Padding(padding: EdgeInsets.all(5),)
-                                                ),
-                                                const Flexible
-                                                (
-                                                    child: Padding(padding: EdgeInsets.all(5),)
-                                                ),
-                                            ],
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    children:
+                                                    [
+                                                        buildComboCidade()
+                                                    ]
+                                                )
+                                            ),
+                                            const Flexible
+                                            (
+                                                child: Padding(padding: EdgeInsets.all(5),)
+                                            ),
+                                            const Flexible
+                                            (
+                                                child: Padding(padding: EdgeInsets.all(5),)
+                                            ),
+                                        ],
                                         )
-                                    ],
-                                )
+                                    )
+                                ],
                             )
-                        ),
+                        )
+                    ),
+                    SingleChildScrollView
+                    (
+                        scrollDirection: Axis.vertical,
+                        child:
                         FutureBuilder
                         (
                             future: filteredList,
@@ -617,8 +627,8 @@ class _PessoaListViewState extends State<PessoaListView>
                                 }
                             },
                         ),
-                    ]
-                )
+                    )
+                ]
             )
         );
 
