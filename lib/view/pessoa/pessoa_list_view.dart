@@ -343,29 +343,13 @@ class _PessoaListViewState extends State<PessoaListView>
                                                 ),
                                                 Flexible
                                                 (
-                                                    flex: 2,
+                                                    flex: 3,
                                                     child: Column
                                                     (
                                                         crossAxisAlignment: CrossAxisAlignment.center,
                                                         children:
                                                         [
                                                             buildFieldNome()
-                                                        ]
-                                                    )
-                                                ),
-                                                const Flexible
-                                                (
-                                                    child:  Padding(padding: EdgeInsets.all(5),)
-                                                ),
-                                                Flexible
-                                                (
-                                                    flex: 2,
-                                                    child: Column
-                                                    (
-                                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                                        children:
-                                                        [
-                                                            buildFieldEmail()
                                                         ]
                                                     )
                                                 ),
@@ -497,8 +481,25 @@ class _PessoaListViewState extends State<PessoaListView>
                                         Row
                                         (
                                             mainAxisAlignment: MainAxisAlignment.center,
-                                            children: <Widget> [
+                                            children: <Widget>
+                                            [
                                                 const Padding(padding: EdgeInsets.all(9)),
+                                                Flexible
+                                                (
+                                                    flex: 3,
+                                                    child: Column
+                                                    (
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children:
+                                                        [
+                                                            buildFieldEmail()
+                                                        ]
+                                                    )
+                                                ),
+                                                const Flexible
+                                                (
+                                                    child:  Padding(padding: EdgeInsets.all(5),)
+                                                ),
                                                 Flexible
                                                 (
                                                     flex: 1,
@@ -517,7 +518,7 @@ class _PessoaListViewState extends State<PessoaListView>
                                                 ),
                                                 Flexible
                                                 (
-                                                    flex: 1,
+                                                    flex: 2,
                                                     child: Column
                                                     (
                                                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -533,7 +534,7 @@ class _PessoaListViewState extends State<PessoaListView>
                                                 ),
                                                 Flexible
                                                 (
-                                                    flex: 1,
+                                                    flex: 2,
                                                     child: Column
                                                     (
                                                         crossAxisAlignment: CrossAxisAlignment.center,
