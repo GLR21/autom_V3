@@ -736,7 +736,7 @@ class DTS extends DataTableSource
                                     builder: (context) => AlertDialog
                                     (
                                         title: const Text('Alerta!'),
-                                        content: const Text('Deseja remover a peça?'),
+                                        content: const Text('Deseja desativar esta pessoa?'),
                                         actions:
                                         [
                                             ElevatedButton

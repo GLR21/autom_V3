@@ -28,7 +28,7 @@ class _PessoaViewState extends State<PessoaView>
 
     Future<Pessoa> pessoa = Future.value(Pessoa.empty());
     Future<List> allCidades = CidadeController().getAll();
-    int? selectedCidade;
+    int? selectedCidade = 0;
 
     // Pessoa
     String? idPessoa;
@@ -464,7 +464,7 @@ class _PessoaViewState extends State<PessoaView>
                                                                     child: ListTile
                                                                     (
                                                                         contentPadding: const EdgeInsets.symmetric(horizontal: 5),
-                                                                        title: AbsorbPointer( absorbing: ( idPessoa == null ? false :  int.parse( idPessoa! ) > 0 ), child: buildSwitchTipoPessoa() ),
+                                                                        title: AbsorbPointer( absorbing: ( idController.text.isEmpty ? false :  int.parse( idController.text ) > 0 ), child: buildSwitchTipoPessoa() ),
                                                                     ),
                                                                 )
                                                             ],
@@ -995,7 +995,7 @@ class _PessoaViewState extends State<PessoaView>
     Widget buildSwitchTipoPessoa()
     {
         String titleTipoPessoa = tipoPessoa == Pessoa.tipoPessoaFisica ? 'Física' : 'Jurídica';
-        bool isNew = idPessoa == null ? true : int.parse( idPessoa! ) == 0;
+        bool isNew = idController.text.isEmpty ? true : int.parse( idController.text ) == 0;
         return SwitchListTile
         (
             title: Text('Tipo de pessoa: $titleTipoPessoa'),
