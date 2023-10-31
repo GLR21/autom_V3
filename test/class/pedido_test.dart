@@ -15,10 +15,10 @@ void main() async
             }
         );
 
-        Pedido pedido_obj = Pedido.empty().toObject(pedido.first);
-        print(pedido_obj);
+        Pedido pedidoObj = Pedido.empty().toObject(pedido.first);
+        print(pedidoObj);
 
-        Pedido new_pedido = Pedido(
+        Pedido newPedido = Pedido(
             221.0,
             0,
             DateTime.parse('2023-04-09'),
@@ -33,7 +33,7 @@ void main() async
             false
         );
 
-        PedidoModel().insert(new_pedido.toMap());
+        PedidoModel().insert(newPedido.toMap());
 
     }
     catch(e)

@@ -20,7 +20,7 @@ class _EstadoView extends State<CidadeView>
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-    Future<List<dynamic>> all_estados = EstadoController().getAll();
+    Future<List<dynamic>> allEstados = EstadoController().getAll();
     Future<Cidade> cidade = Future.value(Cidade.empty());
 
     String? id;
@@ -118,7 +118,7 @@ class _EstadoView extends State<CidadeView>
     {
         return FutureBuilder<List<dynamic>>
         (
-            future: all_estados,
+            future: allEstados,
             builder: (context, snapshot)
             {
                 if( snapshot.connectionState == ConnectionState.waiting )

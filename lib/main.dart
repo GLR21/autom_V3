@@ -6,7 +6,7 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 Future<void> main() async
 {
     await dotenv.load(fileName: ".env");
-
+    // await initializeDateFormatting('pt_BR', null);
     runApp(const MyApp());
 
     doWhenWindowReady(()
@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget
     Widget build(BuildContext context) => MaterialApp
     (
         title: MainView.title,
+        debugShowCheckedModeBanner: false,
         theme: ThemeData
         (
             colorScheme: ColorScheme.fromSeed

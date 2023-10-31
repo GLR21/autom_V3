@@ -12,21 +12,21 @@ class Pessoa
     int _id = 0;
     String _nome = '';
     String _email = '';
-    String _senha = '';
+    String? _senha = '';
     String _telefone = '';
     String _cep = '';
     String _rua = '';
     String _bairro = '';
     int    _numeroEndereco = 0;
     int    _cidade = 1;
-    int _tipoPessoa = 3;
+    int _tipoPessoa = 1;
     String _complemento = '';
 
     Pessoa
     (  
         String nome,
         String email,
-        String senha,
+        String? senha,
         String telefone,
         String cep,
         String rua,
@@ -64,7 +64,7 @@ class Pessoa
     int get id => _id;
     String get nome => _nome;
     String get email => _email;
-    String get senha => _senha;
+    String? get senha => _senha;
     String get telefone => _telefone;
     String get cep => _cep;
     String get rua => _rua;
@@ -89,7 +89,7 @@ class Pessoa
         _email = email;
     }
 
-    set senha ( String senha )
+    set senha ( String? senha )
     {
         _senha = senha;
     }

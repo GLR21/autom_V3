@@ -19,7 +19,7 @@ class _PecaListViewState extends State<PecaListView>
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-    Future<List<dynamic>> all_marcas = MarcaController().getAll();
+    Future<List<dynamic>> allMarcas = MarcaController().getAll();
     Future<List> filteredList = PecaController().getAll();
 
     String? id;
@@ -112,7 +112,7 @@ class _PecaListViewState extends State<PecaListView>
     {
         return FutureBuilder<List<dynamic>>
         (
-            future: all_marcas,
+            future: allMarcas,
             builder: (context, snapshot)
             {
                 if( snapshot.connectionState == ConnectionState.waiting )

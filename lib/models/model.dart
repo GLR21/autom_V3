@@ -56,7 +56,7 @@ class Model<T>
 
         object.forEach((key, value)
         {
-            if(key.startsWith('ref_'))
+            if(key.startsWith('ref_') || value is int || value == null )
             {
                 query += "$value,";    
             }
@@ -77,8 +77,16 @@ class Model<T>
     Future<dynamic> update ( Map< String,  T  > object ) async
     {
         String query = "UPDATE $tableName SET ";
-        object.forEach((key, value) {
-            query += "$key = '$value',";
+        object.forEach((key, value)
+        {
+            if(key.startsWith('ref_') || value is int || value == null )
+            {
+                query += "$key = $value,";
+            }
+            else
+            {
+                query += "$key = '$value',";
+            }
         });
 
         query = query.substring(0, query.length - 1);
@@ -139,6 +147,10 @@ class Model<T>
 
                     if(count <= 1)
                     {
+                        if(value is bool)
+                        {
+                            where += "AND $key is $value ";
+                        }
                         if(value is String)
                         {
                             where += " $key ILIKE '%$value%' ";
@@ -150,6 +162,11 @@ class Model<T>
                     }
                     else
                     {
+
+                        if(value is bool)
+                        {
+                            where += "AND $key is $value ";
+                        }
                         if(value is String)
                         {
                             where += "AND $key ILIKE '%$value%' ";

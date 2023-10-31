@@ -30,6 +30,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  # intl: any
 
   bitsdojo_window: ^0.1.5
 
@@ -40,6 +43,7 @@ dependencies:
   postgres: ^2.6.2
   flutter_dotenv: ^5.1.0
   fluent_query_builder: ^5.5.0
+  dio: ^5.3.3
 
 dev_dependencies:
   flutter_test:

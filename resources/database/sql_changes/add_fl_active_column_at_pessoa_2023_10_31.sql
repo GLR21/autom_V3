@@ -1,0 +1,1 @@
+ALTER table at_pessoa add column fl_active boolean default true
