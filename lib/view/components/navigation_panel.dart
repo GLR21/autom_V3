@@ -55,7 +55,7 @@ class NavigationPanel extends StatelessWidget
                 const Divider(color: Colors.black54,),
                 ListTile
                 (
-                    leading: const Icon(Icons.car_rental_outlined),
+                    leading: const Icon(Icons.settings_outlined),
                     title: const Text('Peças', style: TextStyle(fontWeight: FontWeight.w500),),
                     onTap: () =>
                         Navigator.of(context).push
@@ -68,7 +68,7 @@ class NavigationPanel extends StatelessWidget
                 ),
                 ListTile
                 (
-                    leading: const Icon(Icons.car_rental_outlined),
+                    leading: const Icon(Icons.storefront_outlined),
                     title: const Text('Marcas', style: TextStyle(fontWeight: FontWeight.w500),),
                     onTap: () =>
                         Navigator.of(context).push
@@ -109,7 +109,7 @@ class NavigationPanel extends StatelessWidget
                 ),
                 ListTile
                 (
-                    leading: const Icon(Icons.account_balance_outlined),
+                    leading: const Icon(Icons.location_city_outlined),
                     title: const Text('Cidades', style: TextStyle(fontWeight: FontWeight.w500),),
                     onTap: () =>
                         Navigator.of(context).push
