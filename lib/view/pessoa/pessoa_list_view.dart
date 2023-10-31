@@ -1,3 +1,5 @@
+// ignore_for_file: sized_box_for_whitespace
+
 import 'package:autom_v3/classes/cidade.dart';
 import 'package:autom_v3/classes/peca.dart';
 import 'package:autom_v3/classes/pessoa.dart';
@@ -6,6 +8,7 @@ import 'package:autom_v3/controllers/peca_controller.dart';
 import 'package:autom_v3/controllers/pessoa_controller.dart';
 import 'package:autom_v3/view/components/navigation_panel.dart';
 import 'package:autom_v3/view/peca/peca_list_view.dart';
+import 'package:autom_v3/view/pessoa/pessoa_view.dart';
 import 'package:flutter/material.dart';
 
 class PessoaListView extends StatefulWidget
@@ -21,8 +24,8 @@ class _PessoaListViewState extends State<PessoaListView>
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-    Future<List<dynamic>> all_pessoas = PessoaController().getAll();
-    Future<List<dynamic>> all_cidades = CidadeController().getAll();
+    Future<List<dynamic>> allPessoas = PessoaController().getAll();
+    Future<List<dynamic>> allCidades = CidadeController().getAll();
     Future<List> filteredList = PessoaController().getAll();
 
     String? id;
@@ -221,7 +224,7 @@ class _PessoaListViewState extends State<PessoaListView>
     {
         return FutureBuilder<List<dynamic>>
         (
-            future: all_cidades,
+            future: allCidades,
             builder: (context, snapshot)
             {
                 if( snapshot.connectionState == ConnectionState.waiting )
@@ -460,116 +463,115 @@ class _PessoaListViewState extends State<PessoaListView>
                                             ],
                                         )
                                     ),
-                                    Flexible
-                                    (
-                                        child:
+                                    // Flexible
+                                    // (
+                                    //     child:
                                         Row
                                         (
-                                            mainAxisAlignment: MainAxisAlignment.start,
                                             children:
                                             [
-                                                const Flexible(
-                                                    child: SizedBox(width: 635)
-                                                ),
                                                 Expanded
                                                 (
                                                     child:
-                                                    Column
+                                                    ListTile
                                                     (
-                                                        children:
-                                                        [
-                                                            ElevatedButton
-                                                            (
-                                                                style: ElevatedButton.styleFrom
-                                                                (
-                                                                    backgroundColor: Colors.green,
-                                                                    foregroundColor: Colors.white,
-                                                                    shape: RoundedRectangleBorder
-                                                                    (
-                                                                        borderRadius: BorderRadius.circular(4.0),
-                                                                    ),
-                                                                ),
-                                                                child: const Text
-                                                                (
-                                                                    'Buscar',
-                                                                    style: TextStyle(color: Colors.white),
-                                                                ),
-                                                                onPressed: ()
-                                                                {
-                                                                    if(!formKey.currentState!.validate())
-                                                                    {
-                                                                        return;
-                                                                    }
                                                     
-                                                                    formKey.currentState!.save();
-
-                                                                    /*
-                                                                    * filtrar Pessoa
-                                                                    */
-                                                                    int? id = this.id != null && this.id != '' ? int.parse(this.id!) : 0;
-                                                                    Pessoa pessoa = Pessoa
-                                                                    (
-                                                                        nome ?? '',
-                                                                        email ?? '',
-                                                                        '', // senha
-                                                                        '', // telefone
-                                                                        cep ?? '',
-                                                                        '', // rua
-                                                                        bairro ?? '',
-                                                                        0,  // numeroEndereco
-                                                                        selectedCidade == null ? 0 : selectedCidade as int,  // cidade
-                                                                        '', // complemento
-                                                                        selectedTipoPessoa == null ? 0 : selectedTipoPessoa as int,
-                                                                        id
-                                                                    );
-
-                                                                    setState(()
-                                                                    {
-                                                                        filteredList = PessoaController().getFiltered(pessoa);
-                                                                    });
-                                                                },
+                                                        subtitle: 
+                                                        ElevatedButton
+                                                        (
+                                                            style: ElevatedButton.styleFrom
+                                                            (
+                                                                backgroundColor: Colors.green,
+                                                                foregroundColor: Colors.white,
+                                                                shape: RoundedRectangleBorder
+                                                                (
+                                                                    borderRadius: BorderRadius.circular(4.0),
+                                                                ),
                                                             ),
-                                                        ],
-                                                    ),
+                                                            child: const Text
+                                                            (
+                                                                'Buscar',
+                                                                style: TextStyle(color: Colors.white),
+                                                            ),
+                                                            onPressed: ()
+                                                            {
+                                                                if(!formKey.currentState!.validate())
+                                                                {
+                                                                    return;
+                                                                }
+
+                                                                formKey.currentState!.save();
+
+                                                                /*
+                                                                * filtrar Pessoa
+                                                                */
+                                                                int? id = this.id != null && this.id != '' ? int.parse(this.id!) : 0;
+                                                                Pessoa pessoa = Pessoa
+                                                                (
+                                                                    nome ?? '',
+                                                                    email ?? '',
+                                                                    '', // senha
+                                                                    '', // telefone
+                                                                    cep ?? '',
+                                                                    '', // rua
+                                                                    bairro ?? '',
+                                                                    0,  // numeroEndereco
+                                                                    selectedCidade == null ? 0 : selectedCidade as int,  // cidade
+                                                                    '', // complemento
+                                                                    selectedTipoPessoa == null ? 0 : selectedTipoPessoa as int,
+                                                                    id
+                                                                );
+
+                                                                setState(()
+                                                                {
+                                                                    filteredList = PessoaController().getFiltered(pessoa);
+                                                                });
+                                                            },
+                                                        ),
+                                                    )
                                                 ),
-                                                // Flexible
-                                                // (
-                                                //     child: Column
-                                                //     (
-                                                //         children: [
-                                                //             ElevatedButton
-                                                //             (
-                                                //                 style: ElevatedButton.styleFrom
-                                                //                 (
-                                                //                     backgroundColor: Colors.green,
-                                                //                     foregroundColor: Colors.white,
-                                                //                     shape: RoundedRectangleBorder
-                                                //                     (
-                                                //                         borderRadius: BorderRadius.circular(4.0),
-                                                //                     ),
-                                                //                 ),
-                                                //                 child: const Text
-                                                //                 (
-                                                //                     'Cadastrar',
-                                                //                     style: TextStyle(color: Colors.white),
-                                                //                 ),
-                                                //                 onPressed: ()
-                                                //                 {
-                                                //                     Navigator.of(context).push
-                                                //                     (
-                                                //                         MaterialPageRoute
-                                                //                         (
-                                                //                             builder: (context) => const PecaView(null),
-                                                //                         ),
-                                                //                     );
-                                                //                 },
-                                                //             ),
-                                                //         ],
-                                                //     )
-                                                // )  
+                                                
+                                                // const SizedBox(width: 2),
+
+                                                Expanded
+                                                (
+                                                    flex: 1,
+                                                    child: 
+                                                    ListTile
+                                                    (
+                                                        subtitle: 
+                                                        ElevatedButton
+                                                        (  
+                                                            style: ElevatedButton.styleFrom
+                                                            (
+                                                                backgroundColor: Colors.green,
+                                                                foregroundColor: Colors.white,
+                                                                shape: RoundedRectangleBorder
+                                                                (
+                                                                    borderRadius: BorderRadius.circular(4.0),
+                                                                ),
+                                                            ),
+                                                            child: const Text
+                                                            (
+                                                                'Cadastrar',
+                                                                style: TextStyle(color: Colors.white),
+                                                            ),
+                                                            onPressed: ()
+                                                            {
+                                                                Navigator.of(context).push
+                                                                (
+                                                                    MaterialPageRoute
+                                                                    (
+                                                                        builder: (context) => const PessoaView( null ),
+                                                                    ),
+                                                                );
+                                                            },
+                                                        ),
+                                                    ),
+                                                )
                                             ],
                                         )
-                                    )
+                                    // c)
                                 ],
                             )
                         )
@@ -617,7 +619,7 @@ class _PessoaListViewState extends State<PessoaListView>
                                                     DataColumn(label: Text('Bairro')),
                                                     DataColumn(label: Text('Cidade')),
                                                     DataColumn(label: Text('Tipo')),
-                                                    // DataColumn(label: Text('Editar')),
+                                                    DataColumn(label: Text('Editar')),
                                                     DataColumn(label: Text('Excluir')),
                                                 ],
                                                 source: dts,
@@ -682,35 +684,35 @@ class DTS extends DataTableSource
                         child: buidlCellTipoPessoa(rows[index].id)
                     )
                 ),
-                // DataCell
-                // (
-                //     Tooltip
-                //     (
-                //         message: 'Editar',
-                //         height: 40,
-                //         verticalOffset: 25,
-                //         child: ElevatedButton
-                //         (
-                //             onPressed: ()
-                //             {
-                //                 var id = rows[index].id;
+                DataCell
+                (
+                    Tooltip
+                    (
+                        message: 'Editar',
+                        height: 40,
+                        verticalOffset: 25,
+                        child: ElevatedButton
+                        (
+                            onPressed: ()
+                            {
+                                var id = rows[index].id;
 
-                //                 Navigator.of(context).push
-                //                 (
-                //                     MaterialPageRoute
-                //                     (
-                //                         builder: (context) => PecaView(id),
-                //                     ),
-                //                 );
-                //             },
-                //             child: const  Icon
-                //             (
-                //                 Icons.edit,
-                //                 color: Colors.blueAccent
-                //             )
-                //         )
-                //     ),
-                // ),
+                                Navigator.of(context).push
+                                (
+                                    MaterialPageRoute
+                                    (
+                                        builder: (context) => PessoaView(id),
+                                    ),
+                                );
+                            },
+                            child: const  Icon
+                            (
+                                Icons.edit,
+                                color: Colors.blueAccent
+                            )
+                        )
+                    ),
+                ),
                 DataCell
                 (
                     Tooltip
@@ -722,7 +724,7 @@ class DTS extends DataTableSource
                         (
                             onPressed: ()
                             {
-                                var id = rows[index]['id'];
+                                var id = rows[index].id;
 
                                 showDialog
                                 (
@@ -737,13 +739,12 @@ class DTS extends DataTableSource
                                             (
                                                 onPressed: ()
                                                 {
-                                                    PecaController().delete(Peca.byId(id));
-                                    
+                                                    PessoaController().delete(Pessoa.byId(id));
                                                     Navigator.of(context).push
                                                     (
                                                         MaterialPageRoute
                                                         (
-                                                            builder: (context) => const PecaListView()
+                                                            builder: (context) => const PessoaListView()
                                                         ),
                                                     );
                                                 },

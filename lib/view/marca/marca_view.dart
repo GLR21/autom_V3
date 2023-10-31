@@ -1,9 +1,6 @@
-import 'package:autom_v3/classes/estado.dart';
 import 'package:autom_v3/classes/marca.dart';
-import 'package:autom_v3/controllers/estado_controller.dart';
 import 'package:autom_v3/controllers/marca_controller.dart';
 import 'package:autom_v3/view/components/dialog_builder.dart';
-import 'package:autom_v3/view/estado/estado_list_view.dart';
 import 'package:autom_v3/view/marca/marca_list_view.dart';
 import 'package:flutter/material.dart';
 

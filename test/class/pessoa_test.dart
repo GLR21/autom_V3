@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import, unused_local_variable
+
 import 'package:autom_v3/classes/pessoa.dart';
 import 'package:autom_v3/classes/pessoa_fisica.dart';
 import 'package:autom_v3/classes/pessoa_juridica.dart';
@@ -55,7 +57,7 @@ void main() async
         (
             'Teste juridica',
             'test@gmail',
-            'Teste juridica123',
+            null,
             '999999999',
             '99999999',
             'Rua Teste juridica',

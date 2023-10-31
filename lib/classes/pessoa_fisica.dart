@@ -56,6 +56,7 @@ class PessoaFisica
     
     String get cpf => _cpf;
     String get rg => _rg;
+    String get dataNascimento => _dataNascimento;
 
     @override
     Map<String, dynamic> toMap()
