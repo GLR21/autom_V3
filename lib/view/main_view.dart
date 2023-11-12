@@ -8,16 +8,25 @@ class MainView extends StatelessWidget
 
     static const String title = 'Autom';
 
-@override
-    Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
+    @override
+    Widget build(BuildContext context) => Scaffold
+    (
+        appBar: AppBar
+        (
             backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-            title: const Text(MainView.title, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),),
+            title: const Text
+            (
+                MainView.title,
+                style: TextStyle
+                (
+                    color: Colors.white, fontWeight: FontWeight.w500
+                ),
+            )
         ),
         drawer: const NavigationPanel(),
-        body: const Center(
+        body: const Center
+        (
             child: Text('Página em branco')
         ),
     );
 }
-
