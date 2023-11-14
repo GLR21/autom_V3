@@ -204,7 +204,7 @@ class _LoginViewState extends State<LoginView>
 
         doWhenWindowReady(()
             {
-                const initialSize = Size(1440, 900);
+                const initialSize = Size(1366, 768);
                 appWindow.minSize = const Size(1280,720);
                 appWindow.size = initialSize;
                 appWindow.alignment = Alignment.center;
