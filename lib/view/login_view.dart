@@ -2,7 +2,6 @@
 import 'dart:convert';
 
 import 'package:autom_v3/classes/pessoa.dart';
-import 'package:autom_v3/classes/pessoa_fisica.dart';
 import 'package:autom_v3/controllers/pessoa_controller.dart';
 import 'package:autom_v3/main.dart';
 import 'package:autom_v3/view/components/dialog_builder.dart';
