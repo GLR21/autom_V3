@@ -13,7 +13,7 @@ class LoginView extends StatefulWidget
 {
     const LoginView({super.key});
 
-    static const String title = 'Autenticar';
+    static const String title = 'Login';
 
      @override
     State<StatefulWidget> createState() => _LoginViewState();
