@@ -201,4 +201,13 @@ class PessoaController
             print(e);
         }
     }
+
+    Future<dynamic> getIdPessoaFisicaByCpf(String cpf) async
+    {
+        var map = {'cpf' : cpf};
+        var pessoa = await PessoaFisicaModel().selectQueryBuilder(map);
+        pessoa = pessoa[0];
+
+        return pessoa['ref_pessoa'];
+    }
 }

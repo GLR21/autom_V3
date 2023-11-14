@@ -1,5 +1,12 @@
 
+import 'dart:convert';
+
+import 'package:autom_v3/classes/pessoa.dart';
+import 'package:autom_v3/classes/pessoa_fisica.dart';
+import 'package:autom_v3/controllers/pessoa_controller.dart';
 import 'package:autom_v3/main.dart';
+import 'package:autom_v3/view/components/dialog_builder.dart';
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 
@@ -15,6 +22,8 @@ class LoginView extends StatefulWidget
 
 class _LoginViewState extends State<LoginView>
 {
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
     String? cpf;
     String? senha;
 
@@ -25,6 +34,7 @@ class _LoginViewState extends State<LoginView>
             width: 300,
             child: TextFormField
             (
+                maxLength: 11,
                 decoration: const InputDecoration
                 (
                     label: Text
@@ -35,6 +45,10 @@ class _LoginViewState extends State<LoginView>
                 ),
                 validator: (String? value)
                 {
+                    if(value!.isEmpty)
+                    {
+                        return '"CPF" é obrigatório';
+                    }
                     return null;
                 },
                 onSaved: (newValue)
@@ -63,6 +77,10 @@ class _LoginViewState extends State<LoginView>
                 ),
                 validator: (String? value)
                 {
+                    if(value!.isEmpty)
+                    {
+                        return '"Senha" é obrigatória';
+                    }
                     return null;
                 },
                 onSaved: (newValue)
@@ -90,65 +108,94 @@ class _LoginViewState extends State<LoginView>
                         ),
                 ),
             ),
-            body: Column
+            body: Form
             (
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: 
-                [
-                    Row
-                    (
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children:
-                        [
-                            buildFieldCpf()
-                        ],
-                    ),
-                    const Padding(padding: EdgeInsets.all(5),),
-                    Row
-                    (
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children:
-                        [
-                            buildFieldSenha()
-                        ],
-                    ),
-                    const Padding(padding: EdgeInsets.all(5),),
-                    Row
-                    (
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children:
-                        [
-                            ElevatedButton
-                            (
-                                style: ElevatedButton.styleFrom
+                key: formKey,
+                child: Column
+                (
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: 
+                    [
+                        Row
+                        (
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children:
+                            [
+                                buildFieldCpf()
+                            ],
+                        ),
+                        const Padding(padding: EdgeInsets.all(5),),
+                        Row
+                        (
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children:
+                            [
+                                buildFieldSenha()
+                            ],
+                        ),
+                        const Padding(padding: EdgeInsets.all(5),),
+                        Row
+                        (
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children:
+                            [
+                                ElevatedButton
                                 (
-                                    backgroundColor: Colors.green,
-                                    foregroundColor: Colors.white,
-                                    shape: RoundedRectangleBorder
+                                    style: ElevatedButton.styleFrom
                                     (
-                                        borderRadius: BorderRadius.circular(4.0),
-                                    ),
-                                ),
-                                child: const Text
-                                (
-                                    'Entrar',
-                                    style: TextStyle(color: Colors.white),
-                                ),
-                                onPressed: ()
-                                {
-                                    Navigator.of(context).push
-                                    (
-                                        MaterialPageRoute
+                                        backgroundColor: Colors.green,
+                                        foregroundColor: Colors.white,
+                                        shape: RoundedRectangleBorder
                                         (
-                                            builder: (context) => openApp(),
+                                            borderRadius: BorderRadius.circular(4.0),
                                         ),
-                                    );
-                                },
-                            ),
-                        ],
-                    )
-                ],
+                                    ),
+                                    child: const Text
+                                    (
+                                        'Entrar',
+                                        style: TextStyle(color: Colors.white),
+                                    ),
+                                    onPressed: () async
+                                    {
+                                        if(!formKey.currentState!.validate())
+                                        {
+                                            return;
+                                        }
+
+                                        formKey.currentState!.save();
+
+                                        var isAuthenticated = await validateLogin(cpf, senha);
+                                        if(isAuthenticated)
+                                        {
+                                            routeToApp();
+                                        }
+                                        else
+                                        {
+                                            showWarning();
+                                        }
+                                    },
+                                ),
+                            ],
+                        )
+                    ],
+                )
             )
+        );
+    }
+
+    void showWarning() async
+    {
+        DialogBuilder().showInfoDialog('Erro', 'Dados de login estão incorretos.', context);
+    }
+
+    void routeToApp() async
+    {
+        Navigator.of(context).push
+        (
+            MaterialPageRoute
+            (
+                builder: (context) => openApp(),
+            ),
         );
     }
 
@@ -167,5 +214,18 @@ class _LoginViewState extends State<LoginView>
         );
 
         return app;
+    }
+
+    Future<bool> validateLogin(String? cpf, String? senha) async
+    {
+        var refPessoa = await PessoaController().getIdPessoaFisicaByCpf(cpf!);
+        var pessoa = await PessoaController().get(Pessoa.byId(refPessoa));
+        var hash = pessoa.senha;
+
+        if(md5.convert(utf8.encode(senha!)).toString() == hash)
+        {
+            return true;
+        }
+        return false;
     }
 }
