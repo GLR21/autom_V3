@@ -218,6 +218,10 @@ class _LoginViewState extends State<LoginView>
     Future<bool> validateLogin(String? cpf, String? senha) async
     {
         var refPessoa = await PessoaController().getIdPessoaFisicaByCpf(cpf!);
+        if(refPessoa == 0)
+        {
+            return false;
+        }
         var pessoa = await PessoaController().get(Pessoa.byId(refPessoa));
         var hash = pessoa.senha;
 

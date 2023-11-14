@@ -206,6 +206,10 @@ class PessoaController
     {
         var map = {'cpf' : cpf};
         var pessoa = await PessoaFisicaModel().selectQueryBuilder(map);
+        if (pessoa.length == 0)
+        {
+            return 0;
+        }
         pessoa = pessoa[0];
 
         return pessoa['ref_pessoa'];
