@@ -399,17 +399,61 @@ class _PecaListViewState extends State<PecaListView>
                                         child:
                                         SizedBox
                                         (
-                                            width: MediaQuery.of(context).size.width/1.60,
+                                            width: MediaQuery.of(context).size.width/1.17,
                                             child:
                                             PaginatedDataTable
                                             (
                                                 columnSpacing: 0.01,
                                                 columns: const
                                                 [
-                                                    DataColumn(label: Text('Código')),
-                                                    DataColumn(label: Text('Nome')),
-                                                    DataColumn(label: Text('Descrição')),
-                                                    DataColumn(label: Text('Marca')),
+                                                    DataColumn
+                                                    (
+                                                        label: Padding
+                                                        (
+                                                            padding: EdgeInsets.symmetric(horizontal: 20),
+                                                            child: Text('Código')
+                                                        ),
+                                                    ),
+                                                    DataColumn
+                                                    (
+                                                        label: Padding
+                                                        (
+                                                            padding: EdgeInsets.symmetric(horizontal: 30),
+                                                            child: Text('Nome')
+                                                        ),
+                                                    ),
+                                                    DataColumn
+                                                    (
+                                                        label: Padding
+                                                        (
+                                                            padding: EdgeInsets.symmetric(horizontal: 30),
+                                                            child: Text('Descrição')
+                                                        ),
+                                                    ),
+                                                    DataColumn
+                                                    (
+                                                        label: Padding
+                                                        (
+                                                            padding: EdgeInsets.symmetric(horizontal: 20),
+                                                            child: Text('Marca')
+                                                        ),
+                                                    ),
+                                                    DataColumn
+                                                    (
+                                                        label: Padding
+                                                        (
+                                                            padding: EdgeInsets.symmetric(horizontal: 10),
+                                                            child: Text('Valor Compra')
+                                                        ),
+                                                    ),
+                                                    DataColumn
+                                                    (
+                                                        label: Padding
+                                                        (
+                                                            padding: EdgeInsets.symmetric(horizontal: 10),
+                                                            child: Text('Valor Revenda')
+                                                        ),
+                                                    ),
                                                     DataColumn(label: Text('Editar')),
                                                     DataColumn(label: Text('Excluir')),
                                                 ],
@@ -454,8 +498,22 @@ class DTS extends DataTableSource
             index: index,
             cells: 
             [
-                DataCell(Text(rows[index]['id'].toString())),
-                DataCell(Text(rows[index]['nome'])),
+                DataCell
+                (
+                    Padding
+                    (
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Text(rows[index]['id'].toString())
+                    )
+                ),
+                DataCell
+                (
+                    Padding
+                    (
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                        child: Text(rows[index]['nome'] ?? '')
+                    )
+                ),
                 DataCell
                 (
                     Padding
@@ -470,6 +528,22 @@ class DTS extends DataTableSource
                     (
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: buidlCellMarca(rows[index]['ref_marca'])
+                    )
+                ),
+                DataCell
+                (
+                    Padding
+                    (
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Text(rows[index]['valor_compra'].toString())
+                    )
+                ),
+                                DataCell
+                (
+                    Padding
+                    (
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Text(rows[index]['valor_revenda'].toString())
                     )
                 ),
                 DataCell
