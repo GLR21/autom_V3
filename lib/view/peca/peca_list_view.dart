@@ -208,171 +208,184 @@ class _PecaListViewState extends State<PecaListView>
                             Padding
                             (
                                 padding: const EdgeInsets.all(15),
-                                child:
-                                Row
+                                child: Column
                                 (
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>
+                                    children:
                                     [
-                                        Flexible
+                                        Row
                                         (
-                                            child: Column
-                                            (
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                children:
-                                                [
-                                                    buildFieldId()
-                                                ]
-                                            )
-                                        ),
-                                        const Flexible
-                                        (
-                                            child: Padding(padding: EdgeInsets.all(5),)
-                                        ),
-                                        const Flexible
-                                        (
-                                            child: Padding(padding: EdgeInsets.all(5),)
-                                        ),
-                                        Flexible
-                                        (
-                                            child: Column
-                                            (
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                children:
-                                                [
-                                                    buildFieldNome()
-                                                ]
-                                            )
-                                        ),
-                                        const Flexible
-                                        (
-                                            child:  Padding(padding: EdgeInsets.all(5),)
-                                        ),
-                                        Flexible
-                                        (
-                                            child: Column
-                                            (
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                children:
-                                                [
-                                                    buildFieldDescricao()
-                                                ]
-                                            )
-                                        ),
-                                        const Flexible
-                                        (
-                                            child: Padding(padding: EdgeInsets.all(5),)
-                                        ),
-                                        Flexible
-                                        (
-                                            flex: 2,
-                                            child:
-                                            ListTile
-                                            (
-                                                contentPadding: const EdgeInsets.symmetric(horizontal: 5),
-                                                subtitle: buildComboMarcas()
-                                            ) 
-                                        ),
-                                        const Flexible
-                                        (
-                                            child: Padding(padding: EdgeInsets.all(5),)
-                                        ),
-                                        Flexible
-                                        (
-                                            child: Column
-                                            (
-                                                children:
-                                                [
-                                                    ElevatedButton
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: <Widget>
+                                            [
+                                                Flexible
+                                                (
+                                                    child: Column
                                                     (
-                                                        style: ElevatedButton.styleFrom
-                                                        (
-                                                            backgroundColor: Colors.green,
-                                                            foregroundColor: Colors.white,
-                                                            shape: RoundedRectangleBorder
-                                                            (
-                                                                borderRadius: BorderRadius.circular(4.0),
-                                                            ),
-                                                        ),
-                                                        child: const Text
-                                                        (
-                                                            'Buscar',
-                                                            style: TextStyle(color: Colors.white),
-                                                        ),
-                                                        onPressed: ()
-                                                        {
-                                                            if(!formKey.currentState!.validate())
-                                                            {
-                                                                return;
-                                                            }
-                                            
-                                                            formKey.currentState!.save();
-
-                                                            /*
-                                                            * filtrar Peca
-                                                            */
-                                                            int? id = this.id != null && this.id != '' ? int.parse(this.id!) : 0;
-                                                            Peca peca = Peca
-                                                            (
-                                                                nome ?? '',
-                                                                descricao ?? '',
-                                                                valorCompra != null && valorCompra != '' ? double.parse(valorCompra!) : 0.00,
-                                                                valorRevenda != null && valorRevenda != '' ? double.parse(valorRevenda!) : 0.00,
-                                                                selectedMarca == null ? 0 : selectedMarca as int,
-                                                                id
-                                                            );
-
-                                                            setState(()
-                                                            {
-                                                                filteredList = PecaController().getFiltered(peca);
-                                                            });
-                                                        },
-                                                    ),
-                                                ],
-                                            ),
-                                        ),
-                                        const Flexible
-                                        (
-                                            child: Padding(padding: EdgeInsets.all(5),)
-                                        ),
-                                        Flexible
-                                        (
-                                            child: Column
-                                            (
-                                                children: [
-                                                    ElevatedButton
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children:
+                                                        [
+                                                            buildFieldId()
+                                                        ]
+                                                    )
+                                                ),
+                                                const Flexible
+                                                (
+                                                    child: Padding(padding: EdgeInsets.all(5),)
+                                                ),
+                                                const Flexible
+                                                (
+                                                    child: Padding(padding: EdgeInsets.all(5),)
+                                                ),
+                                                Flexible
+                                                (
+                                                    child: Column
                                                     (
-                                                        style: ElevatedButton.styleFrom
-                                                        (
-                                                            backgroundColor: Colors.green,
-                                                            foregroundColor: Colors.white,
-                                                            shape: RoundedRectangleBorder
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children:
+                                                        [
+                                                            buildFieldNome()
+                                                        ]
+                                                    )
+                                                ),
+                                                const Flexible
+                                                (
+                                                    child:  Padding(padding: EdgeInsets.all(5),)
+                                                ),
+                                                Flexible
+                                                (
+                                                    child: Column
+                                                    (
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children:
+                                                        [
+                                                            buildFieldDescricao()
+                                                        ]
+                                                    )
+                                                ),
+                                                const Flexible
+                                                (
+                                                    child: Padding(padding: EdgeInsets.all(5),)
+                                                ),
+                                                Flexible
+                                                (
+                                                    flex: 2,
+                                                    child:
+                                                    ListTile
+                                                    (
+                                                        contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+                                                        subtitle: buildComboMarcas()
+                                                    ) 
+                                                ),
+                                            ],
+                                        ),
+                                        Row
+                                        (
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children:
+                                            [
+                                                Flexible
+                                                (
+                                                    child: Column
+                                                    (
+                                                        children:
+                                                        [
+                                                            ElevatedButton
                                                             (
-                                                                borderRadius: BorderRadius.circular(4.0),
-                                                            ),
-                                                        ),
-                                                        child: const Text
-                                                        (
-                                                            'Cadastrar',
-                                                            style: TextStyle(color: Colors.white),
-                                                        ),
-                                                        onPressed: ()
-                                                        {
-                                                            Navigator.of(context).push
-                                                            (
-                                                                MaterialPageRoute
+                                                                style: ElevatedButton.styleFrom
                                                                 (
-                                                                    builder: (context) => const PecaView(null),
+                                                                    backgroundColor: Colors.green,
+                                                                    foregroundColor: Colors.white,
+                                                                    shape: RoundedRectangleBorder
+                                                                    (
+                                                                        borderRadius: BorderRadius.circular(4.0),
+                                                                    ),
                                                                 ),
-                                                            );
-                                                        },
+                                                                child: const Text
+                                                                (
+                                                                    'Buscar',
+                                                                    style: TextStyle(color: Colors.white),
+                                                                ),
+                                                                onPressed: ()
+                                                                {
+                                                                    if(!formKey.currentState!.validate())
+                                                                    {
+                                                                        return;
+                                                                    }
+                                                    
+                                                                    formKey.currentState!.save();
+
+                                                                    /*
+                                                                    * filtrar Peca
+                                                                    */
+                                                                    int? id = this.id != null && this.id != '' ? int.parse(this.id!) : 0;
+                                                                    Peca peca = Peca
+                                                                    (
+                                                                        nome ?? '',
+                                                                        descricao ?? '',
+                                                                        valorCompra != null && valorCompra != '' ? double.parse(valorCompra!) : 0.00,
+                                                                        valorRevenda != null && valorRevenda != '' ? double.parse(valorRevenda!) : 0.00,
+                                                                        selectedMarca == null ? 0 : selectedMarca as int,
+                                                                        id
+                                                                    );
+
+                                                                    setState(()
+                                                                    {
+                                                                        filteredList = PecaController().getFiltered(peca);
+                                                                    });
+                                                                },
+                                                            ),
+                                                        ],
                                                     ),
-                                                ],
-                                            )
+                                                ),
+                                                const Flexible
+                                                (
+                                                    child: Padding(padding: EdgeInsets.all(5),)
+                                                ),
+                                                Flexible
+                                                (
+                                                    flex: 1,
+                                                    child: Column
+                                                    (
+                                                        children: [
+                                                            ElevatedButton
+                                                            (
+                                                                style: ElevatedButton.styleFrom
+                                                                (
+                                                                    backgroundColor: Colors.green,
+                                                                    foregroundColor: Colors.white,
+                                                                    shape: RoundedRectangleBorder
+                                                                    (
+                                                                        borderRadius: BorderRadius.circular(4.0),
+                                                                    ),
+                                                                ),
+                                                                child: const Text
+                                                                (
+                                                                    'Cadastrar',
+                                                                    style: TextStyle(color: Colors.white),
+                                                                ),
+                                                                onPressed: ()
+                                                                {
+                                                                    Navigator.of(context).push
+                                                                    (
+                                                                        MaterialPageRoute
+                                                                        (
+                                                                            builder: (context) => const PecaView(null),
+                                                                        ),
+                                                                    );
+                                                                },
+                                                            ),
+                                                        ],
+                                                    )
+                                                ),
+                                                const SizedBox
+                                                (
+                                                    width: 320,
+                                                ),
+                                            ],
                                         )
                                     ],
-                                ),
-                            )
+                                )
+                            ),
                         ),
                         FutureBuilder
                         (
@@ -399,17 +412,61 @@ class _PecaListViewState extends State<PecaListView>
                                         child:
                                         SizedBox
                                         (
-                                            width: MediaQuery.of(context).size.width/1.60,
+                                            width: MediaQuery.of(context).size.width/1.17,
                                             child:
                                             PaginatedDataTable
                                             (
                                                 columnSpacing: 0.01,
                                                 columns: const
                                                 [
-                                                    DataColumn(label: Text('Código')),
-                                                    DataColumn(label: Text('Nome')),
-                                                    DataColumn(label: Text('Descrição')),
-                                                    DataColumn(label: Text('Marca')),
+                                                    DataColumn
+                                                    (
+                                                        label: Padding
+                                                        (
+                                                            padding: EdgeInsets.symmetric(horizontal: 20),
+                                                            child: Text('Código')
+                                                        ),
+                                                    ),
+                                                    DataColumn
+                                                    (
+                                                        label: Padding
+                                                        (
+                                                            padding: EdgeInsets.symmetric(horizontal: 30),
+                                                            child: Text('Nome')
+                                                        ),
+                                                    ),
+                                                    DataColumn
+                                                    (
+                                                        label: Padding
+                                                        (
+                                                            padding: EdgeInsets.symmetric(horizontal: 30),
+                                                            child: Text('Descrição')
+                                                        ),
+                                                    ),
+                                                    DataColumn
+                                                    (
+                                                        label: Padding
+                                                        (
+                                                            padding: EdgeInsets.symmetric(horizontal: 20),
+                                                            child: Text('Marca')
+                                                        ),
+                                                    ),
+                                                    DataColumn
+                                                    (
+                                                        label: Padding
+                                                        (
+                                                            padding: EdgeInsets.symmetric(horizontal: 10),
+                                                            child: Text('Valor Compra')
+                                                        ),
+                                                    ),
+                                                    DataColumn
+                                                    (
+                                                        label: Padding
+                                                        (
+                                                            padding: EdgeInsets.symmetric(horizontal: 10),
+                                                            child: Text('Valor Revenda')
+                                                        ),
+                                                    ),
                                                     DataColumn(label: Text('Editar')),
                                                     DataColumn(label: Text('Excluir')),
                                                 ],
@@ -454,8 +511,22 @@ class DTS extends DataTableSource
             index: index,
             cells: 
             [
-                DataCell(Text(rows[index]['id'].toString())),
-                DataCell(Text(rows[index]['nome'])),
+                DataCell
+                (
+                    Padding
+                    (
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Text(rows[index]['id'].toString())
+                    )
+                ),
+                DataCell
+                (
+                    Padding
+                    (
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                        child: Text(rows[index]['nome'] ?? '')
+                    )
+                ),
                 DataCell
                 (
                     Padding
@@ -470,6 +541,22 @@ class DTS extends DataTableSource
                     (
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: buidlCellMarca(rows[index]['ref_marca'])
+                    )
+                ),
+                DataCell
+                (
+                    Padding
+                    (
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Text(rows[index]['valor_compra'].toString())
+                    )
+                ),
+                                DataCell
+                (
+                    Padding
+                    (
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Text(rows[index]['valor_revenda'].toString())
                     )
                 ),
                 DataCell

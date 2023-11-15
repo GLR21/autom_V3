@@ -4,6 +4,7 @@ import 'package:autom_v3/controllers/peca_controller.dart';
 import 'package:autom_v3/view/components/dialog_builder.dart';
 import 'package:autom_v3/view/peca/peca_list_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class PecaView extends StatefulWidget
 {
@@ -112,6 +113,66 @@ class _PecaView extends State<PecaView>
         );
     }
 
+    Widget buildFieldPrecoCompra(String value)
+    {
+        return TextFormField
+        (
+            keyboardType: TextInputType.number,
+            inputFormatters:
+            [
+                 FilteringTextInputFormatter.deny(RegExp('[,;]'))
+            ],
+            initialValue: value,
+            decoration: const InputDecoration
+            (
+                label: Text('Preço de compra'),
+                border: OutlineInputBorder()
+            ),
+            validator: (String? value)
+            {
+                if(value!.isEmpty)
+                {
+                    return '"Preço de compra" é obrigatório';
+                }
+                return null;
+            },
+            onSaved: (newValue)
+            {
+                valorCompra = newValue;
+            },
+        );
+    }
+
+    Widget buildFieldPrecorRevenda(String value)
+    {
+        return TextFormField
+        (
+            keyboardType: TextInputType.number,
+            inputFormatters:
+            [
+                 FilteringTextInputFormatter.deny(RegExp('[,;]'))
+            ],
+            initialValue: value,
+            decoration: const InputDecoration
+            (
+                label: Text('Preço de revenda'),
+                border: OutlineInputBorder()
+            ),
+            validator: (String? value)
+            {
+                if(value!.isEmpty)
+                {
+                    return '"Preço de revenda" é obrigatório';
+                }
+                return null;
+            },
+            onSaved: (newValue)
+            {
+                valorRevenda = newValue;
+            },
+        );
+    }
+
     FutureBuilder buildComboMarca(int? selectedItem)
     {
         return FutureBuilder<List<dynamic>>
@@ -209,261 +270,298 @@ class _PecaView extends State<PecaView>
                 ),
                 backgroundColor: Colors.greenAccent,
             ),
-            body: Scaffold
+            body: SingleChildScrollView
             (
-                body: SingleChildScrollView
+                child:
+                Padding
                 (
+                    padding: const EdgeInsets.all(10),
                     child:
-                    Padding
+                    Center
                     (
-                        padding: const EdgeInsets.all(10),
-
                         child:
-                        
-                        Center
+                        Container
                         (
-                            child:
-                            Container
+                            width: MediaQuery.of(context).size.width * 0.5,
+                            padding: const EdgeInsets.all(10),
+                            margin: const EdgeInsets.all(10),
+                            child: FutureBuilder
                             (
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                padding: const EdgeInsets.all(10),
-                                margin: const EdgeInsets.all(10),
-                                child: FutureBuilder
-                                (
-                                    future: peca,
-                                    builder: (context, snapshot)
+                                future: peca,
+                                builder: (context, snapshot)
+                                {
+                                    if( snapshot.connectionState == ConnectionState.waiting )
                                     {
-                                        if( snapshot.connectionState == ConnectionState.waiting )
-                                        {
-                                            return const Center
+                                        return const Center
+                                        (
+                                            child: CircularProgressIndicator()
+                                        );
+                                    }
+
+                                    if(snapshot.hasError)
+                                    {
+                                        return Text('Error: ${snapshot.error}');
+                                    }
+                                    else
+                                    {
+                                        var peca =  snapshot.data!;
+                                        /**
+                                         * Ao editar precisa pegar dados vindos da tela de listagem
+                                         */
+                                        selectedMarca ??= snapshot.data!.refMarca;
+
+                                        return
+                                        Form
+                                        (
+                                            key: formKey,
+                                            child: Column
                                             (
-                                                child: CircularProgressIndicator()
-                                            );
-                                        }
-
-                                        if(snapshot.hasError)
-                                        {
-                                            return Text('Error: ${snapshot.error}');
-                                        }
-                                        else
-                                        {
-                                            var peca =  snapshot.data!;
-                                            /**
-                                             * Ao editar precisa pegar dados vindos da tela de listagem
-                                             */
-                                            selectedMarca ??= snapshot.data!.refMarca;
-
-                                            return
-                                            Form
-                                            (
-                                                key: formKey,
-                                                child: Column
-                                                (
-                                                    children: <Widget>
-                                                    [
-                                                        (
-                                                            isEdit ?
-                                                            Row
-                                                            (
-                                                                children:
-                                                                [
-                                                                    Expanded
-                                                                    (
-                                                                        flex: 1,
-                                                                        child: ListTile
-                                                                        (
-                                                                            contentPadding: const EdgeInsets.symmetric(horizontal: 5),
-                                                                            subtitle: buildFieldId(peca.id.toString())
-                                                                        ) 
-                                                                    ),
-
-                                                                    const SizedBox
-                                                                    (
-                                                                        width: 1
-                                                                    ),
-
-                                                                    Expanded
-                                                                    (
-                                                                        flex: 5,
-                                                                        child: ListTile
-                                                                        (
-                                                                            contentPadding: const EdgeInsets.symmetric(horizontal: 5),
-                                                                            subtitle: buildFieldNome(peca.nome),
-                                                                        ) 
-                                                                    )
-                                                                ],
-                                                            )
-                                                            :
-                                                            ListTile
-                                                            (
-                                                                contentPadding: const EdgeInsets.symmetric(horizontal: 5),
-                                                                title: buildFieldNome(peca.nome),
-                                                            )
-                                                        ),
-                                                        
-                                                        const SizedBox
-                                                        (
-                                                            height: 2
-                                                        ),
-                                                        
+                                                children: <Widget>
+                                                [
+                                                    (
+                                                        isEdit ?
                                                         Row
                                                         (
                                                             children:
                                                             [
-                                                                const SizedBox
-                                                                (
-                                                                    width: 2
-                                                                ),
-
                                                                 Expanded
                                                                 (
                                                                     flex: 1,
                                                                     child: ListTile
                                                                     (
                                                                         contentPadding: const EdgeInsets.symmetric(horizontal: 5),
-                                                                        subtitle: buildFieldDescricao(peca.descricao)
+                                                                        subtitle: buildFieldId(peca.id.toString())
                                                                     ) 
                                                                 ),
 
                                                                 const SizedBox
                                                                 (
-                                                                    width: 2
+                                                                    width: 1
                                                                 ),
 
                                                                 Expanded
                                                                 (
-                                                                    flex: 1,
-                                                                    child:
-                                                                    ListTile
+                                                                    flex: 5,
+                                                                    child: ListTile
                                                                     (
                                                                         contentPadding: const EdgeInsets.symmetric(horizontal: 5),
-                                                                        subtitle: buildComboMarca(peca.refMarca)
+                                                                        subtitle: buildFieldNome(peca.nome),
                                                                     ) 
-                                                                ),  
-                                                            ],
-                                                        ),
-
-                                                        const SizedBox
-                                                        (
-                                                            height: 5
-                                                        ),
-
-                                                        Row
-                                                        (
-                                                            children:
-                                                            [
-                                                                Expanded
-                                                                (
-                                                                    flex: 1,
-                                                                    child: 
-                                                                    ListTile
-                                                                    (
-                                                                        contentPadding: const EdgeInsets.symmetric(horizontal: 5),
-                                                                        title: 
-                                                                        ElevatedButton
-                                                                        (
-                                                                            style: ElevatedButton.styleFrom
-                                                                            (
-                                                                                backgroundColor: Colors.green,
-                                                                                foregroundColor: Colors.white,
-                                                                                shape: RoundedRectangleBorder
-                                                                                (
-                                                                                    borderRadius: BorderRadius.circular(4.0),
-                                                                                ),
-                                                                            ),
-                                                                            child: Text
-                                                                            (
-                                                                                isEdit ? 'Atualizar' : 'Salvar',
-                                                                                style: const TextStyle(color: Colors.white),
-                                                                            ),
-                                                                            onPressed: ()
-                                                                            {
-                                                                                if(!formKey.currentState!.validate())
-                                                                                {
-                                                                                    return;
-                                                                                }
-
-                                                                                if(!isEdit)
-                                                                                {
-                                                                                    int marca = int.parse(selectedMarca.toString());
-                                                                                    /* Inserir */
-                                                                                    formKey.currentState!.save();
-
-                                                                                    Peca peca = Peca
-                                                                                        (
-                                                                                            nome!,
-                                                                                            descricao!,
-                                                                                            0.00,
-                                                                                            0.00,
-                                                                                            marca
-                                                                                        );
-                                                                                    PecaController().insert(peca);
-
-                                                                                    DialogBuilder().showInfoDialog
-                                                                                    (
-                                                                                        'Sucesso',
-                                                                                        'Peça inserida com sucesso',
-                                                                                        context
-                                                                                    ).then((value) =>
-                                                                                        Navigator.of(context).push
-                                                                                        (
-                                                                                            MaterialPageRoute
-                                                                                            (
-                                                                                                builder: (context) => const PecaListView()
-                                                                                            ),
-                                                                                        )
-                                                                                    );
-                                                                                }
-                                                                                else
-                                                                                {
-                                                                                    int marca = int.parse(selectedMarca.toString());
-
-                                                                                    /* Atualizar  */
-                                                                                    formKey.currentState!.save();
-
-                                                                                    Peca peca = Peca
-                                                                                        (
-                                                                                            nome!,
-                                                                                            descricao!,
-                                                                                            0.00,
-                                                                                            0.00,
-                                                                                            marca,
-                                                                                            id!
-                                                                                        );
-                                                                                    PecaController().update(peca);
-
-                                                                                    DialogBuilder().showInfoDialog
-                                                                                    (
-                                                                                        'Sucesso',
-                                                                                        'Peça atualizada com sucesso',
-                                                                                        context
-                                                                                    ).then((value) =>
-                                                                                        Navigator.of(context).push
-                                                                                        (
-                                                                                            MaterialPageRoute
-                                                                                            (
-                                                                                                builder: (context) => const PecaListView()
-                                                                                            ),
-                                                                                        )
-                                                                                    );
-
-                                                                                    /* Limpar form */
-                                                                                    formKey.currentState!.reset();
-                                                                                }
-                                                                            },
-                                                                        )
-                                                                    )
                                                                 )
                                                             ],
                                                         )
-                                                    ],
-                                                )
-                                            );
-                                        }
-                                    },
-                                ),
-                            
-                            )
+                                                        :
+                                                        ListTile
+                                                        (
+                                                            contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+                                                            title: buildFieldNome(peca.nome),
+                                                        )
+                                                    ),
+                                                    
+                                                    const SizedBox
+                                                    (
+                                                        height: 2
+                                                    ),
+                                                    
+                                                    Row
+                                                    (
+                                                        children:
+                                                        [
+                                                            const SizedBox
+                                                            (
+                                                                width: 2
+                                                            ),
+
+                                                            Expanded
+                                                            (
+                                                                flex: 1,
+                                                                child: ListTile
+                                                                (
+                                                                    contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+                                                                    subtitle: buildFieldDescricao(peca.descricao)
+                                                                ) 
+                                                            ),
+
+                                                            const SizedBox
+                                                            (
+                                                                width: 2
+                                                            ),
+
+                                                            Expanded
+                                                            (
+                                                                flex: 1,
+                                                                child:
+                                                                ListTile
+                                                                (
+                                                                    contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+                                                                    subtitle: buildComboMarca(peca.refMarca)
+                                                                ) 
+                                                            ),  
+                                                        ],
+                                                    ),
+
+                                                    const SizedBox
+                                                    (
+                                                        height: 5
+                                                    ),
+
+                                                    const SizedBox
+                                                    (
+                                                        height: 5
+                                                    ),
+
+                                                    Row
+                                                    (
+                                                        children:
+                                                        [
+                                                            const SizedBox
+                                                            (
+                                                                width: 2
+                                                            ),
+
+                                                            Expanded
+                                                            (
+                                                                flex: 1,
+                                                                child:
+                                                                ListTile
+                                                                (
+                                                                    contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+                                                                    subtitle: buildFieldPrecoCompra(peca.valorCompra.toString())
+                                                                )
+                                                            ),
+
+                                                            const SizedBox
+                                                            (
+                                                                width: 2
+                                                            ),
+
+                                                            Expanded
+                                                            (
+                                                                flex: 1,
+                                                                child:
+                                                                ListTile
+                                                                (
+                                                                    contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+                                                                    subtitle: buildFieldPrecorRevenda(peca.valorRevenda.toString())
+                                                                )
+                                                            ),
+                                                        ],
+                                                    ),
+
+                                                    Row
+                                                    (
+                                                        children:
+                                                        [
+                                                            Expanded
+                                                            (
+                                                                flex: 1,
+                                                                child: 
+                                                                ListTile
+                                                                (
+                                                                    contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+                                                                    title: 
+                                                                    ElevatedButton
+                                                                    (
+                                                                        style: ElevatedButton.styleFrom
+                                                                        (
+                                                                            backgroundColor: Colors.green,
+                                                                            foregroundColor: Colors.white,
+                                                                            shape: RoundedRectangleBorder
+                                                                            (
+                                                                                borderRadius: BorderRadius.circular(4.0),
+                                                                            ),
+                                                                        ),
+                                                                        child: Text
+                                                                        (
+                                                                            isEdit ? 'Atualizar' : 'Salvar',
+                                                                            style: const TextStyle(color: Colors.white),
+                                                                        ),
+                                                                        onPressed: ()
+                                                                        {
+                                                                            if(!formKey.currentState!.validate())
+                                                                            {
+                                                                                return;
+                                                                            }
+
+                                                                            if(!isEdit)
+                                                                            {
+                                                                                int marca = int.parse(selectedMarca.toString());
+                                                                                /* Inserir */
+                                                                                formKey.currentState!.save();
+
+                                                                                Peca peca = Peca
+                                                                                    (
+                                                                                        nome!,
+                                                                                        descricao!,
+                                                                                        num.parse(valorCompra!),
+                                                                                        num.parse(valorRevenda!),
+                                                                                        marca
+                                                                                    );
+                                                                                PecaController().insert(peca);
+
+                                                                                DialogBuilder().showInfoDialog
+                                                                                (
+                                                                                    'Sucesso',
+                                                                                    'Peça inserida com sucesso',
+                                                                                    context
+                                                                                ).then((value) =>
+                                                                                    Navigator.of(context).push
+                                                                                    (
+                                                                                        MaterialPageRoute
+                                                                                        (
+                                                                                            builder: (context) => const PecaListView()
+                                                                                        ),
+                                                                                    )
+                                                                                );
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                int marca = int.parse(selectedMarca.toString());
+
+                                                                                /* Atualizar  */
+                                                                                formKey.currentState!.save();
+
+                                                                                Peca peca = Peca
+                                                                                    (
+                                                                                        nome!,
+                                                                                        descricao!,
+                                                                                        num.parse(valorCompra!),
+                                                                                        num.parse(valorRevenda!),
+                                                                                        marca,
+                                                                                        id!
+                                                                                    );
+                                                                                PecaController().update(peca);
+
+                                                                                DialogBuilder().showInfoDialog
+                                                                                (
+                                                                                    'Sucesso',
+                                                                                    'Peça atualizada com sucesso',
+                                                                                    context
+                                                                                ).then((value) =>
+                                                                                    Navigator.of(context).push
+                                                                                    (
+                                                                                        MaterialPageRoute
+                                                                                        (
+                                                                                            builder: (context) => const PecaListView()
+                                                                                        ),
+                                                                                    )
+                                                                                );
+
+                                                                                /* Limpar form */
+                                                                                formKey.currentState!.reset();
+                                                                            }
+                                                                        },
+                                                                    )
+                                                                )
+                                                            )
+                                                        ],
+                                                    )
+                                                ],
+                                            )
+                                        );
+                                    }
+                                },
+                            ),
                         )
                     )
                 )
