@@ -276,9 +276,7 @@ class _PecaView extends State<PecaView>
                 Padding
                 (
                     padding: const EdgeInsets.all(10),
-
                     child:
-                    
                     Center
                     (
                         child:
@@ -564,7 +562,6 @@ class _PecaView extends State<PecaView>
                                     }
                                 },
                             ),
-                        
                         )
                     )
                 )
