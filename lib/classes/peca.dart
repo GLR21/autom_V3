@@ -75,7 +75,7 @@ class Peca
             'nome': _nome,
             'descricao': _descricao,
             'valor_compra': _valorCompra,
-            'valor_revenda': _valorCompra,
+            'valor_revenda': _valorRevenda,
             'ref_marca': _refMarca
         };
     }
