@@ -4,6 +4,7 @@ import 'package:autom_v3/controllers/peca_controller.dart';
 import 'package:autom_v3/view/components/dialog_builder.dart';
 import 'package:autom_v3/view/peca/peca_list_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class PecaView extends StatefulWidget
 {
@@ -117,6 +118,10 @@ class _PecaView extends State<PecaView>
         return TextFormField
         (
             keyboardType: TextInputType.number,
+            inputFormatters:
+            [
+                 FilteringTextInputFormatter.deny(RegExp('[,;]'))
+            ],
             initialValue: value,
             decoration: const InputDecoration
             (
@@ -143,6 +148,10 @@ class _PecaView extends State<PecaView>
         return TextFormField
         (
             keyboardType: TextInputType.number,
+            inputFormatters:
+            [
+                 FilteringTextInputFormatter.deny(RegExp('[,;]'))
+            ],
             initialValue: value,
             decoration: const InputDecoration
             (
@@ -518,8 +527,8 @@ class _PecaView extends State<PecaView>
                                                                                     (
                                                                                         nome!,
                                                                                         descricao!,
-                                                                                        0.00,
-                                                                                        0.00,
+                                                                                        num.parse(valorCompra!),
+                                                                                        num.parse(valorRevenda!),
                                                                                         marca,
                                                                                         id!
                                                                                     );
