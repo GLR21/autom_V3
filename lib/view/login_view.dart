@@ -25,14 +25,21 @@ class _LoginViewState extends State<LoginView>
 
     String? cpf;
     String? senha;
+    String? senhaRegister;
 
     late final TextEditingController cpfController;
     late final TextEditingController senhaController;
+
+    bool showCpfInput = true;
+    bool showSenhaInput = true;
+    bool showLoginButton = true;
+    bool doRegister = false;
 
     @override
     void initState()
     {
         super.initState();
+
         cpfController = TextEditingController(text: cpf ?? '');
         senhaController = TextEditingController(text: senha ?? '');
     }
@@ -41,8 +48,27 @@ class _LoginViewState extends State<LoginView>
     void dispose()
     {
         super.dispose();
+
         cpfController.dispose();
         senhaController.dispose();
+    }
+
+    void hideDefaultInputs()
+    {
+        setState(()
+        {
+            showCpfInput = false;
+            showLoginButton = false;
+        });
+    }
+
+    void unhideDefaultInputs()
+    {
+        setState(()
+        {
+            showCpfInput = true;
+            showLoginButton = true;
+        });
     }
 
     Widget buildFieldCpf()
@@ -50,34 +76,38 @@ class _LoginViewState extends State<LoginView>
         return SizedBox
         (
             width: 300,
-            child: TextFormField
+            child: Visibility
             (
-                controller: cpfController,
-                maxLength: 11,
-                decoration: const InputDecoration
+                visible: showCpfInput,
+                child: TextFormField
                 (
-                    label: Text
+                    controller: cpfController,
+                    maxLength: 11,
+                    decoration: const InputDecoration
                     (
-                        'CPF'
+                        label: Text
+                        (
+                            'CPF'
+                        ),
+                        border: OutlineInputBorder()
                     ),
-                    border: OutlineInputBorder()
-                ),
-                validator: (String? value)
-                {
-                    if(value!.isEmpty)
+                    validator: (String? value)
                     {
-                        return '"CPF" é obrigatório';
+                        if(value!.isEmpty)
+                        {
+                            return '"CPF" é obrigatório';
+                        }
+                        return null;
+                    },
+                    onChanged: (value)
+                    {
+                        cpfController.text = value;
+                    },
+                    onSaved: (newValue)
+                    {
+                        cpf = newValue!;
                     }
-                    return null;
-                },
-                onChanged: (value)
-                {
-                    cpfController.text = value;
-                },
-                onSaved: (newValue)
-                {
-                    cpf = newValue!;
-                }
+                ),
             ),
         );
     }
@@ -87,34 +117,38 @@ class _LoginViewState extends State<LoginView>
         return SizedBox
         (
             width: 300,
-            child: TextFormField
+            child: Visibility
             (
-                controller: senhaController,
-                obscureText: true,
-                decoration: const InputDecoration
+                visible: showSenhaInput,
+                child: TextFormField
                 (
-                    label: Text
+                    controller: senhaController,
+                    obscureText: true,
+                    decoration: const InputDecoration
                     (
-                        'Senha'
+                        label: Text
+                        (
+                            'Senha'
+                        ),
+                        border: OutlineInputBorder()
                     ),
-                    border: OutlineInputBorder()
-                ),
-                validator: (String? value)
-                {
-                    if(value!.isEmpty)
+                    validator: (String? value)
                     {
-                        return '"Senha" é obrigatória';
+                        if(value!.isEmpty)
+                        {
+                            return '"Senha" é obrigatória';
+                        }
+                        return null;
+                    },
+                    onChanged: (value)
+                    {
+                        senhaController.text = value;
+                    },
+                    onSaved: (newValue)
+                    {
+                        senha = newValue;
                     }
-                    return null;
-                },
-                onChanged: (value)
-                {
-                    senhaController.text = value;
-                },
-                onSaved: (newValue)
-                {
-                    senha = newValue;
-                }
+                )
             ),
         );
     }
@@ -178,10 +212,10 @@ class _LoginViewState extends State<LoginView>
                                             borderRadius: BorderRadius.circular(4.0),
                                         ),
                                     ),
-                                    child: const Text
+                                    child: Text
                                     (
-                                        'Entrar',
-                                        style: TextStyle(color: Colors.white),
+                                        showLoginButton ? 'Entrar' : 'Cadastrar',
+                                        style: const TextStyle(color: Colors.white),
                                     ),
                                     onPressed: () async
                                     {
@@ -196,13 +230,32 @@ class _LoginViewState extends State<LoginView>
                                         senhaController.text = senhaController.text.isEmpty ? senha! : senhaController.text;
 
                                         var isAuthenticated = await validateLogin(cpfController.text, senhaController.text);
-                                        if(isAuthenticated)
+                                        if(await isHashSenha(cpf))
                                         {
-                                            routeToApp();
+                                            if(isAuthenticated)
+                                            {
+                                                routeToApp();
+                                            }
+                                            else
+                                            {
+                                                showPasswordLoginWarning();
+                                            }
                                         }
-                                        else
+                                        else if(await isCpf(cpf) && ! await isHashSenha(cpf))
                                         {
-                                            showWarning();
+                                            hideDefaultInputs();
+                                            if(doRegister)
+                                            {
+                                                if(await registerPassword(cpfController.text, senhaController.text))
+                                                {
+                                                    showPasswordRegisterSucess();
+                                                    unhideDefaultInputs();
+                                                }
+                                            }
+                                            setState(()
+                                            {
+                                                doRegister = true;
+                                            });
                                         }
                                     },
                                 ),
@@ -214,9 +267,14 @@ class _LoginViewState extends State<LoginView>
         );
     }
 
-    void showWarning() async
+    void showPasswordLoginWarning() async
     {
         DialogBuilder().showInfoDialog('Erro', 'Dados de login estão incorretos.', context);
+    }
+
+    void showPasswordRegisterSucess() async
+    {
+        DialogBuilder().showInfoDialog('Sucesso', 'Nova senha cadastrada com sucesso!', context);
     }
 
     void routeToApp() async
@@ -262,5 +320,35 @@ class _LoginViewState extends State<LoginView>
             return true;
         }
         return false;
+    }
+
+    Future<bool> registerPassword(String? cpf, String? senha) async
+    {
+        var refPessoa = await PessoaController().getIdPessoaFisicaByCpf(cpf!);
+        if(refPessoa == 0)
+        {
+            return false;
+        }
+        var pessoa = await PessoaController().get(Pessoa.byId(refPessoa));
+
+        pessoa.senha = md5.convert(utf8.encode(senha!)).toString();
+        PessoaController().update(pessoa);
+
+        return true;
+    }
+
+    Future<bool> isCpf(String? cpf) async
+    {
+        var refPessoa = await PessoaController().getIdPessoaFisicaByCpf(cpf!);
+        if(refPessoa == 0)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    Future<bool> isHashSenha(String? cpf) async
+    {
+        return await PessoaController().isHashPessoaFisicaByCpf(cpf!);
     }
 }
