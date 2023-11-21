@@ -13,7 +13,7 @@ class LoginView extends StatefulWidget
 {
     const LoginView({super.key});
 
-    static const String title = 'Login';
+    static const String title = 'Autom';
 
      @override
     State<StatefulWidget> createState() => _LoginViewState();
@@ -256,6 +256,18 @@ class _LoginViewState extends State<LoginView>
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: 
                     [
+                        const Row
+                        (
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children:
+                            [
+                                SizedBox
+                                (
+                                    child: Text('Login', style: TextStyle(fontSize: 36, fontWeight: FontWeight.w500),),
+                                ),
+                            ]
+                        ),
+                        const SizedBox(height: 15),
                         Row
                         (
                             mainAxisAlignment: MainAxisAlignment.center,
