@@ -226,6 +226,6 @@ class PessoaController
 
         var pessoa = await PessoaModel().selectQueryBuilder({'id': pessoaFisica['ref_pessoa']});
         pessoa = pessoa[0];
-        return pessoa['senha'].length > 0;
+        return pessoa['senha'] == null ? false : pessoa['senha'].length > 0;
     }
 }

@@ -79,35 +79,57 @@ class _LoginViewState extends State<LoginView>
             child: Visibility
             (
                 visible: showCpfInput,
-                child: TextFormField
+                child: 
+                Focus
                 (
-                    controller: cpfController,
-                    maxLength: 11,
-                    decoration: const InputDecoration
-                    (
-                        label: Text
-                        (
-                            'CPF'
-                        ),
-                        border: OutlineInputBorder()
-                    ),
-                    validator: (String? value)
+                    onFocusChange: (hasFocus) async
                     {
-                        if(value!.isEmpty)
+                        if(!hasFocus)
                         {
-                            return '"CPF" é obrigatório';
+                            bool isSenha = await isHashSenha(cpfController.text);
+                            if(!isSenha)
+                            {
+                                showNoPasswordRegisteredDialog();
+                            }
+
+                            setState(()
+                            {
+                                doRegister = false;
+                            });
                         }
-                        return null;
                     },
-                    onChanged: (value)
-                    {
-                        cpfController.text = value;
-                    },
-                    onSaved: (newValue)
-                    {
-                        cpf = newValue!;
-                    }
-                ),
+                    child:
+                
+                    TextFormField
+                    (
+                        controller: cpfController,
+                        maxLength: 11,
+                        decoration: const InputDecoration
+                        (
+                            label: Text
+                            (
+                                'CPF'
+                            ),
+                            border: OutlineInputBorder()
+                        ),
+                        validator: (String? value)
+                        {
+                            if(value!.isEmpty)
+                            {
+                                return '"CPF" é obrigatório';
+                            }
+                            return null;
+                        },
+                        onChanged: (value)
+                        {
+                            cpfController.text = value;
+                        },
+                        onSaved: (newValue)
+                        {
+                            cpf = newValue!;
+                        }
+                    )
+                )
             ),
         );
     }
@@ -149,6 +171,62 @@ class _LoginViewState extends State<LoginView>
                         senha = newValue;
                     }
                 )
+            ),
+        );
+    }
+
+    Future<dynamic> showNoPasswordRegisteredDialog() async
+    {
+        return showDialog
+        (
+            context: context,
+            builder: (context) => AlertDialog
+            (
+                title: const Text('Alerta'),
+                content: const Text('Você não tem uma senha cadastrada: realize o cadastro de uma senha para prosseguir com o login.'),
+                actions:
+                [
+                    ElevatedButton
+                    (
+                        onPressed: ()
+                        {
+                            hideDefaultInputs();
+                            setState(()
+                            {
+                                formKey.currentState!.save();
+                                doRegister = true;
+                            });
+
+                            Navigator.pop(context);
+                        },
+                        child: const Text('Fechar')
+                    )
+                ],
+            ),
+        );
+    }
+
+    Future<dynamic> showPasswordRegistrationSuccessfuldDialog() async
+    {
+        return showDialog
+        (
+            context: context,
+            builder: (context) => AlertDialog
+            (
+                title: const Text('Sucesso!'),
+                content: const Text('Sua senha foi cadastrada com sucesso.'),
+                actions:
+                [
+                    ElevatedButton
+                    (
+                        onPressed: ()
+                        {
+                            Navigator.pop(context);
+                            routeToApp();
+                        },
+                        child: const Text('Fechar')
+                    )
+                ],
             ),
         );
     }
@@ -248,8 +326,7 @@ class _LoginViewState extends State<LoginView>
                                             {
                                                 if(await registerPassword(cpfController.text, senhaController.text))
                                                 {
-                                                    showPasswordRegisterSucess();
-                                                    unhideDefaultInputs();
+                                                    showPasswordRegistrationSuccessfuldDialog();
                                                 }
                                             }
                                             setState(()
@@ -271,11 +348,6 @@ class _LoginViewState extends State<LoginView>
     void showPasswordLoginWarning() async
     {
         DialogBuilder().showInfoDialog('Erro', 'Dados de login estão incorretos.', context);
-    }
-
-    void showPasswordRegisterSucess() async
-    {
-        DialogBuilder().showInfoDialog('Sucesso', 'Nova senha cadastrada com sucesso!', context);
     }
 
     void routeToApp() async
