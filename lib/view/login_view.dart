@@ -255,6 +255,7 @@ class _LoginViewState extends State<LoginView>
                                             setState(()
                                             {
                                                 doRegister = true;
+                                                senhaController.text = '';
                                             });
                                         }
                                     },
