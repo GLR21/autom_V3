@@ -56,6 +56,7 @@ class LoginScreen extends StatelessWidget
         (
             colorScheme: ColorScheme.fromSeed
             (
+                background: Colors.greenAccent.withOpacity( 0.92 ),
                 seedColor: Colors.greenAccent
             ),
             useMaterial3: true,

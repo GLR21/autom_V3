@@ -104,13 +104,16 @@ class _LoginViewState extends State<LoginView>
                     (
                         controller: cpfController,
                         maxLength: 11,
+                        
                         decoration: const InputDecoration
                         (
                             label: Text
                             (
                                 'CPF'
                             ),
-                            border: OutlineInputBorder()
+                            border: OutlineInputBorder(),
+                            fillColor: Colors.white,
+                            filled: true
                         ),
                         validator: (String? value)
                         {
@@ -152,7 +155,9 @@ class _LoginViewState extends State<LoginView>
                         (
                             'Senha'
                         ),
-                        border: OutlineInputBorder()
+                        border: OutlineInputBorder(),
+                        fillColor: Colors.white,
+                        filled: true
                     ),
                     validator: (String? value)
                     {
@@ -263,7 +268,7 @@ class _LoginViewState extends State<LoginView>
                             [
                                 SizedBox
                                 (
-                                    child: Text('Login', style: TextStyle(fontSize: 36, fontWeight: FontWeight.w500),),
+                                    child: Text('Login', style: TextStyle(fontSize: 36, fontWeight: FontWeight.w600, color: Colors.white),),
                                 ),
                             ]
                         ),
