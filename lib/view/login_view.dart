@@ -26,6 +26,25 @@ class _LoginViewState extends State<LoginView>
     String? cpf;
     String? senha;
 
+    late final TextEditingController cpfController;
+    late final TextEditingController senhaController;
+
+    @override
+    void initState()
+    {
+        super.initState();
+        cpfController = TextEditingController(text: cpf ?? '');
+        senhaController = TextEditingController(text: senha ?? '');
+    }
+
+    @override
+    void dispose()
+    {
+        super.dispose();
+        cpfController.dispose();
+        senhaController.dispose();
+    }
+
     Widget buildFieldCpf()
     {
         return SizedBox
@@ -33,6 +52,7 @@ class _LoginViewState extends State<LoginView>
             width: 300,
             child: TextFormField
             (
+                controller: cpfController,
                 maxLength: 11,
                 decoration: const InputDecoration
                 (
@@ -50,9 +70,13 @@ class _LoginViewState extends State<LoginView>
                     }
                     return null;
                 },
+                onChanged: (value)
+                {
+                    cpfController.text = value;
+                },
                 onSaved: (newValue)
                 {
-                    cpf = newValue;
+                    cpf = newValue!;
                 }
             ),
         );
@@ -65,6 +89,7 @@ class _LoginViewState extends State<LoginView>
             width: 300,
             child: TextFormField
             (
+                controller: senhaController,
                 obscureText: true,
                 decoration: const InputDecoration
                 (
@@ -81,6 +106,10 @@ class _LoginViewState extends State<LoginView>
                         return '"Senha" é obrigatória';
                     }
                     return null;
+                },
+                onChanged: (value)
+                {
+                    senhaController.text = value;
                 },
                 onSaved: (newValue)
                 {
@@ -163,7 +192,10 @@ class _LoginViewState extends State<LoginView>
 
                                         formKey.currentState!.save();
 
-                                        var isAuthenticated = await validateLogin(cpf, senha);
+                                        cpfController.text = cpfController.text.isEmpty ? cpf! : cpfController.text;
+                                        senhaController.text = senhaController.text.isEmpty ? senha! : senhaController.text;
+
+                                        var isAuthenticated = await validateLogin(cpfController.text, senhaController.text);
                                         if(isAuthenticated)
                                         {
                                             routeToApp();
