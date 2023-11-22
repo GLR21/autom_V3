@@ -13,8 +13,6 @@ class LoginView extends StatefulWidget
 {
     const LoginView({super.key});
 
-    static const String title = 'Autom';
-
      @override
     State<StatefulWidget> createState() => _LoginViewState();
 }    
@@ -244,14 +242,6 @@ class _LoginViewState extends State<LoginView>
             appBar: AppBar
             (
                 backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-                title: const Text
-                (
-                    LoginView.title,
-                    style: TextStyle
-                        (
-                            color: Colors.white, fontWeight: FontWeight.w500
-                        ),
-                ),
             ),
             body: Form
             (
@@ -266,9 +256,13 @@ class _LoginViewState extends State<LoginView>
                             mainAxisAlignment: MainAxisAlignment.center,
                             children:
                             [
-                                SizedBox
+                                Column
                                 (
-                                    child: Text('Login', style: TextStyle(fontSize: 36, fontWeight: FontWeight.w600, color: Colors.white),),
+                                    children:
+                                    [
+                                        Icon(Icons.settings, size: 100, color: Colors.white),
+                                        Text('Autom', style: TextStyle(fontSize: 36, fontWeight: FontWeight.w600, color: Colors.white))
+                                    ]
                                 ),
                             ]
                         ),

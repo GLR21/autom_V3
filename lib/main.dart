@@ -50,7 +50,6 @@ class LoginScreen extends StatelessWidget
     @override
     Widget build(BuildContext context) => MaterialApp
     (
-        title: LoginView.title,
         debugShowCheckedModeBanner: false,
         theme: ThemeData
         (
