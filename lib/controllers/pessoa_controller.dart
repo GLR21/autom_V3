@@ -201,4 +201,31 @@ class PessoaController
             print(e);
         }
     }
+
+    Future<dynamic> getIdPessoaFisicaByCpf(String cpf) async
+    {
+        var map = {'cpf' : cpf};
+        var pessoa = await PessoaFisicaModel().selectQueryBuilder(map);
+        if (pessoa.length == 0)
+        {
+            return 0;
+        }
+        pessoa = pessoa[0];
+
+        return pessoa['ref_pessoa'];
+    }
+
+    Future<dynamic> isHashPessoaFisicaByCpf(String cpf) async
+    {
+        var pessoaFisica = await PessoaFisicaModel().selectQueryBuilder({'cpf' : cpf});
+        if (pessoaFisica.length == 0)
+        {
+            return 0;
+        }
+        pessoaFisica = pessoaFisica[0];
+
+        var pessoa = await PessoaModel().selectQueryBuilder({'id': pessoaFisica['ref_pessoa']});
+        pessoa = pessoa[0];
+        return pessoa['senha'] == null ? false : pessoa['senha'].length > 0;
+    }
 }

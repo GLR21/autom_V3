@@ -1,3 +1,4 @@
+import 'package:autom_v3/main.dart';
 import 'package:autom_v3/view/cidade/cidade_list_view.dart';
 import 'package:autom_v3/view/estado/estado_list_view.dart';
 import 'package:autom_v3/view/main_view.dart';
@@ -5,6 +6,7 @@ import 'package:autom_v3/view/marca/marca_list_view.dart';
 import 'package:autom_v3/view/peca/peca_list_view.dart';
 import 'package:autom_v3/view/pessoa/pessoa_list_view.dart';
 import 'package:flutter/material.dart';
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 
 class NavigationPanel extends StatelessWidget
 {
@@ -120,7 +122,38 @@ class NavigationPanel extends StatelessWidget
                             ),
                         )
                 ),
+                const Divider(color: Colors.black54,),
+                ListTile
+                (
+                    leading: const Icon(Icons.exit_to_app_outlined),
+                    title: const Text('Sair', style: TextStyle(fontWeight: FontWeight.w500),),
+                    onTap: () =>
+                        Navigator.of(context).push
+                        (
+                            MaterialPageRoute
+                            (
+                                builder: (context) => exitToLogin(),
+                            ),
+                        )
+                ),
             ],
         ),
     );
+
+    Widget exitToLogin()
+    {
+       Widget login = const LoginScreen();
+
+        doWhenWindowReady(()
+            {
+                const initialSize = Size(800, 600);
+                appWindow.minSize = const Size(800, 600);
+                appWindow.size = initialSize;
+                appWindow.alignment = Alignment.center;
+                appWindow.show();
+            }
+        );
+
+        return login;
+    }
 }

@@ -44,6 +44,7 @@ dependencies:
   flutter_dotenv: ^5.1.0
   fluent_query_builder: ^5.5.0
   dio: ^5.3.3
+  crypto: ^3.0.3
   intl: ^0.18.1
 
 dev_dependencies:
