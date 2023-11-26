@@ -435,6 +435,7 @@ class _LoginViewState extends State<LoginView>
         {
             return true;
         }
+
         return false;
     }
 
@@ -455,8 +456,7 @@ class _LoginViewState extends State<LoginView>
 
     Future<bool> isHashSenha(String? cpf) async
     {
-        var isHash = await PessoaController().isHashPessoaFisicaByCpf(cpf!);
-        return isHash;
+        return await PessoaController().isHashPessoaFisicaByCpf(cpf!);
     }
 
     Future<bool> isCpf(String? cpf) async
@@ -466,6 +466,7 @@ class _LoginViewState extends State<LoginView>
         {
             return false;
         }
+
         return true;
     }
 }
