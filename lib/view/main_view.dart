@@ -1,5 +1,6 @@
 
 import 'package:autom_v3/view/components/navigation_panel.dart';
+import 'package:autom_v3/view/marca/marca_view.dart';
 import 'package:autom_v3/view/peca/peca_view.dart';
 import 'package:flutter/material.dart';
 
@@ -31,15 +32,16 @@ class MainView extends StatelessWidget
             (
                 children:
                 [
-                    Row
+                    Column
                     (
                         children:
                         [
-                            Column
+                            Row
                             (
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children:
                                 [
-                                    SizedBox.fromSize
+                                    SizedBox.fromSize /// Cadastrar Peça
                                     (
                                         size: const Size(150, 150),
                                         child: ClipRRect
@@ -73,6 +75,50 @@ class MainView extends StatelessWidget
                                                                 color: Colors.white
                                                             ),
                                                             Text("Cadastrar Peça", style: TextStyle(color: Colors.white)),
+                                                        ],
+                                                    ),
+                                                ),
+                                            ),
+                                        ),
+                                    ),
+                                    const Padding
+                                    (
+                                        padding: EdgeInsets.all(15)
+                                    ),
+                                    SizedBox.fromSize /// Cadastrar Marca
+                                    (
+                                        size: const Size(150, 150),
+                                        child: ClipRRect
+                                        (
+                                            borderRadius: BorderRadius.circular(15),
+                                            child: Material
+                                            (
+                                                color: Colors.green.shade600,
+                                                child: InkWell
+                                                (
+                                                    // splashColor: Colors.green,
+                                                    onTap: () 
+                                                    {
+                                                        Navigator.of(context).push
+                                                        (
+                                                            MaterialPageRoute
+                                                            (
+                                                                builder: (context) => const MarcaView(null),
+                                                            ),
+                                                        );
+                                                    },
+                                                    child: const Column
+                                                    (
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children:
+                                                        [
+                                                            Icon
+                                                            (
+                                                                Icons.storefront_outlined,
+                                                                size: 50,
+                                                                color: Colors.white
+                                                            ),
+                                                            Text("Cadastrar Marca", style: TextStyle(color: Colors.white)),
                                                         ],
                                                     ),
                                                 ),
