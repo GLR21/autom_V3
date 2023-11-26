@@ -39,6 +39,8 @@ class PessoaFisica
         _dataNascimento = dataNascimento;
     }
 
+    PessoaFisica.empty() : super.empty();
+
     set cpf ( String cpf )
     {
         _cpf = cpf;
@@ -57,6 +59,25 @@ class PessoaFisica
     String get cpf => _cpf;
     String get rg => _rg;
     String get dataNascimento => _dataNascimento;
+
+    @override
+    String toString()
+    {
+        return 'Pessoa{cpf: $_cpf, rg: $_rg}';
+    }
+
+    @override
+    PessoaFisica toObject(Map<String, dynamic> map)
+    {
+        PessoaFisica pessoaFisica = PessoaFisica.empty();
+
+        pessoaFisica.id = map['ref_pessoa'];
+        pessoaFisica.cpf = map['cpf'];
+        pessoaFisica.rg = map['rg'];
+        pessoaFisica.dataNascimento = map['dt_nascimento'].toString();
+
+        return pessoaFisica;
+    }
 
     @override
     Map<String, dynamic> toMap()

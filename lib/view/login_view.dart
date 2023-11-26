@@ -84,8 +84,16 @@ class _LoginViewState extends State<LoginView>
                     {
                         if(!hasFocus)
                         {
-                            bool isSenha = await isHashSenha(cpfController.text);
-                            if(!isSenha)
+                            bool isSenhaRegistered = await isHashSenha(cpfController.text);
+                            bool isCpfRegistered = await isCpf(cpfController.text);
+                            
+                            if(!isCpfRegistered)
+                            {
+                                showNoCPFRegisteredDialog();
+                                cpfController.text = '';
+                                senhaController.text = '';
+                            }
+                            else if(isCpfRegistered && !isSenhaRegistered)
                             {
                                 showNoPasswordRegisteredDialog();
                             }
@@ -200,6 +208,30 @@ class _LoginViewState extends State<LoginView>
                                 doRegister = true;
                             });
 
+                            Navigator.pop(context);
+                        },
+                        child: const Text('Fechar')
+                    )
+                ],
+            ),
+        );
+    }
+
+    Future<dynamic> showNoCPFRegisteredDialog() async
+    {
+        return showDialog
+        (
+            context: context,
+            builder: (context) => AlertDialog
+            (
+                title: const Text('Alerta'),
+                content: const Text('O CPF informado não está registrado no sistema.'),
+                actions:
+                [
+                    ElevatedButton
+                    (
+                        onPressed: ()
+                        {
                             Navigator.pop(context);
                         },
                         child: const Text('Fechar')
@@ -391,12 +423,12 @@ class _LoginViewState extends State<LoginView>
 
     Future<bool> validateLogin(String? cpf, String? senha) async
     {
-        var refPessoa = await PessoaController().getIdPessoaFisicaByCpf(cpf!);
-        if(refPessoa == 0)
+        var pessoa = await PessoaController().getPessoaFisicaByCpf(cpf!);
+        if(pessoa.id == 0)
         {
             return false;
         }
-        var pessoa = await PessoaController().get(Pessoa.byId(refPessoa));
+        pessoa = await PessoaController().get(Pessoa.byId(pessoa.id));
         var hash = pessoa.senha;
 
         if(md5.convert(utf8.encode(senha!)).toString() == hash)
@@ -408,12 +440,12 @@ class _LoginViewState extends State<LoginView>
 
     Future<bool> registerPassword(String? cpf, String? senha) async
     {
-        var refPessoa = await PessoaController().getIdPessoaFisicaByCpf(cpf!);
-        if(refPessoa == 0)
+        var pessoa = await PessoaController().getPessoaFisicaByCpf(cpf!);
+        if(pessoa.id == 0)
         {
             return false;
         }
-        var pessoa = await PessoaController().get(Pessoa.byId(refPessoa));
+        pessoa = await PessoaController().get(Pessoa.byId(pessoa.id));
 
         pessoa.senha = md5.convert(utf8.encode(senha!)).toString();
         PessoaController().update(pessoa);
@@ -421,18 +453,19 @@ class _LoginViewState extends State<LoginView>
         return true;
     }
 
+    Future<bool> isHashSenha(String? cpf) async
+    {
+        var isHash = await PessoaController().isHashPessoaFisicaByCpf(cpf!);
+        return isHash;
+    }
+
     Future<bool> isCpf(String? cpf) async
     {
-        var refPessoa = await PessoaController().getIdPessoaFisicaByCpf(cpf!);
-        if(refPessoa == 0)
+        var pessoa = await PessoaController().getPessoaFisicaByCpf(cpf!);
+        if(pessoa.id == 0)
         {
             return false;
         }
         return true;
-    }
-
-    Future<bool> isHashSenha(String? cpf) async
-    {
-        return await PessoaController().isHashPessoaFisicaByCpf(cpf!);
     }
 }

@@ -202,30 +202,40 @@ class PessoaController
         }
     }
 
-    Future<dynamic> getIdPessoaFisicaByCpf(String cpf) async
+    Future<dynamic> getPessoaFisicaByCpf(String cpf) async
     {
-        var map = {'cpf' : cpf};
-        var pessoa = await PessoaFisicaModel().selectQueryBuilder(map);
-        if (pessoa.length == 0)
+        PessoaFisica pessoaFisicaForSelect = PessoaFisica.empty();
+        pessoaFisicaForSelect.cpf = cpf;
+        var pessoa = await PessoaFisicaModel().selectQueryBuilder(pessoaFisicaForSelect.toMap());
+        if (pessoa.isEmpty)
         {
-            return 0;
+            PessoaFisica pessoa = PessoaFisica.empty();
+            pessoa.id = 0;
+            return pessoa;
         }
-        pessoa = pessoa[0];
 
-        return pessoa['ref_pessoa'];
+        return PessoaFisica.empty().toObject(pessoa[0]);
     }
 
     Future<dynamic> isHashPessoaFisicaByCpf(String cpf) async
     {
-        var pessoaFisica = await PessoaFisicaModel().selectQueryBuilder({'cpf' : cpf});
-        if (pessoaFisica.length == 0)
+        PessoaFisica pessoaFisica = await getPessoaFisicaByCpf(cpf);
+        if(pessoaFisica.id == 0)
         {
-            return 0;
+            return false;
         }
-        pessoaFisica = pessoaFisica[0];
 
-        var pessoa = await PessoaModel().selectQueryBuilder({'id': pessoaFisica['ref_pessoa']});
-        pessoa = pessoa[0];
-        return pessoa['senha'] == null ? false : pessoa['senha'].length > 0;
+        Pessoa pessoa = Pessoa.empty();
+        pessoa.id = pessoaFisica.id;
+        pessoa = await PessoaController().get(pessoa);            
+
+        if (pessoa.id == 0)
+        {
+            PessoaFisica pessoa = PessoaFisica.empty();
+            pessoa.id = 0;
+            return false;
+        }
+
+        return pessoa.senha == null || pessoa.senha!.isEmpty? false : true;
     }
 }
