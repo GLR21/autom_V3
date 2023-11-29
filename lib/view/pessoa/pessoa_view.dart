@@ -28,7 +28,7 @@ class _PessoaViewState extends State<PessoaView>
 
     Future<Pessoa> pessoa = Future.value(Pessoa.empty());
     Future<List> allCidades = CidadeController().getAll();
-    int? selectedCidade = 0;
+    int? selectedCidade;
 
     // Pessoa
     String? idPessoa;
@@ -230,7 +230,8 @@ class _PessoaViewState extends State<PessoaView>
                                             else
                                             {
                                                 tipoPessoa = tipoPessoa ?? Pessoa.tipoPessoaFisica;
-                                                cidade = selectedCidade == null ? pessoa.cidade : selectedCidade as int;
+                                                selectedCidade = selectedCidade ?? 0;
+                                                cidade = selectedCidade as int;
 
                                                 switch( tipoPessoa )
                                                 {
