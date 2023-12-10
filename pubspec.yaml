@@ -46,6 +46,8 @@ dependencies:
   dio: ^5.3.3
   crypto: ^3.0.3
   intl: ^0.18.1
+  pdf: ^3.10.6
+  pdfx: ^2.3.0
 
 dev_dependencies:
   flutter_test:
