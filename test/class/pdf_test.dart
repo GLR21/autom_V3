@@ -30,6 +30,7 @@ void main() async
         pw.Table table = pw.TableHelper.fromTextArray
         (
             context: null,
+            headers: headers,
             data: data
         );
 
@@ -38,37 +39,37 @@ void main() async
             pw.Page
             (
                 pageFormat: PdfPageFormat.a4,
-                build:(context) => pw.Center
+                build:(context) => pw.Wrap
                 (
-                    child: pw.Wrap
-                    (
-                        children:
-                        [
-                            pw.Row
-                            (
-                                children: 
-                                [
-                                    pw.Text
+                    children:
+                    [
+                        pw.Row
+                        (
+                            mainAxisAlignment: pw.MainAxisAlignment.center,
+                            children: 
+                            [
+                                pw.Text
+                                (
+                                    'Relatório de Pedidos por Cliente',
+                                    textAlign: pw.TextAlign.center,
+                                    style: pw.TextStyle
                                     (
-                                        'Relatório de Pedidos por Cliente',
-                                        textAlign: pw.TextAlign.center,
-                                        style: pw.TextStyle
-                                        (
-                                            fontSize: 23,
-                                            fontWeight: pw.FontWeight.bold
-                                        )
+                                        fontSize: 23,
+                                        fontWeight: pw.FontWeight.bold
                                     )
-                                ],
-                            ),
-                            pw.Row
-                            (
-                                children:
-                                [
-                                    table
-                                ]
-                            )
-                        ]
-                    )
+                                )
+                            ],
+                        ),
+                        pw.SizedBox
+                        (
+                            height: 50
+                        )
+                        ,
+                        pw.Center
+                        (
+                            child: table
+                        )
+                    ],
                 )
             )
         );
