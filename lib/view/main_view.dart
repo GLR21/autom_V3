@@ -5,6 +5,7 @@ import 'package:autom_v3/view/estado/estado_view.dart';
 import 'package:autom_v3/view/marca/marca_view.dart';
 import 'package:autom_v3/view/peca/peca_view.dart';
 import 'package:autom_v3/view/pessoa/pessoa_view.dart';
+import 'package:autom_v3/view/report/report_pedidos_view.dart';
 import 'package:flutter/material.dart';
 
 class MainView extends StatelessWidget
@@ -258,6 +259,54 @@ class MainView extends StatelessWidget
                                                                 color: Colors.white
                                                             ),
                                                             Text("Cadastrar Cidade", style: TextStyle(color: Colors.white)),
+                                                        ],
+                                                    ),
+                                                ),
+                                            ),
+                                        ),
+                                    ),
+                                ],
+                            ),
+                            const Padding(padding: EdgeInsets.all(15)),
+                            Row
+                            (
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children:
+                                [
+                                    SizedBox.fromSize /// Relatório de Pedidos
+                                    (
+                                        size: const Size(150, 150),
+                                        child: ClipRRect
+                                        (
+                                            borderRadius: BorderRadius.circular(15),
+                                            child: Material
+                                            (
+                                                color: Colors.green.shade600,
+                                                child: InkWell
+                                                (
+                                                    // splashColor: Colors.green,
+                                                    onTap: () 
+                                                    {
+                                                        Navigator.of(context).push
+                                                        (
+                                                            MaterialPageRoute
+                                                            (
+                                                                builder: (context) => const ReportPedidosView(),
+                                                            ),
+                                                        );
+                                                    },
+                                                    child: const Column
+                                                    (
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children:
+                                                        [
+                                                            Icon
+                                                            (
+                                                                Icons.location_city_outlined,
+                                                                size: 50,
+                                                                color: Colors.white
+                                                            ),
+                                                            Text("Relatório Pedidos", style: TextStyle(color: Colors.white)),
                                                         ],
                                                     ),
                                                 ),
