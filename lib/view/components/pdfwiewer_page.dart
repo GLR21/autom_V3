@@ -1,18 +1,16 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:autom_v3/interfaces/report_itnerface.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 
 import 'package:pdfx/pdfx.dart';
 
-import 'package:autom_v3/view/report/reports_pedidos_generate.dart';
-
 class PDFViewerPage extends StatefulWidget
 {
-    final String path;
+    final ReportInterface builder;
 
-    const PDFViewerPage({Key key = const Key('report-key'), required this.path}) : super(key: key);
+    const PDFViewerPage({Key key = const Key('report-key'), required this.builder}) : super(key: key);
 
   @override
   _PDFViewerPageState createState() => _PDFViewerPageState();
@@ -23,13 +21,9 @@ class _PDFViewerPageState extends State<PDFViewerPage>
     @override
     Widget build(BuildContext context)
     {
-        File file = File(widget.path);
-
-        ReportPedidosGenerate reportPedido = ReportPedidosGenerate();
-        
         final pdfController = PdfController
         (
-            document: PdfDocument.openData(reportPedido.buildReportToByes())
+            document: PdfDocument.openData(widget.builder.buildReportToByes())
             // document: PdfDocument.openFile(widget.path),
         );
 

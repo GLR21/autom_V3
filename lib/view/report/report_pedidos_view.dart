@@ -176,7 +176,7 @@ class _ReportPedidosViewState extends State<ReportPedidosView>
                                                             (
                                                                 MaterialPageRoute
                                                                 (
-                                                                    builder: (context) => const PDFViewerPage(path: ReportPedidosGenerate.pathReport)
+                                                                    builder: (context) => PDFViewerPage(builder: reportPedido)
                                                                 ),
                                                             );
                                                         },

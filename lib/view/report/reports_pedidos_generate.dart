@@ -1,13 +1,15 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:autom_v3/interfaces/report_itnerface.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-class ReportPedidosGenerate
+class ReportPedidosGenerate implements ReportInterface
 {
     static const pathReport = 'files/relatorio-pedido.pdf';
 
+    @override
     void buildReportToFile() async
     {
         try
@@ -80,6 +82,7 @@ class ReportPedidosGenerate
         }
     }
 
+    @override
     Future<Uint8List> buildReportToByes() async
     {
         final pdf = pw.Document();
