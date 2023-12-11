@@ -1,6 +1,9 @@
+import 'package:autom_v3/view/components/pdfwiewer_page.dart';
 import 'package:autom_v3/view/report/reports_pedidos_generate.dart';
 import 'package:autom_v3/view/components/navigation_panel.dart';
 import 'package:flutter/material.dart';
+
+import 'dart:io';
 
 class ReportPedidosView extends StatefulWidget
 {
@@ -157,7 +160,7 @@ class _ReportPedidosViewState extends State<ReportPedidosView>
                                                             'Gerar',
                                                             style: TextStyle(color: Colors.white),
                                                         ),
-                                                        onPressed: () async
+                                                        onPressed: ()
                                                         {
                                                             if(!formKey.currentState!.validate())
                                                             {
@@ -167,9 +170,15 @@ class _ReportPedidosViewState extends State<ReportPedidosView>
                                                             formKey.currentState!.save();
 
                                                             ReportPedidosGenerate reportPedido = ReportPedidosGenerate();
-                                                            reportPedido.buildReport();
+                                                            reportPedido.buildReportToFile();
 
-                                                            print(ReportPedidosGenerate.pathReport);
+                                                            Navigator.of(context).push
+                                                            (
+                                                                MaterialPageRoute
+                                                                (
+                                                                    builder: (context) => const PDFViewerPage(path: ReportPedidosGenerate.pathReport)
+                                                                ),
+                                                            );
                                                         },
                                                     ),
                                                 ],
