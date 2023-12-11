@@ -1,6 +1,7 @@
-import 'package:autom_v3/view/components/pdfwiewer_page.dart';
-import 'package:autom_v3/view/report/reports_pedidos_generate.dart';
+import 'package:autom_v3/utils/datetime_utils.dart';
+import 'package:autom_v3/view/components/dialog_builder.dart';
 import 'package:autom_v3/view/components/navigation_panel.dart';
+import 'package:autom_v3/view/report/reports_pedidos_generate.dart';
 import 'package:flutter/material.dart';
 
 import 'dart:io';
@@ -170,14 +171,19 @@ class _ReportPedidosViewState extends State<ReportPedidosView>
                                                             formKey.currentState!.save();
 
                                                             ReportPedidosGenerate reportPedido = ReportPedidosGenerate();
-                                                            reportPedido.buildReportToFile();
-
-                                                            Navigator.of(context).push
+                                                            reportPedido.buildReportToFile
                                                             (
-                                                                MaterialPageRoute
-                                                                (
-                                                                    builder: (context) => PDFViewerPage(builder: reportPedido)
-                                                                ),
+                                                                "${ReportPedidosGenerate.basefolder}/relatorio_pedidos_${DateTimeUtils.nowTimeAbbreviatedAsString()}.pdf"
+                                                            );
+
+                                                            /**
+                                                             * Mensagem de sucesso
+                                                             */
+                                                            DialogBuilder().showInfoDialog
+                                                            (
+                                                                'Sucesso!',
+                                                                "Relatório gerado com sucesso!",
+                                                                context
                                                             );
                                                         },
                                                     ),

@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 abstract class ReportInterface
 {
-    void buildReportToFile();
+    void buildReportToFile(String path);
 
-    Future<Uint8List> buildReportToByes();
+    Future<Uint8List> buildReportToBytes(String path);
 }
