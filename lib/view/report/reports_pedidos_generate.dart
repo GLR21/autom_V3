@@ -16,13 +16,12 @@ class ReportPedidosGenerate implements ReportInterface
         {
             final pdf = pw.Document();
 
-            final headers = ['Item', 'Price', 'Quantity'];
+            final headers = ['ID', 'Data Abertura', 'Data Encerramento', 'Quantidade', 'Total'];
             final data = <List<String>>
                 [
-                    ['Item 1', '200', '1'],
-                    ['Item 2', '150', '2'],
-                    ['Item 3', '100', '3'],
-                    ['Item 4', '75' , '4'],
+                    ['13', '2023-01-01', '2023-01-13', '1', '221.00'],
+                    ['17', '2023-01-01', '2023-01-17', '2', '442.00'],
+                    ['23', '2023-01-01', '2023-01-23', '3', '663.00'],
                 ];
 
             pw.Table table = pw.TableHelper.fromTextArray
@@ -90,13 +89,12 @@ class ReportPedidosGenerate implements ReportInterface
         try
         {
          
-            final headers = ['Item', 'Price', 'Quantity'];
+            final headers = ['ID', 'Data Abertura', 'Data Encerramento', 'Quantidade', 'Total'];
             final data = <List<String>>
                 [
-                    ['Item 1', '200', '1'],
-                    ['Item 2', '150', '2'],
-                    ['Item 3', '100', '3'],
-                    ['Item 4', '75' , '4'],
+                    ['13', '2023-01-01', '2023-01-13', '1', '221.00'],
+                    ['17', '2023-01-01', '2023-01-17', '2', '442.00'],
+                    ['23', '2023-01-01', '2023-01-23', '3', '663.00'],
                 ];
 
             pw.Table table = pw.TableHelper.fromTextArray
@@ -110,7 +108,7 @@ class ReportPedidosGenerate implements ReportInterface
             (
                 pw.Page
                 (
-                    pageFormat: PdfPageFormat.a4,
+                    pageFormat: PdfPageFormat.a5,
                     build:(context) => pw.Wrap
                     (
                         children:

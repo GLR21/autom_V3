@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:autom_v3/interfaces/report_itnerface.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import 'package:pdfx/pdfx.dart';
 
@@ -23,7 +24,7 @@ class _PDFViewerPageState extends State<PDFViewerPage>
     {
         final pdfController = PdfController
         (
-            document: PdfDocument.openData(widget.builder.buildReportToByes())
+            document: PdfDocument.openData(widget.builder.buildReportToByes()),
             // document: PdfDocument.openFile(widget.path),
         );
 
@@ -36,6 +37,7 @@ class _PDFViewerPageState extends State<PDFViewerPage>
             body: PdfView
             (
                 controller: pdfController,
+                scrollDirection: Axis.vertical,
             )
         );
     }
