@@ -19,11 +19,7 @@ void main() async
 
     try
     {
-        // List<dynamic> pedido = await PedidoModel().select( 
-        //     {
-        //         'id': 19
-        //     }
-        // );
+        
 
         // Map<String, dynamic > pedidoReturn = pedido.first;
 
@@ -32,32 +28,46 @@ void main() async
 
         // // print( pedidoCliente.first );
 
-        // List<PedidoPeca> pedidosPecasList = [];
+        List<PedidoPeca> pedidosPecasList = [];
 
+        Peca peca1 = await PecaController().get( Peca.byId( 8 ) );
+        Peca peca2 = await PecaController().get( Peca.byId( 9 ) );
         // for (var element in pedidosPecas)
         // {
         //     pedidosPecasList.add( PedidoPeca( element['ref_pedido'], element['ref_peca'], element['quantidade'] ) );
         // }
 
+        pedidosPecasList.add( PedidoPeca( 0, peca1.id, 10 ) );
+        pedidosPecasList.add( PedidoPeca( 0, peca2.id, 20 ) );
 
-        // Pedido pedidoObj = Pedido
-        // (
-        //     num.parse( pedidoReturn['total'] ),
-        //     pedidoReturn['status'],
-        //     pedidoReturn['cep'],
-        //     pedidoReturn['rua'],
-        //     pedidoReturn['bairro'],
-        //     pedidoReturn['numero_endereco'],
-        //     pedidoReturn['ref_cidade'],
-        //     pedidoReturn['fl_usar_endereco_cliente'],
-        //     pedidoReturn['id'],
-        //     pedidoReturn['dt_abertura'] == null ? null : pedidoReturn['dt_abertura'].toString(),
-        //     pedidoReturn['dt_encerramento'] == null ? null : pedidoReturn['dt_encerramento'].toString(),
-        //     pedidoReturn['dt_reabertura'] == null ? null : pedidoReturn['dt_reabertura'].toString(),
-        //     pedidoReturn['dt_cancelamento'] == null ? null : pedidoReturn['dt_cancelamento'].toString(),
-        //     pedidosPecasList,
-        //     pedidoCliente.first['ref_pessoa']
-        // );
+        double valorTotal = 0;
+        
+        for (var element in pedidosPecasList)
+        {
+            Peca peca = await PecaController().get( Peca.byId( element.refPeca ) );
+            valorTotal += peca.valorRevenda * element.quantidade;
+        }
+
+        Pessoa dadosCliente = await PessoaController().get( Pessoa.byId( 79 ) );
+
+        Pedido pedidoObj = Pedido
+        (
+            valorTotal,
+            Pedido.statusPendente,
+            '95914104',
+            'Wilma Ruwer',
+            'São Cristóvão',
+            '123',
+            1,
+            false,
+            0,
+            null,
+            null,
+            null,
+            null,
+            pedidosPecasList,
+            dadosCliente
+        );
 
         // Pedido pedidoObj = await PedidoController().getPedido( Pedido.byId( 19 ) );
 
@@ -73,7 +83,7 @@ void main() async
         // print( allPedidos );   
     
         
-        // await PedidoController().insert( pedido );
+        await PedidoController().insert( pedidoObj );
 
         // List pedidoDadosInsert = await PedidoModel().insert( pedido.toMap() );
         
@@ -89,7 +99,7 @@ void main() async
         // print( pedidoInsertReturn['id'] );
         // print( 'Pedido inserido com sucesso!' );
         
-        Pedido pedido = await PedidoController().getPedido( Pedido.byId( 34 ) );
+        // Pedido pedido = await PedidoController().getPedido( Pedido.byId( 34 ) );
 
         // print( pedido.pecasPedido );
 
@@ -114,7 +124,7 @@ void main() async
 
         // await PedidoController().update( pedido );
 
-        await PedidoController().conclude(pedido);
+        // await PedidoController().conclude(pedido);
 
         
     }
