@@ -1,6 +1,6 @@
 class DateTimeUtils
 {
-    static String nowTimeAbbreviatedAsString()
+    static String nowTimeForFilenameAsIso8601()
     {
         String timestamp = DateTime.now().toString();
         String date = timestamp.split(' ')[0];

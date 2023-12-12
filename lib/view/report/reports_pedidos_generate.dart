@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:autom_v3/interfaces/report_itnerface.dart';
+import 'package:autom_v3/interfaces/report_interface.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
@@ -10,12 +10,12 @@ class ReportPedidosGenerate implements ReportInterface
     static const basefolder = 'files';
 
     @override
-    void buildReportToFile(String path) async
+    void buildReportToFile(List items, String path) async
     {
         try
         {
             final file = File(path);
-            await file.writeAsBytes(await buildReportToBytes(path));
+            await file.writeAsBytes(await buildReportToBytes(items, path));
         }
         catch(e)
         {
@@ -24,20 +24,28 @@ class ReportPedidosGenerate implements ReportInterface
     }
 
     @override
-    Future<Uint8List> buildReportToBytes(String path) async
+    Future<Uint8List> buildReportToBytes(List items, String path) async
     {
         final pdf = pw.Document();
 
         try
         {
-         
             final headers = ['ID', 'Data Abertura', 'Data Encerramento', 'Quantidade', 'Total'];
-            final data = <List<String>>
-                [
-                    ['13', '2023-01-01', '2023-01-13', '1', '221.00'],
-                    ['17', '2023-01-01', '2023-01-17', '2', '442.00'],
-                    ['23', '2023-01-01', '2023-01-23', '3', '663.00'],
-                ];
+
+            var data = <List<String>>[];
+            items.forEach((element)
+            {
+                data.add
+                (
+                    [
+                        element.id.toString(),
+                        element.dtAbertura.toString().split(' ')[0],
+                        element.dtEncerramento.toString().split(' ')[0],
+                        '',
+                        element.total.toString(),
+                    ]
+                );
+            });
 
             pw.Table table = pw.TableHelper.fromTextArray
             (
@@ -50,7 +58,7 @@ class ReportPedidosGenerate implements ReportInterface
             (
                 pw.Page
                 (
-                    pageFormat: PdfPageFormat.a5,
+                    pageFormat: PdfPageFormat.a4,
                     build:(context) => pw.Wrap
                     (
                         children:

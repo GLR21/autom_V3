@@ -1,3 +1,7 @@
+import 'package:autom_v3/classes/pedido.dart';
+import 'package:autom_v3/classes/pessoa.dart';
+import 'package:autom_v3/controllers/pedido_controller.dart';
+import 'package:autom_v3/controllers/pessoa_controller.dart';
 import 'package:autom_v3/utils/datetime_utils.dart';
 import 'package:autom_v3/view/components/dialog_builder.dart';
 import 'package:autom_v3/view/components/navigation_panel.dart';
@@ -19,59 +23,133 @@ class _ReportPedidosViewState extends State<ReportPedidosView>
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-    // Future<List> filteredList = MarcaController().getAll();
+    Future<List<dynamic>> allPessoas = PessoaController().getAll();
 
     String? id;
     String? nome;
 
-    Widget buildFieldId()
+    Object? selectedPessoa;
+    Object? selectedStatusPedido;
+
+    DropdownButtonFormField buildComboStatusPedido()
     {
-        return SizedBox
-        (
-            width: 100,
-            child: TextFormField
+        var items = [
+            const DropdownMenuItem
             (
-                decoration: const InputDecoration
-                (
-                    label: Text('Código'),
-                    border: OutlineInputBorder()
-                ),
-                validator: (String? value)
-                {
-                    return null;
-                },
-                onSaved: (newValue)
-                {
-                    id = newValue;
-                },
+                value: 0,
+                child: Text('Status do pedido')
             ),
+            const DropdownMenuItem
+            (
+                value: 1,
+                child: Text('Cancelado')
+            ),
+            const DropdownMenuItem
+            (
+                value: 2,
+                child: Text('Pendente')
+            ),
+            const DropdownMenuItem
+            (
+                value: 3,
+                child: Text('Concluído')
+            )
+        ];
+
+        return DropdownButtonFormField
+        (
+            isExpanded: true,
+            value: 0,
+            hint: const Text('Selecione um status!'),
+            items: items,
+            onChanged: (value) => setState(()
+            {
+                selectedStatusPedido = value;
+            }),
+            validator: (value)
+            {
+                if(value == null)
+                {
+                    return 'Selecione um status!';
+                }
+                return null;
+            },
+            onSaved: (value)
+            {
+                selectedStatusPedido = value;
+            },
         );
     }
 
-    Widget buildFieldNome()
+    FutureBuilder buildComboPessoa()
     {
-        return SizedBox
+        return FutureBuilder<List<dynamic>>
         (
-            width: 300,
-            child: TextFormField
-            (
-                decoration: const InputDecoration
-                (
-                    label: Text
-                    (
-                        'Nome'
-                    ),
-                    border: OutlineInputBorder()
-                ),
-                validator: (String? value)
+            future: allPessoas,
+            builder: (context, snapshot)
+            {
+                if( snapshot.connectionState == ConnectionState.waiting )
+                {}
+
+                if(snapshot.hasError)
                 {
-                    return null;
-                },
-                onSaved: (newValue)
-                {
-                    nome = newValue;
+                    return Text('Error: ${snapshot.error}');
                 }
-            ),
+
+                if (snapshot.hasData)
+                {
+                    var items = snapshot.data!;
+                    var map = items.map((map) =>
+                        DropdownMenuItem
+                        (
+                            value: map.id,
+                            child: Text(map.nome)
+                        )
+                    );
+                    var list = map.toList();
+                    list.insert
+                    (
+                        0,
+                        const DropdownMenuItem
+                        (
+                            value: 0,
+                            child: Text('Selecione uma pessoa')
+                        )
+                    );
+
+                    return DropdownButtonFormField
+                    (
+                        isExpanded: true,
+                        value: 0,
+                        hint: const Text('Selecione uma cidade'),
+                        items: list,
+                        onChanged: (value) => setState(()
+                        {
+                            selectedPessoa = value!;
+                        }),
+                        validator: (value)
+                        {
+                            if(value == null)
+                            {
+                                return 'Selecione uma pessoa!';
+                            }
+                            return null;
+                        },
+                        onSaved: (value)
+                        {
+                            selectedPessoa = value;
+                        },
+                    );
+                }
+                else
+                {
+                    return DropdownButton
+                    (
+                        items: const [],
+                        onChanged: (item) => setState(() {}),
+                    );
+                }
+            },
         );
     }
 
@@ -116,7 +194,7 @@ class _ReportPedidosViewState extends State<ReportPedidosView>
                                                 crossAxisAlignment: CrossAxisAlignment.center,
                                                 children:
                                                 [
-                                                    buildFieldId()
+                                                    buildComboPessoa()
                                                 ]
                                             )
                                         ),
@@ -131,7 +209,7 @@ class _ReportPedidosViewState extends State<ReportPedidosView>
                                                 crossAxisAlignment: CrossAxisAlignment.center,
                                                 children:
                                                 [
-                                                    buildFieldNome()
+                                                    buildComboStatusPedido()
                                                 ]
                                             )
                                         ),
@@ -161,7 +239,7 @@ class _ReportPedidosViewState extends State<ReportPedidosView>
                                                             'Gerar',
                                                             style: TextStyle(color: Colors.white),
                                                         ),
-                                                        onPressed: ()
+                                                        onPressed: () async
                                                         {
                                                             if(!formKey.currentState!.validate())
                                                             {
@@ -170,21 +248,41 @@ class _ReportPedidosViewState extends State<ReportPedidosView>
 
                                                             formKey.currentState!.save();
 
+                                                            // print(selectedPessoa);
+                                                            // print(selectedStatusPedido);
+
+                                                            /**
+                                                             * Buscar pedidos da pessoa
+                                                             */
+                                                            List<Pedido> pedidosFiltered = [];
+
+                                                            var pedidos = await PedidoController().getAllPedidos();
+                                                            pedidos.forEach
+                                                            (
+                                                                (pedido) =>
+                                                                {
+                                                                    if(
+                                                                       pedido.refCliente?.id == int.parse(selectedPessoa.toString())
+                                                                    && pedido.status == selectedStatusPedido
+                                                                    )
+                                                                    {
+                                                                        pedidosFiltered.add(pedido)
+                                                                    }
+                                                                }
+                                                            );
+
+                                                            String caminho = "${ReportPedidosGenerate.basefolder}/relatorio_pedidos_${DateTimeUtils.nowTimeForFilenameAsIso8601()}.pdf";
                                                             ReportPedidosGenerate reportPedido = ReportPedidosGenerate();
                                                             reportPedido.buildReportToFile
                                                             (
-                                                                "${ReportPedidosGenerate.basefolder}/relatorio_pedidos_${DateTimeUtils.nowTimeAbbreviatedAsString()}.pdf"
+                                                                pedidosFiltered,
+                                                                caminho
                                                             );
 
                                                             /**
                                                              * Mensagem de sucesso
                                                              */
-                                                            DialogBuilder().showInfoDialog
-                                                            (
-                                                                'Sucesso!',
-                                                                "Relatório gerado com sucesso!",
-                                                                context
-                                                            );
+                                                            showDialogSucesso(caminho, context);
                                                         },
                                                     ),
                                                 ],
@@ -204,5 +302,15 @@ class _ReportPedidosViewState extends State<ReportPedidosView>
         );
 
         return scaffold;
+    }
+
+    void showDialogSucesso(String caminho, context)
+    {
+        DialogBuilder().showInfoDialog
+        (
+            'Sucesso!',
+            "Relatório gerado com sucesso! \n\n Caminho: $caminho",
+            context
+        );
     }
 }
