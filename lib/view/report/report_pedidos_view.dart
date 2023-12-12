@@ -248,9 +248,6 @@ class _ReportPedidosViewState extends State<ReportPedidosView>
 
                                                             formKey.currentState!.save();
 
-                                                            // print(selectedPessoa);
-                                                            // print(selectedStatusPedido);
-
                                                             /**
                                                              * Buscar pedidos da pessoa
                                                              */
