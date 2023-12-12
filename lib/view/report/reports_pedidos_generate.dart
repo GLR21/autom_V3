@@ -41,7 +41,7 @@ class ReportPedidosGenerate implements ReportInterface
                         element.id.toString(),
                         element.dtAbertura.toString().split(' ')[0],
                         element.dtEncerramento.toString().split(' ')[0],
-                        '',
+                        element.pecasPedido.length.toString(),
                         element.total.toString(),
                     ]
                 );
